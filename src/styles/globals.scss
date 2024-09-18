@@ -1,0 +1,133 @@
+:root {
+  @apply bg-gray-100;
+}
+
+input {
+  @apply px-2;
+}
+  .fc-header-toolbar {
+    display: inline-block;
+    padding: 4px 4px;
+    
+    @apply space-x-8;
+}
+
+.fc-day {
+  @apply m-8;
+}
+
+.fc-scrollgrid-sync-table {
+  @apply w-full;
+}
+
+.fc-view {
+  @apply w-full h-full lg:h-3/4 xl:h-2/3 bg-white;
+}
+
+.fc-h-event {
+  @apply bg-violet-500 border border-violet-600 ;
+  
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  @apply bg-violet-100 ;
+}
+
+.fc .fc-button{
+  @apply  hover:bg-violet-900  ;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  @apply bg-violet-600;
+}
+
+.fc .fc-button-primary:disabled {
+  @apply bg-violet-600;
+}
+.fc-v-event {
+  @apply bg-violet-500 border border-violet-600 ;
+  
+}
+
+
+
+
+@font-face {
+  font-family: "Argentum Sans";
+  src: url(../../fonts/Argentum/ArgentumSans-Light.ttf);
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Argentum Sans";
+  src: url(../../fonts/Argentum/ArgentumSans-Medium.ttf);
+  font-weight: 600;
+  font-style: normal;
+}
+
+body {
+  font-family: "Argentum Sans", sans-serif;
+}
+
+.flex {
+  display: flex;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+body {
+  background-color: #eff0f5;
+}
+
+#__next {
+  background-color: #eff0f5;
+}
+
+.slider-class-testimonal {
+  column-gap: 2px;
+}
+
+.dots {
+  border: "1px solid red";
+}
+
+.error {
+  color: #f44336;
+  font-family: Argentum Sans;
+  font-weight: 400;
+  font-size: 0.75rem;
+  margin-top: 3px;
+  margin-right: 14px;
+  margin-left: 14px;
+}
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.loading {
+  opacity: 0;
+  animation-name: fade-in-out;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
