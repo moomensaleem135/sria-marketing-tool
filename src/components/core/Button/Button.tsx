@@ -24,11 +24,7 @@ interface IButtonProps {
  * Reusable button component
  */
 const Button: React.FC<React.PropsWithChildren<IButtonProps>> = ({ children, pan, ...props }) => {
-  return (
-    <ButtonStyled Pan={pan} {...props}>
-      {children}
-    </ButtonStyled>
-  );
+  return <ButtonStyled {...props}>{children}</ButtonStyled>;
 };
 
 export default Button;

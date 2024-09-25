@@ -1,13 +1,7 @@
+'use client';
 import SharedLayout from '@/components/layout/shared-layout';
 
-import {
-  Container,
-  FlexRow,
-  Text,
-  TextBlue,
-  TextBold,
-  TopHeading,
-} from './index.styles';
+import { Container, FlexRow, Text, TextBlue, TextBold, TopHeading } from './index.styles';
 
 import IconButton from '@mui/material/IconButton';
 import { Add, Remove } from '@mui/icons-material';

@@ -28,7 +28,6 @@ import Button from '@/components/core/Button';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import YesNoSelector from '../../YesNoSelector';
 
-
 interface Question {
   id: number;
   question: string;

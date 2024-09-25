@@ -8,7 +8,6 @@ import Image from 'next/image';
 
 import Button from '@/components/core/Button';
 
-
 export const Main = styled(Box)`
   padding: 1rem;
   width: 25rem;

@@ -2,7 +2,6 @@ import { COLORS } from '@/constants/colors';
 import styled from '@emotion/styled';
 import { Box, Grid, Typography, SwipeableDrawer } from '@mui/material';
 
-
 export const LinkStyled = styled(Box)`
   align-items: flex-start;
 `;

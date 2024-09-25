@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+
 import {
   Btn,
   DivButton,
@@ -12,12 +13,16 @@ import {
   SubHeading,
   TextDiv
 } from './index.styles';
+
 import Button from '@/components/core/Button';
+
 import Image from 'next/image';
+
 import { useRouter } from 'next/navigation';
 
 const Welcome = () => {
   const router = useRouter();
+
   return (
     <MainContainer>
       <Nav>

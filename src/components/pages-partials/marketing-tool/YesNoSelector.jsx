@@ -8,7 +8,6 @@ import { COLORS } from '@/constants/colors';
 
 import { useState } from 'react';
 
-
 const OptionContainer = styled.div`
   display: flex;
   align-items: center;

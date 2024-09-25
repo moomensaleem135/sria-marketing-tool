@@ -1,5 +1,5 @@
 export interface IAppState {
-  loading: Boolean;
+  loading: boolean;
   status: string;
   error: string | undefined;
 }

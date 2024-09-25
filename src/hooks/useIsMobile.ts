@@ -8,7 +8,7 @@ type DeviceSizeProps = {
 
 const useDeviceSize = ({ type, size }: DeviceSizeProps) => {
   const theme = useTheme();
-  
+
   return useMediaQuery(theme.breakpoints[type](size));
 };
 

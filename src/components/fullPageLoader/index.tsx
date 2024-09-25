@@ -40,5 +40,5 @@ function FullPageSkeleton() {
 }
 
 export default function FullPageLoader() {
-  return <SharedLayout children={<FullPageSkeleton />} title={'Rooms'} />;
+  return <SharedLayout children={<FullPageSkeleton />} />;
 }

@@ -132,7 +132,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
       }}
       {...props}
     />
-  ))(({  }) => ({
+  ))(() => ({
     '& .MuiPaper-root': {
       borderRadius: 6,
       minWidth: 180,
@@ -212,9 +212,9 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
               marginTop: '1.5rem'
             }}
           >
-            {MenuITEMS.map((item) => (
+            {MenuITEMS.map((item: any) => (
               <>
-                {item.submenu && item?.submenu?.length > 0 ? (
+                {item && item.submenu && item?.submenu?.length > 0 ? (
                   <SideBarNavList aria-labelledby="nested-list-subheader">
                     {collapse ? (
                       <StyledListItemButton
@@ -280,7 +280,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
                         open={Boolean(anchorEl) && openMenu === item.title}
                         onClose={handleClose}
                       >
-                        {item.submenu.map((ele, index) => (
+                        {item.submenu.map((ele: any, index: number) => (
                           <MenuItem
                             sx={{
                               background: path === ele.path ? `${COLORS.BLUE_600}` : 'white',
@@ -316,7 +316,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
                         orientation="vertical"
                       >
                         <Box style={{ marginTop: '10px' }}>
-                          {item.submenu.map((ele, index) => {
+                          {item.submenu.map((ele: any, index: number) => {
                             return (
                               <List
                                 component="div"

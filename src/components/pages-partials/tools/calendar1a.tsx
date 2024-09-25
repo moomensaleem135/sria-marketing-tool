@@ -56,14 +56,15 @@ export default function Calendar1a() {
   });
 
   useEffect(() => {
-    let draggableEl = document.getElementById('draggable-el');
+    const draggableEl = document.getElementById('draggable-el');
     if (draggableEl) {
       new Draggable(draggableEl, {
         itemSelector: '.fc-event',
         eventData: function (eventEl) {
-          let title = eventEl.getAttribute('title');
-          let id = eventEl.getAttribute('data');
-          let start = eventEl.getAttribute('start');
+          const title = eventEl.getAttribute('title');
+          const id = eventEl.getAttribute('data');
+          const start = eventEl.getAttribute('start');
+
           return { title, id, start };
         }
       });
@@ -134,7 +135,7 @@ export default function Calendar1a() {
   }
 
   return (
-    <SharedLayout title="Calender">
+    <SharedLayout>
       <Main>
         <CalendarStyles>
           <FullCalendar

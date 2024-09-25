@@ -2,7 +2,6 @@ import { Providers } from '@/store/provider';
 import { MuiThemeProvider } from '@/theme/provider';
 import { ReactNode } from 'react';
 
-
 interface Props {
   children: ReactNode;
 }

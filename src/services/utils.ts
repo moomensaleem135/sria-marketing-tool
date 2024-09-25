@@ -5,7 +5,7 @@ import axios from './apiConfig';
 import { IRequestBody } from './service.types';
 
 const getTokenHeader = () => {
-  let extraHeaders: { authorization?: string } = {};
+  const extraHeaders: { authorization?: string } = {};
   let token = localStorage.getItem('token');
   if (token) {
     token = JSON.parse(token);
@@ -88,7 +88,7 @@ export const patchRequest = (
   config?: AxiosRequestConfig
 ) => {
   const extraHeaders = getTokenHeader();
-  
+
   return axios.patch(url, body, {
     ...config,
     headers: {
@@ -100,7 +100,6 @@ export const patchRequest = (
 };
 
 export const getErrorMessage = (json: AxiosError) => {
-  
   return json?.response?.data?.message
     ? json?.response?.data?.message
     : json?.response?.data?.errors.length

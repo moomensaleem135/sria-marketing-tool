@@ -58,8 +58,8 @@ const MyPopover = () => {
           <Title>Client Billing Review - Quarterly</Title>
           <Schedule>Scheduled 3/10</Schedule>
           <Details>
-            Every quarter you'll need to examine a sampling of your client's billing activity. The
-            goal of this review is to ensure your client's bills are accurate and match the fee
+            Every quarter you will need to examine a sampling of your clients billing activity. The
+            goal of this review is to ensure your clients bills are accurate and match the fee
             schedule set forth in their advisory agreement and form ADV 2A.
           </Details>
           <hr />

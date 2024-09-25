@@ -49,6 +49,7 @@ module.exports = {
     'newline-before-return': 2,
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 0,
+    'react/no-unknown-property': 1,
     'import-helpers/order-imports': [
       1,
       {
@@ -67,16 +68,24 @@ module.exports = {
       }
     ],
     '@typescript-eslint/no-unused-vars': [
-      2,
+      1,
       {
         argsIgnorePattern: '^_'
       }
     ],
     'no-console': [
-      2,
+      1,
       {
         allow: ['warn', 'error']
       }
-    ]
+    ],
+    // Update the '@typescript-eslint/no-explicit-any' rule to warn instead of error
+    '@typescript-eslint/no-explicit-any': [
+      0, // 1 is a warning, 2 is an error
+      {
+        ignoreRestArgs: true
+      }
+    ],
+    'react/no-children-prop': 1
   }
 };

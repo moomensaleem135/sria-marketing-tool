@@ -246,7 +246,7 @@ export const CustomListItemText = styled(Typography)`
   color: white;
 `;
 export const StyledListItemButton = styled(ListItemButton)<StyledListItemButtonProps>(
-  ({  path, itemPath }) => ({
+  ({ path, itemPath }) => ({
     backgroundColor: path.includes(itemPath) ? COLORS.BLUE_600 : 'white',
     borderRadius: '10px',
     marginRight: '23px !important',

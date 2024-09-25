@@ -9,8 +9,6 @@ import WebsiteDomainIcon from '@/assets/images/svgs/icons/drawerIcons/WebsiteDom
 import EmailCampaignIcon from '@/assets/images/svgs/icons/drawerIcons/emailIcon';
 import SocialMediaIcon from '@/assets/images/svgs/icons/drawerIcons/socialMediaIcon';
 
-
-
 export const MenuITEMS = [
   {
     title: 'Website Domain',

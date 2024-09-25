@@ -28,5 +28,5 @@ import React from 'react';
 // } from "./index.styles";
 
 export default function Home() {
-  return <SharedLayout title="HomePage">ahsdhs</SharedLayout>;
+  return <SharedLayout>ahsdhs</SharedLayout>;
 }

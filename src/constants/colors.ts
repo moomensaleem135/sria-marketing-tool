@@ -1,4 +1,3 @@
-
 export const COLORS = {
   BLUE_TEXT: '#3A6FB6',
   BLUE_600: '#3A6FB6',
@@ -33,6 +32,5 @@ export const COLORS = {
   BACKGROUND_COLOR: '#EFF0F5',
   LIGHT_GREEN: '#e8f3dc',
   BUTTON_COLOR: '#f05f97',
-  BLUE_600: '#3A6FB6',
   BLUE_200: '#0263D1'
 };

@@ -7,7 +7,7 @@ import { Container, FlexRowGrid, FlexCol, TypographyStyle } from './index.styles
 
 export default function PartialDashboard() {
   return (
-    <SharedLayout title={'Dashboard'}>
+    <SharedLayout>
       <Container container>
         <FlexRowGrid item xs={12}>
           <FlexCol>

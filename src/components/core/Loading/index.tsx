@@ -8,7 +8,7 @@ export const Loading = () => {
     <>
       <StyledPreloader>
         <Loader>
-          <Image src={'/svgs/saving.svg'} width={300} height={200} />
+          <Image src={'/svgs/saving.svg'} width={300} height={200} alt="saving" />
         </Loader>
       </StyledPreloader>
     </>

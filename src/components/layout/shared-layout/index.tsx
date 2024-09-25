@@ -12,7 +12,6 @@ interface SharedLayoutProps {
 }
 
 const SharedLayout = ({ children }: SharedLayoutProps) => {
-
   // useFetchTasks();
 
   return (

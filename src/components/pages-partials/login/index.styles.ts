@@ -3,7 +3,6 @@ import { TextField, Grid, Typography } from '@mui/material';
 
 import { COLORS } from '../../../constants/colors';
 
-
 export const Flex = styled.div`
   display: flex;
   flex-direction: row;

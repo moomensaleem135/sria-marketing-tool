@@ -9,9 +9,7 @@ import DatePickerWithIcon from '@/components/core/DatePickerTask';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import FieldInput from '@/components/core/FieldInput';
 
-
 import { ButtonRightRow, FlexCol, FlexRow, Label } from '../index.styles';
-
 
 interface FormValues {
   name: string;
