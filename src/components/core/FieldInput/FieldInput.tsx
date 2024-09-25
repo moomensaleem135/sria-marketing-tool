@@ -1,15 +1,25 @@
-import { FieldInputStyled } from "./FieldInput.styles";
-import { IInputProps } from "./FieldInput.types";
+import { FieldInputStyled } from './FieldInput.styles';
+import { IInputProps } from './FieldInput.types';
 
-const FieldInput = ({ isShadow,isEndContent ,Left, ...props }: IInputProps) => {
+const FieldInput = ({
+  isShadow,
+  isEndContent,
+  customPadding,
+  fontWeight,
+  Left,
+  ...props
+}: IInputProps) => {
   const style = Left ? { paddingLeft: `${Left}rem` } : {};
+
   return (
     <FieldInputStyled
-    isShadow={isShadow}
-    isEndContent={isEndContent}
+      isShadow={isShadow}
+      isEndContent={isEndContent}
+      customPadding={customPadding}
+      fontWeight={fontWeight}
       {...props}
       InputProps={{
-        style: { ...style },
+        style: { ...style }
       }}
     />
   );

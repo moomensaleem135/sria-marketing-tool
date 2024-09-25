@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  // endOfLine: 'auto',
   extends: [
     'next/core-web-vitals',
     'eslint:recommended',
@@ -49,7 +50,7 @@ module.exports = {
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 0,
     'import-helpers/order-imports': [
-      2,
+      1,
       {
         newlinesBetween: 'always',
         groups: [

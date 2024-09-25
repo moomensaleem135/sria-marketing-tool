@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+import styled from '@emotion/styled';
+import { Box } from '@mui/material';
 
 export const Container = styled(Box)`
   display: flex;
@@ -9,5 +9,4 @@ export const Container = styled(Box)`
 
 export const Main = styled(Box)`
   position: relative;
- 
 `;

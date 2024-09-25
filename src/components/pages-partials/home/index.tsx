@@ -1,7 +1,7 @@
-"use client";
-import SharedLayout from "@/components/layout/shared-layout";
-import React, { useEffect } from "react";
-import NavBar from "src/app/navbar/page";
+'use client';
+import SharedLayout from '@/components/layout/shared-layout';
+
+import React from 'react';
 // import { useRouter } from "next/navigation";
 // import Image from "next/image";
 // import { CircularProgress } from "@mui/material";
@@ -27,12 +27,6 @@ import NavBar from "src/app/navbar/page";
 //   LogoBox,
 // } from "./index.styles";
 
-
-
 export default function Home() {
-  return (
-     <SharedLayout title="HomePage">
-      ahsdhs
-     </SharedLayout>
-  );
+  return <SharedLayout title="HomePage">ahsdhs</SharedLayout>;
 }

@@ -1,8 +1,8 @@
 export enum IRole {
-  SUPER_ADMIN = "superAdmin",
-  BRANCH_ADMIN = "admin",
-  RECECPTIONIST = "recepionist",
-  THERAPIST = "therapist",
+  SUPER_ADMIN = 'superAdmin',
+  BRANCH_ADMIN = 'admin',
+  RECECPTIONIST = 'recepionist',
+  THERAPIST = 'therapist'
 }
 export interface User {
   email?: string;

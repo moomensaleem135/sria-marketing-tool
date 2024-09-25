@@ -5,7 +5,7 @@ import app from './app';
 
 const rootReducer = combineReducers({
   auth,
-  app,
+  app
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

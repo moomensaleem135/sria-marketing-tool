@@ -1,29 +1,32 @@
-"use client";
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { CircularProgress } from "@mui/material";
-import { toast } from "react-toastify";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+'use client';
+import Image from 'next/image';
 
-import Button from "@/components/core/Button";
-import FieldInput from "@/components/core/FieldInput";
-import { useAppDispatch, useAppSelector } from "@/hooks/useReduxTypedHooks";
-import { getAuthDataSelector, clearError, signIn  } from "@/store/auth";
+import { CircularProgress } from '@mui/material';
 
-import { loginValidation } from "@/validations/index";
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+
+import { getAuthDataSelector, clearError, signIn } from '@/store/auth';
+
+import { loginValidation } from '@/validations/index';
+
+import React, { useEffect } from 'react';
+
+import { toast } from 'react-toastify';
+import Button from '@/components/core/Button';
+import FieldInput from '@/components/core/FieldInput';
+import { useAppDispatch, useAppSelector } from '@/hooks/useReduxTypedHooks';
+
 
 import {
   StyledGridRight,
   Heading,
   FlexRow,
-  H4,
   DivButton,
   Container,
   DivSpace,
   SubHeading,
-  LogoBox,
-} from "./index.styles";
+  LogoBox
+} from './index.styles';
 
 export interface FormValues {
   email: string;
@@ -32,10 +35,8 @@ export interface FormValues {
 
 export default function Login() {
   const dispatch = useAppDispatch();
-  const router = useRouter();
 
-  const { status, error, isAuthenticated, isNavigated } =
-    useAppSelector(getAuthDataSelector);
+  const { status, error, isAuthenticated } = useAppSelector(getAuthDataSelector);
 
   const onFormSubmit = async (values: FormValues) => {
     dispatch(signIn(values));
@@ -47,8 +48,6 @@ export default function Login() {
       dispatch(clearError());
     }
   }, [error]);
-console.log({isAuthenticated});
-
 
   // if (isAuthenticated === true && !isNavigated) {
   //   router.push("/home");
@@ -65,14 +64,14 @@ console.log({isAuthenticated});
         <DivSpace />
         <Formik
           initialValues={{
-            email: "",
-            password: "",
+            email: '',
+            password: ''
           }}
           validationSchema={() => loginValidation}
           onSubmit={onFormSubmit}
         >
           {({ errors, touched, isValid, dirty }) => {
-              return (
+            return (
               <Form className="login-form">
                 <Field
                   as={FieldInput}
@@ -90,25 +89,17 @@ console.log({isAuthenticated});
                   type="password"
                   placeholder="Password  "
                   error={errors.password && touched.password ? true : false}
-                  helperText={
-                    <ErrorMessage name="password" className="color-white" />
-                  }
+                  helperText={<ErrorMessage name="password" className="color-white" />}
                 />
                 <FlexRow>
                   <p>Forgot Your Password ?</p>
                 </FlexRow>
                 <DivButton>
                   <Button disabled={!(dirty && isValid)} type="submit">
-                    {status === "pending" ? (
-                      <CircularProgress
-                      />
-                    ) : (
-                      "Sign In"
-                    )}
+                    {status === 'pending' ? <CircularProgress /> : 'Sign In'}
                   </Button>
                 </DivButton>
               </Form>
-              
             );
           }}
         </Formik>

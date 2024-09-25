@@ -1,14 +1,11 @@
-"use client";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, {
-  Draggable,
-  DropArg,
-} from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import { Fragment, useEffect, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { EventSourceInput } from "@fullcalendar/core/index.js";
+'use client';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin, { Draggable, DropArg } from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import { Fragment, useEffect, useState } from 'react';
+import { Transition } from '@headlessui/react';
+import { EventSourceInput } from '@fullcalendar/core/index.js';
 import {
   CalendarStyles,
   CancelButton,
@@ -35,9 +32,9 @@ import {
   InputDiv,
   Main,
   NewButton,
-  TitleDiv,
-} from "./index.styles";
-import SharedLayout from "@/components/layout/shared-layout";
+  TitleDiv
+} from './index.styles';
+import SharedLayout from '@/components/layout/shared-layout';
 
 interface Event {
   title: string;
@@ -52,23 +49,23 @@ export default function Calendar1a() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState<number | null>(null);
   const [newEvent, setNewEvent] = useState<Event>({
-    title: "",
-    start: "",
+    title: '',
+    start: '',
     allDay: false,
-    id: 0,
+    id: 0
   });
 
   useEffect(() => {
-    let draggableEl = document.getElementById("draggable-el");
+    let draggableEl = document.getElementById('draggable-el');
     if (draggableEl) {
       new Draggable(draggableEl, {
-        itemSelector: ".fc-event",
+        itemSelector: '.fc-event',
         eventData: function (eventEl) {
-          let title = eventEl.getAttribute("title");
-          let id = eventEl.getAttribute("data");
-          let start = eventEl.getAttribute("start");
+          let title = eventEl.getAttribute('title');
+          let id = eventEl.getAttribute('data');
+          let start = eventEl.getAttribute('start');
           return { title, id, start };
-        },
+        }
       });
     }
   }, []);
@@ -78,7 +75,7 @@ export default function Calendar1a() {
       ...newEvent,
       start: arg.date,
       allDay: arg.allDay,
-      id: new Date().getTime(),
+      id: new Date().getTime()
     });
     setShowModal(true);
   }
@@ -89,7 +86,7 @@ export default function Calendar1a() {
       start: data.date.toISOString(),
       title: data.draggedEl.innerText,
       allDay: data.allDay,
-      id: new Date().getTime(),
+      id: new Date().getTime()
     };
     setAllEvents([...allEvents, event]);
   }
@@ -100,9 +97,7 @@ export default function Calendar1a() {
   }
 
   function handleDelete() {
-    setAllEvents(
-      allEvents.filter((event) => Number(event.id) !== Number(idToDelete))
-    );
+    setAllEvents(allEvents.filter((event) => Number(event.id) !== Number(idToDelete)));
     setShowDeleteModal(false);
     setIdToDelete(null);
   }
@@ -110,10 +105,10 @@ export default function Calendar1a() {
   function handleCloseModal() {
     setShowModal(false);
     setNewEvent({
-      title: "",
-      start: "",
+      title: '',
+      start: '',
       allDay: false,
-      id: 0,
+      id: 0
     });
     setShowDeleteModal(false);
     setIdToDelete(null);
@@ -122,7 +117,7 @@ export default function Calendar1a() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNewEvent({
       ...newEvent,
-      title: e.target.value,
+      title: e.target.value
     });
   };
 
@@ -131,51 +126,47 @@ export default function Calendar1a() {
     setAllEvents([...allEvents, newEvent]);
     setShowModal(false);
     setNewEvent({
-      title: "",
-      start: "",
-      allDay: false,  
-      id: 0,
+      title: '',
+      start: '',
+      allDay: false,
+      id: 0
     });
   }
 
   return (
     <SharedLayout title="Calender">
       <Main>
-            <CalendarStyles>
-            <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-              headerToolbar={{
-                left: "",
-                center: "prev,title,next",
-                right: "",
-              }}
-              height="100%"
-              firstDay={1}
-              fixedWeekCount={false}
-              events={allEvents as EventSourceInput}
-              nowIndicator={true}
-              editable={true}
-              droppable={true}
-              selectable={true}
-              selectMirror={true}
-              dateClick={handleDateClick}
-              drop={(data) => addEvent(data)}
-              eventClick={(data) => handleDeleteModal(data)}
-              eventClassNames={(arg) => (new Date(arg.event.start as Date) < new Date() ? 'past-event' : '')}
-            />
-                    <DragEventDiv id="draggable-el" >
-            <NewButton>
-              New Task
-            </NewButton>
+        <CalendarStyles>
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+            headerToolbar={{
+              left: '',
+              center: 'prev,title,next',
+              right: ''
+            }}
+            height="100%"
+            firstDay={1}
+            fixedWeekCount={false}
+            events={allEvents as EventSourceInput}
+            nowIndicator={true}
+            editable={true}
+            droppable={true}
+            selectable={true}
+            selectMirror={true}
+            dateClick={handleDateClick}
+            drop={(data) => addEvent(data)}
+            eventClick={(data) => handleDeleteModal(data)}
+            eventClassNames={(arg) =>
+              new Date(arg.event.start as Date) < new Date() ? 'past-event' : ''
+            }
+          />
+          <DragEventDiv id="draggable-el">
+            <NewButton>New Task</NewButton>
           </DragEventDiv>
-            </CalendarStyles>
+        </CalendarStyles>
 
         <Transition.Root show={showDeleteModal} as={Fragment}>
-          <Dialogue
-            as="div"
-            className="relative z-10"
-            onClose={setShowDeleteModal}
-          >
+          <Dialogue as="div" className="relative z-10" onClose={setShowDeleteModal}>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -272,16 +263,10 @@ export default function Calendar1a() {
                             />
                           </InputDiv>
                           <CheckButtonDiv>
-                            <CheckButton
-                              type="submit"
-                              disabled={newEvent.title === ""}
-                            >
+                            <CheckButton type="submit" disabled={newEvent.title === ''}>
                               Create
                             </CheckButton>
-                            <CancelButton
-                              type="button"
-                              onClick={handleCloseModal}
-                            >
+                            <CancelButton type="button" onClick={handleCloseModal}>
                               Cancel
                             </CancelButton>
                           </CheckButtonDiv>

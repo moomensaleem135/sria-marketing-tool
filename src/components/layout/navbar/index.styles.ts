@@ -1,69 +1,27 @@
-// import { COLORS } from "@/constants/colors";
-// import styled from "@emotion/styled";
-// import Image from "next/image";
-
-// export const MainContainer = styled.div`
-// display: flex;
-// padding:0rem 1rem;
-// justify-content: space-between;
-// box-shadow: 1px 1px #C3CAD2 ;
-// `
-
-// export const LogoDiv = styled.div`
-
-// `
-// export const UlDiv = styled.div`
-// display: flex;
-// list-style: none;
-// align-items: center;
-// margin-top: 6rem;
-// justify-content: space-between;
-// width: 100%;
-// `
-// export const Li =styled.li`
-// margin:0 4rem;
-// `
-
-// export const IconsDiv = styled.div`
-// display: flex;
-// align-items: center;
-// justify-content: space-between;
-// width: 100%;
-// `
-
-// export const SearchBar = styled.input`
-// border-radius: 80px;
-// background: var(--Grey-200, #F4F5F6);
-// border-style: none;
-// display: flex;
-// padding: 1rem 0.5rem;
-// align-items: center;
-// font-size: 1em;
-// text-align: center;
-// position: relative;
-// `
-// export const SearchIcon = styled(Image)`
-// position: absolute;
-// margin-left: 10px;
-// `
-import styled from "@emotion/styled";
-import Image from "next/image";
+import { COLORS } from '@/constants/colors';
+import styled from '@emotion/styled';
+import { Box, Paper, Typography } from '@mui/material';
+import Image from 'next/image';
 
 export const MainContainer = styled.div`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: space-arround;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  padding: 0 40px;
+  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
+  background: #eff4f9;
+  padding: 20px 40px;
+  height: 15%;
 `;
 
 export const LogoDiv = styled.div`
+  display: flex;
+  align-items: center;
+  column-gap: 0.3rem;
 `;
 
 export const UlDiv = styled.ul`
   display: flex;
-  justify-content:space-around;
+  justify-content: space-around;
   list-style: none;
   margin: 0 8rem;
   padding: 0;
@@ -74,17 +32,18 @@ export const Li = styled.li`
   color: #003165;
   font-weight: bold;
   cursor: pointer;
+  font-size: 1rem;
 `;
 
 export const IconsDiv = styled.div`
   display: flex;
   align-items: center;
-  column-gap:16px
+  column-gap: 16px;
 `;
 
 export const SearchBar = styled.input`
   border-radius: 80px;
-  background-color: #F4F5F6;
+  background-color: #f4f5f6;
   border: none;
   padding: 0.5rem 1rem;
   font-size: 1em;
@@ -93,4 +52,22 @@ export const SearchBar = styled.input`
 
 export const SearchIcon = styled(Image)`
   margin-left: 10px;
+`;
+export const UserNameText = styled(Typography)`
+  color: ${COLORS.BLUE_600};
+  font-weight: 600;
+`;
+export const NavBarSearchInput = styled(Paper)`
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  width: 145px;
+  height: 36px;
+  background: #f4f5f6;
+  border-radius: 80px;
+`;
+export const NavBarMain = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
 `;

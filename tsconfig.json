@@ -18,7 +18,7 @@
       "@/utils/*": ["src/utils/*"],
       "@/validations/*": ["src/validations/*"],
       "@/validations": ["src/validations"],
-      "@/test-utils": ["src/utils/test-utils"],
+      "@/test-utils": ["src/utils/test-utils"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

@@ -1,10 +1,7 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-import { AppState } from "../rootReducer";
+import { AppState } from '../rootReducer';
 
 export const getAuthDataSelector = (state: AppState) => state.auth;
 
-export const getAuthUserSelector = createSelector(
-  getAuthDataSelector,
-  (authData) => authData.user
-);
+export const getAuthUserSelector = createSelector(getAuthDataSelector, (authData) => authData.user);

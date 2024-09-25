@@ -1,6 +1,6 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-import { AppState } from "../rootReducer";
+import { AppState } from '../rootReducer';
 
 export const getAppDataSelector = (state: AppState) => state.app;
 

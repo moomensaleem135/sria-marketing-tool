@@ -1,24 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IAppState } from "./types";
+import { createSlice } from '@reduxjs/toolkit';
+
+import { IAppState } from './types';
 
 export const initialState: IAppState = {
-  error: "",
+  error: '',
   loading: false,
-  status: "",
+  status: ''
 };
 
 const appSlice = createSlice({
-  name: "app",
+  name: 'app',
   initialState,
   reducers: {
     clearErrors(state: IAppState) {
-      state.error = "";
+      state.error = '';
     },
     resetApp: () => {
       return initialState;
-    },
+    }
   },
-  extraReducers: (_builder) => {},
+  extraReducers: (_builder) => {}
 });
 
 export const { clearErrors, resetApp } = appSlice.actions;

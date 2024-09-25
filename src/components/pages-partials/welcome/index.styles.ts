@@ -1,9 +1,9 @@
-import { COLORS } from "@/constants/colors";
-import styled from "@emotion/styled";
+import { COLORS } from '@/constants/colors';
+import styled from '@emotion/styled';
 
 export const MainContainer = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 `;
 
@@ -11,7 +11,7 @@ export const Nav = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items:center;
+  align-items: center;
   background-color: ${COLORS.WHITE_100};
   height: 10vh;
 `;
@@ -35,7 +35,7 @@ export const ImageDiv = styled.div`
   height: 85vh;
   text-align: center;
 
-  background-image: url("/svgs/Picture.svg");
+  background-image: url('/svgs/Picture.svg');
   // background-position: fixed;
   background-size: cover;
   display: flex;
@@ -44,9 +44,7 @@ export const ImageDiv = styled.div`
   flex-direction: column;
 `;
 
-export const TextDiv = styled.div`
-
-`;
+export const TextDiv = styled.div``;
 
 export const Heading = styled.h1`
   font-family: Inter;
@@ -102,24 +100,23 @@ export const Btn = styled.div`
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    top:70%;
+    top: 70%;
   }
   @media (max-width: 1440px) {
-    top:75%;
+    top: 75%;
   }
   @media (max-width: 1233px) {
-    top:89%;
+    top: 89%;
   }
 
   @media (max-width: 1086px) {
-top:85%;
+    top: 85%;
   }
   @media (max-width: 768px) {
-
   }
 `;
 
 export const FooterContainer = styled.div`
   background-color: ${COLORS.BLUE_100};
-  height:5vh;
+  height: 5vh;
 `;

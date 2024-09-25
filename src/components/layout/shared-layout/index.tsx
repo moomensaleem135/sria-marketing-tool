@@ -1,21 +1,23 @@
-import Head from "next/head";
-import { Container } from "@mui/material";
-import { ReactNode } from "react";
-import NavBar from "@/components/layout/navbar";
+'use client';
+// import useFetchTasks from '@/hooks/useFetchtask';
+import { useAppSelector } from '@/hooks/useReduxTypedHooks';
+import { getAuthDataSelector } from '@/store/auth';
+import { Container } from '@mui/material';
+import React, { ReactNode } from 'react';
+
+import LeftDrawer from '../sidebar';
 
 interface SharedLayoutProps {
   children: ReactNode;
-  title: string;
 }
 
-const SharedLayout = ({ title, children }: SharedLayoutProps) => {
+const SharedLayout = ({ children }: SharedLayoutProps) => {
+
+  // useFetchTasks();
+
   return (
-    <Container maxWidth={false} style={{padding:0}}>
-      <Head>
-        <title>Simulate Emails | {title}</title>
-      </Head>
-      <NavBar/>
-        {children}
+    <Container maxWidth={false} style={{ padding: 0 }}>
+      <LeftDrawer children={children} pageTitle="home" />
     </Container>
   );
 };

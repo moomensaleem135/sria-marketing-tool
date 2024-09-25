@@ -1,53 +1,54 @@
-// import React from 'react'
-// import { IconsDiv, Li, LogoDiv, MainContainer, SearchBar, SearchIcon, UlDiv } from './index.styles'
-// import Image from 'next/image'
-
-// const NavBar = () => {
-//   return (
-//       <MainContainer>
-//         <LogoDiv>
-//             <Image src="/svgs/Wordmark.svg" width={200} height={100} alt='' />
-//         </LogoDiv>
-//         <UlDiv>
-//             <Li>Home</Li>
-//             <Li>Operations</Li>
-//             <Li>Tools</Li>
-//             <Li>Policies</Li>
-//             <Li>Administration</Li>
-//             <Li>Insights</Li>
-//         </UlDiv>
-//         <IconsDiv>
-//             <SearchBar placeholder='Search' />
-//             <Image src="/svgs/UI.svg" width={40} height={40} alt='' />
-//             <Image src="/svgs/account.svg" width={40} height={40} alt=''/>
-//             <SearchIcon src="/svgs/Search.svg" width={40} height={40} alt='' />
-//         </IconsDiv>
-//       </MainContainer>
-//   )
-// }
-
-// export default NavBar
-import React from 'react';
-import { useRouter } from "next/navigation";
-import { IconsDiv, Li, LogoDiv, MainContainer, UlDiv } from './index.styles';
+'use client';
+import { Logout, Search } from '@mui/icons-material';
+import {
+  Box,
+  IconButton,
+  InputBase,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Paper,
+  Typography
+} from '@mui/material';
 import Image from 'next/image';
-import BasicMenu from '@/components/core/Menu/Menu';
-import { IconButton, InputBase, Paper } from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+import { IconsDiv, LogoDiv, MainContainer, NavBarMain, UserNameText } from './index.styles';
 
 const NavBar = () => {
-  const router = useRouter();
-  const handleMenuItemClick = (item: string) => {
-    if(item === 'Calender'){
-      router.push('/tools')
-    }
-    console.log(`Clicked on ${item}`);
+  const [loggedUser, setLoggedUser] = useState('user');
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
   };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('isAuthenticated');
+    window.location.href = '/login';
+  };
+  useEffect(() => {
+    const localUser = localStorage.getItem('user');
+    if (localUser) {
+      const user = JSON.parse(localUser);
+      setLoggedUser(user.username);
+    }
+  });
+
   return (
     <MainContainer>
-      <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px' }}>
+      <NavBarMain>
         <LogoDiv>
-          <Image src={'/svgs/secureRIALogo.svg'} width={110} height={52} alt="" />
+          <Box>
+            <UserNameText>Hey, {loggedUser.toUpperCase()}</UserNameText>
+            <Typography sx={{ fontSize: '0.95rem' }}>Welcome Back!</Typography>
+          </Box>
         </LogoDiv>
         <IconsDiv>
           <Paper
@@ -72,30 +73,59 @@ const NavBar = () => {
             />
           </Paper>
           <Image src="/svgs/UI.svg" width={36} height={36} alt="" />
-          <Image src="/svgs/account.svg" width={36} height={36} alt="" />
+          <IconButton
+            onClick={handleClick}
+            size="small"
+            aria-controls={open ? 'account-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+          >
+            <Image src="/svgs/account.svg" width={36} height={36} alt="" />
+          </IconButton>
         </IconsDiv>
-      </div>
-      <UlDiv>
-        <Li onClick={()=>router.push('/home')}>Home</Li>
-        <BasicMenu
-          buttonTitle="Tools"
-          menuItems={[
-            'Calender',
-            'Model Document',
-            'Annual Compliance Review',
-            'Cybersecurity Hub',
-            'Mock Exam'
-          ]}
-          onItemClick={handleMenuItemClick}
-        />
-        <Li>Requests</Li>
-        <BasicMenu
-          buttonTitle="Policies"
-          menuItems={['My Policies', 'Create New']}
-          onItemClick={handleMenuItemClick}
-        />
-        <Li>Insights</Li>
-      </UlDiv>
+      </NavBarMain>
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1
+            },
+            '&::before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0
+            }
+          }
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+      </Menu>
     </MainContainer>
   );
 };

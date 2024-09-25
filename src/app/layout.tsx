@@ -7,8 +7,7 @@ import { MainProvider } from '@/components/providers/MainProvider';
 
 export const metadata: Metadata = {
   title: 'Securia CCO Portal',
-  description:
-    '🚀'
+  description: '🚀'
 };
 
 interface RootLayoutProps {
@@ -20,7 +19,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
     <html lang="en">
       <body className={'font-primary'} suppressHydrationWarning>
         <MainProvider>
-            <main>{children}</main>
+          <main>{children}</main>
         </MainProvider>
       </body>
     </html>

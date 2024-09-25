@@ -12,21 +12,21 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       name: 'Shahid',
       title: 'Developer',
       email: 'shahid@primelab.io',
-      role: 'Admin',
+      role: 'Admin'
     },
     {
       id: 2,
       name: 'Doug',
       title: 'Lead',
       email: 'doug@primelab.io',
-      role: 'Admin',
+      role: 'Admin'
     },
     {
       id: 3,
       name: 'Rohit',
       title: 'Developer',
       email: 'rohit@primelab.io',
-      role: 'Admin',
-    },
+      role: 'Admin'
+    }
   ]);
 }

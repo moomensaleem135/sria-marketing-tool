@@ -1,59 +1,50 @@
-import { AxiosError, AxiosRequestConfig } from "axios";
-import { REQUEST_HEADERS } from "../constants/api";
+import { AxiosError, AxiosRequestConfig } from 'axios';
 
-import { IRequestBody } from "./service.types";
-import axios from "./apiConfig";
+import { REQUEST_HEADERS } from '../constants/api';
+import axios from './apiConfig';
+import { IRequestBody } from './service.types';
 
 const getTokenHeader = () => {
   let extraHeaders: { authorization?: string } = {};
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem('token');
   if (token) {
     token = JSON.parse(token);
-    extraHeaders["authorization"] = `Bearer ${token}`;
+    extraHeaders['authorization'] = `Bearer ${token}`;
   }
+
   return extraHeaders;
 };
 
-export const postRequest = (
-  url: string,
-  body: IRequestBody | any,
-  config?: AxiosRequestConfig
-) => {
+export const postRequest = (url: string, body: IRequestBody | any, config?: AxiosRequestConfig) => {
   const extraHeaders = getTokenHeader();
+
   return axios.post(url, body, {
     ...config,
     headers: {
       ...REQUEST_HEADERS,
       ...extraHeaders,
-      ...config?.headers,
-    },
+      ...config?.headers
+    }
   });
 };
 
-export const putRequest = (
-  url: string,
-  body: IRequestBody | any,
-  config?: AxiosRequestConfig
-) => {
+export const putRequest = (url: string, body: IRequestBody | any, config?: AxiosRequestConfig) => {
   const extraHeaders = getTokenHeader();
+
   return axios.put(url, body, {
     ...config,
     headers: {
       ...REQUEST_HEADERS,
       ...extraHeaders,
-      ...config?.headers,
-    },
+      ...config?.headers
+    }
   });
 };
 
-export const getRequest = (
-  url: string,
-  params?: string | any,
-  config?: AxiosRequestConfig
-) => {
+export const getRequest = (url: string, params?: string | any, config?: AxiosRequestConfig) => {
   const extraHeaders = getTokenHeader();
   let strParams;
-  if (typeof params === "number") {
+  if (typeof params === 'number') {
     strParams = params.toString();
   }
   let routeUrl = url;
@@ -63,33 +54,31 @@ export const getRequest = (
   if (strParams && strParams.length > 0) {
     routeUrl = routeUrl + strParams;
   }
+
   return axios.get(routeUrl, {
     ...config,
     headers: {
       ...REQUEST_HEADERS,
       ...config?.headers,
-      ...extraHeaders,
-    },
+      ...extraHeaders
+    }
   });
 };
 
-export const deleteRequest = (
-  url: string,
-  params?: string | any,
-  config?: AxiosRequestConfig
-) => {
+export const deleteRequest = (url: string, params?: string | any, config?: AxiosRequestConfig) => {
   let routeUrl = url;
   if (params.length > 0) {
     routeUrl = routeUrl + params;
   }
   const extraHeaders = getTokenHeader();
+
   return axios.delete(routeUrl, {
     ...config,
     headers: {
       ...REQUEST_HEADERS,
       ...config?.headers,
-      ...extraHeaders,
-    },
+      ...extraHeaders
+    }
   });
 };
 
@@ -99,20 +88,22 @@ export const patchRequest = (
   config?: AxiosRequestConfig
 ) => {
   const extraHeaders = getTokenHeader();
+  
   return axios.patch(url, body, {
     ...config,
     headers: {
       ...REQUEST_HEADERS,
       ...extraHeaders,
-      ...config?.headers,
-    },
+      ...config?.headers
+    }
   });
 };
 
 export const getErrorMessage = (json: AxiosError) => {
+  
   return json?.response?.data?.message
     ? json?.response?.data?.message
     : json?.response?.data?.errors.length
-    ? json?.response?.data?.errors
-    : "Error while processing your request";
+      ? json?.response?.data?.errors
+      : 'Error while processing your request';
 };

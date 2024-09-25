@@ -1,41 +1,58 @@
-"use client";
-import * as React from "react";
-import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import Image from "next/image";
+'use client';
+// import { modalStyle } from '@/constants/variables';
+import logo from '@/assets/images/svgs/icons/lpcLogo.svg';
+import MiniLogo from '@/assets/images/svgs/icons/lpcMiniLogo.svg';
+import helpIcon from '@/assets/images/svgs/icons/helpIcon.svg';
+import logoutIcon from '@/assets/images/svgs/icons/logoutIcon.svg';
 
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import FirstPageSharpIcon from "@mui/icons-material/FirstPageSharp";
-import LastPageSharpIcon from "@mui/icons-material/LastPageSharp";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import { Menu, MenuItem, Toolbar, useMediaQuery } from "@mui/material";
-import { Settings, Logout } from "@mui/icons-material";
+import styled from '@emotion/styled';
 
-import { MenuITEMS } from "./menu";
-
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
-  DivFlex,
-  FlexRow,
-  ListItemTextStyled,
-  TypographyStyled,
+  Collapse,
+  Menu,
+  MenuItem,
+  MenuProps,
+  Tooltip,
+  Typography,
+  useMediaQuery
+} from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+
+import Image from 'next/image';
+import { useParams, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import * as React from 'react';
+import { useEffect } from 'react';
+import { COLORS } from '../../../constants/colors';
+import NavBar from '../navbar';
+import {
   DrawerHeader,
   MainStyle,
-  DivRow,
-  DivTitle,
-  DivProfile,
   AppBarStyle,
-  DivOne,
-  DivTwo,
-  DivThree,
   DIV,
   ListItemTextStyledActive,
-} from "./index.styles";
-import { COLORS } from "../../../constants/colors";
+  CustomListItemText,
+  ListItemTextSubMenuStyledActive,
+  ListItemTextSubMenuStyledInActive,
+  StyledListItemButton,
+  CollapseArrowBox,
+  IconSpan,
+  SideBarNavList,
+  StyledDrawer,
+  SidebarStyledListItem,
+  DrawerFooterMainBox,
+  DrawerFooterSubBox,
+  HelpTypo,
+  LogputTypo
+} from './index.styles';
+import { MenuITEMS } from './menu';
 
 interface Props {
   children: React.ReactNode;
@@ -44,214 +61,419 @@ interface Props {
 
 export default function LeftDrawer({ children, pageTitle }: Props) {
   const router = useRouter();
-  const pathname = usePathname()
 
-  const isTablet = useMediaQuery("(max-width: 960px)");
-  const isScroll = useMediaQuery("(max-width: 1295px) and (max-height:768px)");
-
+  const isTablet = useMediaQuery('(max-width: 960px)');
+  const [openD, setOpenD] = React.useState(false);
   const [collapse, setCollapse] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [pushedRoute, setPushedRoute] = React.useState<string>('');
 
-  const open = Boolean(anchorEl);
+  const [openMenu, setOpenMenu] = React.useState<string | null>('');
+  const [open1, setOpen] = React.useState<boolean>(true);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const [saveAlert, setSaveAlert] = React.useState(false);
+  const handleDrawerOpen = () => {
+    setOpenD(true);
+    setCollapse(true);
   };
-
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleDrawerClose = () => {
+    setCollapse(false);
   };
-
-  const handleGoToSettings = () => {
-    router.push("/branchSetting");
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setAnchorEl(null);
-    window.location.href = "/login";
+  const handleCloseConfirmRoute = () => {
+    setSaveAlert(false);
   };
 
   useEffect(() => {
     setCollapse(isTablet);
   }, [isTablet]);
 
-  const toggleCollapse = () => {
-    setCollapse(!collapse);
+  const drawerWidth = collapse ? 80 : 300;
+
+  const path = usePathname();
+  const handleClickMenu = (event: React.MouseEvent<HTMLElement>, menu: string) => {
+    console.log('event', event, 'menu', menu);
+    if (openMenu === menu) {
+      // If the menu is already open, close it
+      setAnchorEl(null);
+      setOpenMenu(null);
+    } else {
+      // Otherwise, open the clicked menu
+      setAnchorEl(event.currentTarget);
+      setOpenMenu(menu);
+    }
+  };
+  const handleClickMenuIcon = (event: React.MouseEvent<HTMLElement>, menu: string) => {
+    setAnchorEl(event.currentTarget);
+    setOpenMenu(menu);
+  };
+  // const { taskId } = useParams();
+  // const handleRoutePush = (route: string) => {
+  //   if (path === '/activities/tasks' || path === `/activities/tasks/${taskId}`) {
+  //     const isSaved = localStorage.getItem('isSaved');
+
+  //     setSaveAlert(true);
+  //   } else {
+  //     router.push(route);
+  //   }
+  // };
+  const handleRoutePush = (route: string) => {
+    router.push(route);
+  };
+  const StyledMenu = styled((props: MenuProps) => (
+    <Menu
+      elevation={0}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right'
+      }}
+      {...props}
+    />
+  ))(({  }) => ({
+    '& .MuiPaper-root': {
+      borderRadius: 6,
+      minWidth: 180,
+      boxShadow:
+        'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+      '& .MuiMenu-list': {
+        padding: '4px 0'
+      },
+      '& .MuiMenuItem-root': {
+        '& .MuiSvgIcon-root': {
+          fontSize: 18
+        }
+      }
+    }
+  }));
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleLogoClick = () => {
+    router.push('/home');
   };
 
-  const drawerWidth = collapse ? 80 : 240;
+  const handleCloseMenu = () => {
+    setOpen(!open1);
+  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBarStyle position="fixed" open={true} drawerwidth={drawerWidth}>
-        <Toolbar
-          sx={{
-            background: "white",
-            paddingBlock: "3.2rem",
-          }}
-        >
-          <DivRow>
-            <DivTitle>{pageTitle}</DivTitle>
-            <DivProfile>
-              <DivOne>
-                {/* <Image src={"/svgs/bell.svg"} width={25} height={25} /> */}
-              </DivOne>
-              <DivTwo>
-                {/* <Image src={"/svgs/search.svg"} width={25} height={25} /> */}
-              </DivTwo>
-              <DivThree>
-                <Image
-                alt=""
-                  src={"/svgs/dummyprofile.svg"}
-                  width={50}
-                  height={50}
-                  onClick={handleClick}
-                />
-              </DivThree>
-            </DivProfile>
-          </DivRow>
-        </Toolbar>
+    <Box sx={{ display: 'flex' }}>
+      <AppBarStyle
+        position="fixed"
+        open={true}
+        drawerwidth={drawerWidth}
+        sx={{ boxShadow: 'none !important' }}
+      >
+        <NavBar />
       </AppBarStyle>
-      <Drawer
+      <StyledDrawer
         variant="permanent"
+        open={openD}
         sx={{
           width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-            overflowY: "visible",
-            transition: "all 0.1s ease-in-out",
-            boxShadow: "8px 0 10px -6px rgba(0, 0, 0, 0.5)",
-          },
+
+          '& .MuiDrawer-paper': {
+            width: drawerWidth
+          }
         }}
       >
+        <CollapseArrowBox sx={{ left: collapse ? ' 4.2rem' : '18rem' }}>
+          {collapse ? (
+            <IconSpan onClick={handleDrawerClose}>
+              <ChevronRightIcon />
+            </IconSpan>
+          ) : (
+            <IconSpan onClick={handleDrawerOpen}>
+              <ChevronLeftIcon />
+            </IconSpan>
+          )}
+        </CollapseArrowBox>
         <DrawerHeader>
-          <DivFlex>
-            {collapse ? (
-              <Image src={"/svgs/logo"} width={60} height={60} alt="" />
-            ) : (
-              <Image src={"/svgs/logo"} width={85} height={85} alt="" />
-            )}
-          </DivFlex>
+          <Box sx={{ cursor: 'pointer' }} onClick={handleLogoClick}>
+            {collapse ? <Image src={MiniLogo} alt="" height={50} /> : <Image src={logo} alt="" />}
+          </Box>
         </DrawerHeader>
         <Divider
           sx={
             collapse
-              ? { width: "4rem", marginInline: "auto" }
-              : { width: "12rem", marginInline: "auto" }
+              ? { width: '4rem', marginInline: 'auto' }
+              : { width: '16rem', marginInline: 'auto' }
           }
         />
         <DIV>
           <List
             sx={{
-              overflowX: "hidden",
-              overflowY: isScroll ? "hidden" : "hidden",
               padding: 0,
+              overflowX: 'hidden',
+              marginTop: '1.5rem'
             }}
           >
             {MenuITEMS.map((item) => (
-              <ListItem
-                key={item.title}
-                sx={{ display: "block", paddingBottom: "0px" }}
-              >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: "center",
-                  }}
-                  onClick={() => router.push(item.path)}
-                >
-                  {/* <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: collapse ? 0 : 4,
-                      justifyContent: "center",
-                    }}
-                  >
-                    {!collapse && pathname.includes(item.page)
-                      ? item.icon1
-                      : item.icon}
-                  </ListItemIcon> */}
-                  {/* {!collapse &&
-                    ( pathname.includes(item.page) ? (
-                      <ListItemTextStyledActive primary={item.title} />
+              <>
+                {item.submenu && item?.submenu?.length > 0 ? (
+                  <SideBarNavList aria-labelledby="nested-list-subheader">
+                    {collapse ? (
+                      <StyledListItemButton
+                        onClick={(e) => {
+                          //  setAnchorEl(e.currentTarget); // Set the clicked button as the anchor element
+                          handleClickMenuIcon(e, item.title); // Toggle the submenu
+                        }}
+                        path={path}
+                        itemPath={item.path}
+                        //  id="demo-customized-button"
+                        //  aria-controls={open ? 'demo-customized-menu' : undefined}
+                        //  aria-haspopup="true"
+                        //  aria-expanded={open ? 'true' : undefined}
+                        sx={{ ml: collapse ? -1 : 0 }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <ListItemIcon sx={{ minWidth: '0', marginRight: '15px' }}>
+                            {item.icon}
+                          </ListItemIcon>
+                        </Box>
+                      </StyledListItemButton>
                     ) : (
-                      <ListItemTextStyled primary={item.title} />
-                    ))} */}
-                </ListItemButton>
-              </ListItem>
+                      <StyledListItemButton
+                        onClick={(e) => {
+                          handleClickMenu(e, item.title);
+                          handleCloseMenu();
+                        }}
+                        path={path}
+                        itemPath={item.path}
+                        sx={{
+                          minHeight: '48px'
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <ListItemIcon
+                            sx={{
+                              minWidth: '0',
+                              marginRight: '15px'
+                            }}
+                          >
+                            {item.icon}
+                          </ListItemIcon>
+
+                          {path.includes(item.path) ? (
+                            <CustomListItemText>{item.title}</CustomListItemText>
+                          ) : (
+                            <Typography>{item.title}</Typography>
+                          )}
+                        </Box>
+
+                        {openMenu === item.title ? <ExpandLess /> : <ExpandMore />}
+                      </StyledListItemButton>
+                    )}
+
+                    {collapse ? (
+                      //submenu when collapse
+                      <StyledMenu
+                        id="demo-customized-menu"
+                        MenuListProps={{
+                          'aria-labelledby': 'demo-customized-button'
+                        }}
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && openMenu === item.title}
+                        onClose={handleClose}
+                      >
+                        {item.submenu.map((ele, index) => (
+                          <MenuItem
+                            sx={{
+                              background: path === ele.path ? `${COLORS.BLUE_600}` : 'white',
+                              borderRadius: '8px',
+                              margin: '0.3rem',
+                              '&:hover': {
+                                background: path === ele.path ? `${COLORS.BLUE_600}` : `white`,
+                                color: path === ele.path ? `${COLORS.BLUE_600}` : `#184063`
+                              }
+                            }}
+                            key={index}
+                            onClick={() => {
+                              setPushedRoute(ele.path);
+                              handleRoutePush(ele.path);
+                              handleClose();
+                            }}
+                          >
+                            {path === ele.path || path.includes(ele.path) ? (
+                              <ListItemTextSubMenuStyledActive primary={ele.title} />
+                            ) : (
+                              <ListItemTextSubMenuStyledInActive primary={ele.title} />
+                            )}
+                          </MenuItem>
+                        ))}
+                      </StyledMenu>
+                    ) : (
+                      //this is submenu item without collapsable
+                      <Collapse
+                        // in={openMenu === item.title}
+                        in={true}
+                        timeout="auto"
+                        unmountOnExit
+                        orientation="vertical"
+                      >
+                        <Box style={{ marginTop: '10px' }}>
+                          {item.submenu.map((ele, index) => {
+                            return (
+                              <List
+                                component="div"
+                                key={index}
+                                disablePadding
+                                onClick={() => {
+                                  setPushedRoute(ele.path);
+                                  handleRoutePush(ele.path);
+                                }}
+                                style={{
+                                  // borderLeft: '1px dashed white',
+                                  marginLeft: '18px',
+                                  paddingLeft: '23px',
+                                  borderRadius: '8px',
+                                  background:
+                                    path === ele.path || path.includes(ele.path)
+                                      ? `
+                                  ${COLORS.BLUE_600}
+                                  `
+                                      : 'transparent'
+                                }}
+                              >
+                                <ListItemButton sx={{ pl: 2, borderRadius: '5px' }}>
+                                  {path === ele.path || path.includes(ele.path) ? (
+                                    <ListItemTextSubMenuStyledActive primary={ele.title} />
+                                  ) : (
+                                    <ListItemTextSubMenuStyledInActive primary={ele.title} />
+                                  )}
+                                </ListItemButton>
+                              </List>
+                            );
+                          })}
+                        </Box>
+                      </Collapse>
+                    )}
+                  </SideBarNavList>
+                ) : (
+                  <SidebarStyledListItem key={item.title}>
+                    {/* collapsable menu icon */}
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        background:
+                          path === item.path || path.includes(item.path)
+                            ? `
+                            ${COLORS.BLUE_600}
+                            `
+                            : 'transparent',
+                        '&:hover': {
+                          background:
+                            path === item.path || path.includes(item.path)
+                              ? `${COLORS.BLUE_600}`
+                              : `white`,
+                          color: path === item.path ? `${COLORS.BLUE_600}` : `#184063`
+                        },
+                        borderRadius: '10px',
+                        display: 'flex'
+                      }}
+                      onClick={() => {
+                        setPushedRoute(item.path);
+                        handleRoutePush(item.path);
+                      }}
+                    >
+                      <Tooltip
+                        title={collapse && item.title}
+                        placement="right"
+                        arrow
+                        componentsProps={{
+                          tooltip: {
+                            sx: {
+                              backgroundColor: `${COLORS.BLUE_600}`,
+                              color: 'white',
+                              fontSize: '0.8rem',
+                              padding: '10px',
+                              marginLeft: '1.6rem !important'
+                            }
+                          },
+                          arrow: {
+                            sx: {
+                              color: `${COLORS.BLUE_600}`
+                            }
+                          }
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            mr: collapse ? 0 : 3,
+                            ml: collapse ? -1 : 0,
+                            alignItems: 'center',
+                            minWidth: '0 !important',
+                            fill: path === item.path || path.includes(item.path) ? 'white' : 'black'
+                          }}
+                        >
+                          {item.icon}
+                        </ListItemIcon>
+                      </Tooltip>
+                      {!collapse &&
+                        (path === item.path || path.includes(item.path) ? (
+                          <ListItemTextStyledActive
+                            sx={{
+                              color: 'white',
+                              fontWeight: '500'
+                            }}
+                          >
+                            {item.title}
+                          </ListItemTextStyledActive>
+                        ) : (
+                          <Typography>{item.title}</Typography>
+                        ))}
+                    </ListItemButton>
+                  </SidebarStyledListItem>
+                )}
+              </>
             ))}
           </List>
-          <FlexRow onClick={toggleCollapse}>
-            {!collapse ? <FirstPageSharpIcon /> : ""}
-            <TypographyStyled paddingLeft={collapse ? 0 : 1.5}>
-              {collapse ? <LastPageSharpIcon /> : ""}
-            </TypographyStyled>
-          </FlexRow>
         </DIV>
-      </Drawer>
-      <MainStyle open={true} drawerwidth={drawerWidth}>
+        <DrawerFooterMainBox sx={{ paddingLeft: collapse ? '1.8rem' : '1.4rem' }}>
+          <DrawerFooterSubBox>
+            <Box>
+              <Image src={helpIcon} alt="helpIcon" height={!collapse ? 20 : 25} />
+            </Box>
+            {!collapse && <HelpTypo>Help</HelpTypo>}
+          </DrawerFooterSubBox>
+          <DrawerFooterSubBox sx={{ cursor: 'pointer' }} onClick={() => router.push('/')}>
+            <Box>
+              <Image src={logoutIcon} alt="logoutIcon" height={!collapse ? 20 : 25} />
+            </Box>
+            {!collapse && <LogputTypo>Logout Account</LogputTypo>}
+          </DrawerFooterSubBox>
+        </DrawerFooterMainBox>
+      </StyledDrawer>
+      <MainStyle open={true} drawerwidth={drawerWidth} style={{ background: '#eff4f9' }}>
         {children}
       </MainStyle>
-      <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: "visible",
-            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-            mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            "& .css-ptiqhd-MuiSvgIcon-root": {
-              color: `${COLORS.THEME_COLOR}`,
-            },
-            "& .css-1a2vgp9-MuiButtonBase-root-MuiMenuItem-root ": {
-              fontSize: "16px",
-              fontWeight: "700",
-            },
-
-            "&:before": {
-              content: '""',
-              display: "block",
-              position: "absolute",
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem onClick={handleGoToSettings}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Branch Settings
-        </MenuItem>
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
+      {/* <CustomModal value={saveAlert} setValue={setSaveAlert} maxWidth="25rem">
+        <Box sx={{ padding: '1rem' }}>
+          <Typography sx={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+            Leaving Page?
+          </Typography>
+          <Typography sx={{ fontSize: '0.9rem', fontWeight: 400 }}>
+            Changes you made may not be saved.
+          </Typography>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'end', columnGap: '1rem', marginTop: '1rem' }}
+          >
+            <CloseButtonAddTask onClick={handleCloseConfirmRoute}>close</CloseButtonAddTask>
+            <DoneButtonAddTask
+              onClick={() => {
+                setSaveAlert(false);
+                router.push(pushedRoute);
+              }}
+            >
+              Confirm
+            </DoneButtonAddTask>
+          </Box>
+        </Box>
+      </CustomModal> */}
     </Box>
   );
 }

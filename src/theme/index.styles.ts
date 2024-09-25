@@ -1,6 +1,6 @@
-import { COLORS } from "@/constants/colors";
-import styled from "@emotion/styled";
-import { ToastContainer } from "react-toastify";
+import { COLORS } from '@/constants/colors';
+import styled from '@emotion/styled';
+import { ToastContainer } from 'react-toastify';
 
 export const StyledToastContainer = styled(ToastContainer)`
   &&&.Toastify__toast-container {

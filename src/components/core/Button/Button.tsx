@@ -1,9 +1,10 @@
-import React, { MouseEventHandler } from "react";
-import { ButtonStyled } from "./Button.styles";
+import React, { MouseEventHandler } from 'react';
+
+import { ButtonStyled } from './Button.styles';
 
 interface IButtonProps {
   className?: string;
-  type?: "reset" | "submit" | "button";
+  type?: 'reset' | 'submit' | 'button';
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   name?: string;
@@ -22,11 +23,7 @@ interface IButtonProps {
 /**
  * Reusable button component
  */
-const Button: React.FC<React.PropsWithChildren<IButtonProps>> = ({
-  children,
-  pan,
-  ...props
-}) => {
+const Button: React.FC<React.PropsWithChildren<IButtonProps>> = ({ children, pan, ...props }) => {
   return (
     <ButtonStyled Pan={pan} {...props}>
       {children}

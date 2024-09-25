@@ -1,7 +1,24 @@
+import { Popover } from '@mui/material';
+
 import React, { useState } from 'react';
-import { Popover, Typography } from '@mui/material';
-import { Details, Frame, FrameBox, LowerContainer, Main, Name, Print, Schedule, StyledButton, SubTitle, Title, TopDiv, Typography1, Typography2, UpperContainer } from './index.styles';
-import { TitleDiv } from '../tools/index.styles';
+
+import {
+  Details,
+  Frame,
+  FrameBox,
+  LowerContainer,
+  Main,
+  Name,
+  Print,
+  Schedule,
+  StyledButton,
+  SubTitle,
+  Title,
+  TopDiv,
+  Typography1,
+  Typography2,
+  UpperContainer
+} from './index.styles';
 
 const MyPopover = () => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -34,49 +51,32 @@ const MyPopover = () => {
       </Typography> */}
       <Main>
         <UpperContainer>
-         <TopDiv>
-            <Typography1>
-                VALUATION &amp; FEES
-            </Typography1>
-            <Typography2>
-                Not Started
-            </Typography2>
-         </TopDiv>
-            <Title>
-            Client Billing Review - Quarterly
-            </Title>
-            <Schedule>
-                Scheduled 3/10
-            </Schedule>
-            <Details>
-            Every quarter you'll need to examine a sampling of your client's
-        billing activity. The goal of this review is to ensure your
-        client's bills are accurate and match the fee schedule set forth
-        in their advisory agreement and form ADV 2A.
-            </Details>
-            <hr/>
+          <TopDiv>
+            <Typography1>VALUATION &amp; FEES</Typography1>
+            <Typography2>Not Started</Typography2>
+          </TopDiv>
+          <Title>Client Billing Review - Quarterly</Title>
+          <Schedule>Scheduled 3/10</Schedule>
+          <Details>
+            Every quarter you'll need to examine a sampling of your client's billing activity. The
+            goal of this review is to ensure your client's bills are accurate and match the fee
+            schedule set forth in their advisory agreement and form ADV 2A.
+          </Details>
+          <hr />
         </UpperContainer>
         <LowerContainer>
-            <SubTitle>
-                RESOURCES
-                </SubTitle>
-                <FrameBox>
-                    <Frame>
-                        <Name>
-                            CheckList
-                        </Name>
-                        <Print src="/svgs/Image1.svg" width={160} height={160} alt='' />
-                    </Frame>
-                    <Frame>
-                        <Name>
-                            Billing WorkBook
-                        </Name>
-                        <Print src="/svgs/Image2.svg" width={160} height={160} alt='' />
-                    </Frame>
-                </FrameBox>
-                <StyledButton>
-                    Begin Review
-                </StyledButton>
+          <SubTitle>RESOURCES</SubTitle>
+          <FrameBox>
+            <Frame>
+              <Name>CheckList</Name>
+              <Print src="/svgs/Image1.svg" width={160} height={160} alt="" />
+            </Frame>
+            <Frame>
+              <Name>Billing WorkBook</Name>
+              <Print src="/svgs/Image2.svg" width={160} height={160} alt="" />
+            </Frame>
+          </FrameBox>
+          <StyledButton>Begin Review</StyledButton>
         </LowerContainer>
       </Main>
     </>
@@ -90,11 +90,11 @@ const MyPopover = () => {
         onClose={handlePopoverClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'center',
+          horizontal: 'center'
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'center',
+          horizontal: 'center'
         }}
       >
         {popoverContent}

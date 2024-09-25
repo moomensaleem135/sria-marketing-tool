@@ -1,6 +1,8 @@
-import { COLORS } from "../../../constants/colors";
-import styled from "@emotion/styled";
-import { TextField, Grid, Typography } from "@mui/material";
+import styled from '@emotion/styled';
+import { TextField, Grid, Typography } from '@mui/material';
+
+import { COLORS } from '../../../constants/colors';
+
 
 export const Flex = styled.div`
   display: flex;
@@ -46,22 +48,20 @@ export const StyledGridLogo = styled(Grid)`
   width: 400px;
 `;
 
-export const LogoBox = styled.div`
-
-`;
+export const LogoBox = styled.div``;
 export const Heading = styled.div`
   text-align: center;
   font-style: bold;
   font-weight: 1000;
-  font-size: 34px;     
-  line-height:2; 
+  font-size: 34px;
+  line-height: 2;
   color: ${COLORS.BLACK_101};
 `;
 export const SubHeading = styled.div`
   text-align: center;
   font-weight: 500;
-  line-height:2;
-  font-size: 28px;      
+  line-height: 2;
+  font-size: 28px;
   color: ${COLORS.BLACK_101};
 `;
 
@@ -79,9 +79,9 @@ export const FlexRow = styled.div`
   flex-direction: row;
   width: 100%;
   margin: 0px auto;
-  font-style:bold;
+  font-style: bold;
   font-weight: 1000;
-  font-size:0.9rem;
+  font-size: 0.9rem;
   justify-content: flex-end;
 `;
 
@@ -101,12 +101,11 @@ export const DivButton = styled.div`
   margin-top: 40px !important;
   display: flex;
   justify-content: center;
-  
+
   button {
     background-color: ${COLORS.BLUE_100};
-    font-size:1rem;
+    font-size: 1rem;
     padding: 10px 20px;
-
   }
   @media (max-width: 400px) {
     button {

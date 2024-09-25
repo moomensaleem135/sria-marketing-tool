@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
-import * as React from "react";
-import Stack from "@mui/material/Stack";
+import { Grid } from '@mui/material';
+import Stack from '@mui/material/Stack';
+
+import * as React from 'react';
 import {
   Div,
   StyledBar,
@@ -8,9 +9,9 @@ import {
   StyledGrid,
   StyledMainGrid,
   StyledTable,
-  WraperGrid,
-} from "./index.style";
-import SharedLayout from "../layout/shared-layout";
+  WraperGrid
+} from './index.style';
+import SharedLayout from '../layout/shared-layout';
 
 function FullPageSkeleton() {
   return (
@@ -39,5 +40,5 @@ function FullPageSkeleton() {
 }
 
 export default function FullPageLoader() {
-  return <SharedLayout children={<FullPageSkeleton />} title={"Rooms"} />;
+  return <SharedLayout children={<FullPageSkeleton />} title={'Rooms'} />;
 }

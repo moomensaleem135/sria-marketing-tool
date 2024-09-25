@@ -1,14 +1,20 @@
 'use-client';
-import * as React from 'react';
-import { memo, useEffect } from 'react';
-
 import CloseIcon from '@mui/icons-material/Close';
 import { DialogTitle, Grid, IconButton, Link } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 
-import { HoverTypo, DivServices, StyledSwipeableDrawer, Line, LineDiv } from './DrawerModule.styles';
+import * as React from 'react';
+import { memo, useEffect } from 'react';
+
+import {
+  HoverTypo,
+  DivServices,
+  StyledSwipeableDrawer,
+  Line,
+  LineDiv
+} from './DrawerModule.styles';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 type Props = {
@@ -23,24 +29,26 @@ function DrawerModule(props: Props) {
     left: false,
     bottom: false,
     right: false,
-    onclose: false,
+    onclose: false
   });
   const { setToggleState, togglestate } = props;
 
   const anchorVal = 'right';
 
-  const toggleDrawer = (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
-    if (open === false) {
-      setToggleState(false);
-    }
-    setState({ ...state, [anchor]: open });
-  };
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+      if (open === false) {
+        setToggleState(false);
+      }
+      setState({ ...state, [anchor]: open });
+    };
   useEffect(() => {
     toggleDrawer(anchorVal, togglestate)({} as React.KeyboardEvent | React.MouseEvent);
   }, [togglestate]);
@@ -48,38 +56,38 @@ function DrawerModule(props: Props) {
   const navList = [
     {
       title: 'Home',
-      link: '/',
+      link: '/'
     },
     {
       title: 'About',
-      link: '/about',
+      link: '/about'
     },
     {
       title: 'Services',
-      link: '/services',
+      link: '/services'
     },
     {
       title: 'Team',
-      link: '/teams',
+      link: '/teams'
     },
     {
       title: 'Event',
-      link: '/events',
+      link: '/events'
     },
     {
       title: 'Portfolio',
-      link: '/portfolio',
+      link: '/portfolio'
     },
     {
       title: 'Contact',
-      link: '/contact',
-    },
+      link: '/contact'
+    }
   ];
 
   const list = (anchor: Anchor) => (
     <Box
       sx={{
-        width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 300,
+        width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 300
       }}
       role="presentation"
       onClick={toggleDrawer(anchor, true)}
@@ -91,7 +99,9 @@ function DrawerModule(props: Props) {
           <Box flexGrow={2}></Box>
           <Box>
             <IconButton onClick={toggleDrawer(anchor, false)}>
-              <CloseIcon style={{ backgroundColor: 'transparent', color: 'white', marginTop: '5px' }} />
+              <CloseIcon
+                style={{ backgroundColor: 'transparent', color: 'white', marginTop: '5px' }}
+              />
             </IconButton>
           </Box>
         </Grid>

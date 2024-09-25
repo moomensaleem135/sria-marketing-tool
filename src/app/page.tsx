@@ -1,9 +1,5 @@
-import Welcome from "./welcome/page";
+import MarketingTool from '@/components/pages-partials/marketing-tool';
 
 export default function LandingPage() {
-
-  return (
-    <Welcome/>
-  );
+  return <MarketingTool />;
 }
-

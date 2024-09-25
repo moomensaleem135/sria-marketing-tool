@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const StyledPreloader = styled.div`
   margin-top: 20rem;
@@ -14,6 +14,3 @@ export const Loader = styled.div`
   margin-left: 0.9rem;
   z-index: 10;
 `;
-
-
-

@@ -9,7 +9,7 @@ export const useWindowSize = () => {
     height: undefined | number;
   }>({
     width: undefined,
-    height: undefined,
+    height: undefined
   });
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export const useWindowSize = () => {
       // Set window width/height to state
       setWindowSize({
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: window.innerHeight
       });
     }
 
@@ -27,7 +27,9 @@ export const useWindowSize = () => {
     // Call handler right away so state gets updated with initial window size
     handleResize();
     // Remove event listener on cleanup
+
     return () => window.removeEventListener('resize', handleResize);
   }, []); // Empty array ensures that effect is only run on mount
+  
   return windowSize;
 };

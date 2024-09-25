@@ -1,11 +1,10 @@
+import Paper from '@mui/material/Paper';
 
-import Paper from "@mui/material/Paper";
+import { GridColDef } from '@mui/x-data-grid';
 
-import { GridColDef } from "@mui/x-data-grid";
+import CustomNoRowsOverlay from '@/components/core/NoRowsOverLay';
 
-import CustomNoRowsOverlay from "@/components/core/NoRowsOverLay";
-
-import { DataGridStyle, HeaderTag, StyleGrid } from "./index.styles";
+import { DataGridStyle, HeaderTag, StyleGrid } from './index.styles';
 
 interface ICustomHeader {
   title: string;
@@ -39,42 +38,42 @@ export default function DashboardTable() {
       renderHeader: (props) => {
         return <CustomHeader title="Sent Date" {...props} />;
       },
-      field: "sent_date",
+      field: 'sent_date',
       width: 150,
-      align: "left",
+      align: 'left'
     } as GridColDef,
     {
       renderHeader: (props) => {
         return <CustomHeader title="Name" {...props} />;
       },
-      field: "name",
+      field: 'name',
       width: 150,
-      align: "left",
+      align: 'left'
     } as GridColDef,
     {
       renderHeader: (props) => {
         return <CustomHeader title="Open" {...props} />;
       },
-      field: "open",
+      field: 'open',
       width: 150,
-      align: "left",
+      align: 'left'
     } as GridColDef,
     {
       renderHeader: (props) => {
         return <CustomHeader title="Internal Clicks" {...props} />;
       },
-      field: "clicks",
+      field: 'clicks',
       width: 200,
-      align: "left",
+      align: 'left'
     } as GridColDef,
     {
       renderHeader: (props) => {
         return <CustomHeader title="Time Opened" {...props} />;
       },
-      field: "time_opened",
+      field: 'time_opened',
       width: 250,
-      align: "left",
-    } as GridColDef,
+      align: 'left'
+    } as GridColDef
   ];
 
   const rows: any[] = [];
@@ -90,14 +89,13 @@ export default function DashboardTable() {
           disableColumnMenu={true}
           disableRowSelectionOnClick={true}
           columnVisibilityModel={{
-            id: false,
+            id: false
           }}
           slots={{
-            noRowsOverlay: CustomNoRowsOverlay,
+            noRowsOverlay: CustomNoRowsOverlay
           }}
         />
       </Paper>
     </StyleGrid>
   );
 }
-

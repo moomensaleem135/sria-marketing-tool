@@ -1,11 +1,12 @@
-import styled from "@emotion/styled";
-import TextField from "@mui/material/TextField";
-
-import { COLORS } from "@/constants/colors";
+import { COLORS } from '@/constants/colors';
+import styled from '@emotion/styled';
+import TextField from '@mui/material/TextField';
 
 export const FieldInputStyled = styled(TextField)<{
   isShadow?: boolean;
   isEndContent?: string;
+  customPadding?: string;
+  fontWeight?: string;
 }>`
   ${({ isShadow }) =>
     isShadow
@@ -30,9 +31,9 @@ export const FieldInputStyled = styled(TextField)<{
   width: 100%;
   color: ${COLORS.BLACK_100};
   position: relative;
-  border-radius: 10px;
+  border-radius: 5px;
   &.MuiTextField-root > div {
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: ${COLORS.WHITE_100};
     font-size: 14px;
     font-style: normal;
@@ -53,7 +54,7 @@ export const FieldInputStyled = styled(TextField)<{
   }
   & .MuiInputBase-input {
     height: 18px;
-    font-weight: 800;
-    padding: 13.5px 14px;
+    font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '800')};
+    padding: ${({ customPadding }) => (customPadding ? customPadding : '12px 14px')};
   }
 `;

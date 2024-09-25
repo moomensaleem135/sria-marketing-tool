@@ -1,8 +1,13 @@
-import Button from "@/components/core/Button";
-import { COLORS } from "@/constants/colors";
-import styled from "@emotion/styled";
-import { Box, Typography } from "@mui/material";
-import Image from "next/image";
+import { COLORS } from '@/constants/colors';
+
+import styled from '@emotion/styled';
+
+import { Box, Typography } from '@mui/material';
+
+import Image from 'next/image';
+
+import Button from '@/components/core/Button';
+
 
 export const Main = styled(Box)`
   padding: 1rem;
@@ -61,19 +66,19 @@ export const SubTitle = styled(Typography)`
   font-weight: 400;
 `;
 export const FrameBox = styled(Box)`
-    display: flex;
-    /* justify-content: space-between; */
-`
+  display: flex;
+  /* justify-content: space-between; */
+`;
 export const Frame = styled(Box)`
-    margin-top:1rem;
-`
+  margin-top: 1rem;
+`;
 export const Name = styled(Typography)`
-    font-size: 18px;
-`
+  font-size: 18px;
+`;
 export const Print = styled(Image)`
-    object-fit: cover;
-`
-export const StyledButton =styled(Button)`
-width: 100%;
-background-color: ${COLORS.BLUE_600};
-`
+  object-fit: cover;
+`;
+export const StyledButton = styled(Button)`
+  width: 100%;
+  background-color: ${COLORS.BLUE_600};
+`;

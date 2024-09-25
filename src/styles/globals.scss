@@ -5,11 +5,11 @@
 input {
   @apply px-2;
 }
-  .fc-header-toolbar {
-    display: inline-block;
-    padding: 4px 4px;
-    
-    @apply space-x-8;
+.fc-header-toolbar {
+  display: inline-block;
+  padding: 4px 4px;
+
+  @apply space-x-8;
 }
 
 .fc-day {
@@ -25,16 +25,15 @@ input {
 }
 
 .fc-h-event {
-  @apply bg-violet-500 border border-violet-600 ;
-  
+  @apply bg-violet-500 border border-violet-600;
 }
 
 .fc .fc-daygrid-day.fc-day-today {
-  @apply bg-violet-100 ;
+  @apply bg-violet-100;
 }
 
-.fc .fc-button{
-  @apply  hover:bg-violet-900  ;
+.fc .fc-button {
+  @apply hover:bg-violet-900;
 }
 
 .fc .fc-button-primary:not(:disabled).fc-button-active {
@@ -45,29 +44,47 @@ input {
   @apply bg-violet-600;
 }
 .fc-v-event {
-  @apply bg-violet-500 border border-violet-600 ;
-  
+  @apply bg-violet-500 border border-violet-600;
 }
 
-
-
+@font-face {
+  font-family: 'Inter Light';
+  font-weight: 300;
+  src: url('../../fonts/Inter/Inter_18pt-Light.ttf') format('truetype');
+}
 
 @font-face {
-  font-family: "Argentum Sans";
-  src: url(../../fonts/Argentum/ArgentumSans-Light.ttf);
+  font-family: 'Inter Regular';
   font-weight: 400;
-  font-style: normal;
+  src: url('../../fonts/Inter/Inter_18pt-Regular.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Argentum Sans";
-  src: url(../../fonts/Argentum/ArgentumSans-Medium.ttf);
+  font-family: 'Inter Medium';
+  font-weight: 500;
+  src: url('../../fonts/Inter/Inter_18pt-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter SemiBold';
   font-weight: 600;
-  font-style: normal;
+  src: url('../../fonts/Inter/Inter_18pt-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter Bold';
+  font-weight: 700;
+  src: url('../../fonts/Inter/Inter_24pt-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter ExtraBold';
+  font-weight: 800;
+  src: url('../../fonts/Inter/Inter_28pt-ExtraBold.ttf') format('truetype');
 }
 
 body {
-  font-family: "Argentum Sans", sans-serif;
+  font-family: 'Inter Regular', sans-serif;
 }
 
 .flex {
@@ -99,12 +116,11 @@ body {
 }
 
 .dots {
-  border: "1px solid red";
+  border: '1px solid red';
 }
 
 .error {
   color: #f44336;
-  font-family: Argentum Sans;
   font-weight: 400;
   font-size: 0.75rem;
   margin-top: 3px;

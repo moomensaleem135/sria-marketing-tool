@@ -7,9 +7,9 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
-      serializableCheck: false,
+      serializableCheck: false
     });
-  },
+  }
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

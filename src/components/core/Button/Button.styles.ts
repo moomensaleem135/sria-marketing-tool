@@ -1,50 +1,38 @@
-import styled from "@emotion/styled";
-import { COLORS } from "@/constants/colors"
+import { COLORS } from '@/constants/colors';
+import styled from '@emotion/styled';
 
-export const ButtonStyled = styled.button<{
-  backgroundColor?: string;
-  hoverColor?: string;
-  isTransparent?: boolean;
-  CaretColor?: string;
-  Pan?: string;
-  isHover?: boolean;
-}>`
-  ${({ isTransparent, backgroundColor }) =>
+export const ButtonStyled = styled.button<{ isTransparent?: boolean; isHover?: boolean }>`
+  font-family: 'Inter Regular', sans-serif;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px 10px;
+  cursor: pointer;
+  transition: 0.5s;
+  display: block;
+  border: 0;
+
+  ${({ isTransparent }) =>
     isTransparent
-      ? ` background-color: ${COLORS.THEME_COLOR} ;
-      width:100%;
-       font-weight:600;
-      font-size:18px;
-      height:48px;
-   
-      border:none;
-      color: red};
-         border: none; `
+      ? `
+        font-family: "Inter SemiBold", sans-serif;
+        background: ${COLORS.WHITE};
+        border: 1px solid ${COLORS.BLUE_600};
+        color: ${COLORS.BLUE_600};
+      `
       : `
-  border: 0px;
-  border-radius:5px;
-  font-weight:600;
-  font-size:20px;
-   
-`}
+        background-color: ${COLORS.BLUE_600};
+        color: ${COLORS.WHITE};
+      `}
+
   ${({ isHover }) =>
     isHover
-      ? ` 
-  &:hover {
-    background-color:#73a144;
-  }
-   `
-      : `
-`}
-  padding: 10px 25px;
-  background-color: ${COLORS.THEME_COLOR};
-  color: ${COLORS.WHITE_100};
-
-  cursor: pointer;
-
-  transition: 0.5s;
-  background-size: 200% auto;
-  display: block;
+      ? `
+        &:hover {
+          background-color: #73a144;
+        }
+      `
+      : ``}
 
   &:disabled {
     cursor: not-allowed;
