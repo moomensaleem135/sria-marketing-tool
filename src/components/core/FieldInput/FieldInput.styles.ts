@@ -7,6 +7,7 @@ export const FieldInputStyled = styled(TextField)<{
   isEndContent?: string;
   customPadding?: string;
   fontWeight?: string;
+  width?: string;
 }>`
   ${({ isShadow }) =>
     isShadow
@@ -28,7 +29,7 @@ export const FieldInputStyled = styled(TextField)<{
       : `
     `}
 
-  width: 100%;
+  width: ${({ width }) => (width ? width : '100%')};
   color: ${COLORS.BLACK_100};
   position: relative;
   border-radius: 5px;

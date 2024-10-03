@@ -1,6 +1,6 @@
-import PartialWebsiteDomain from '@/components/pages-partials/marketing-tool/website-domain';
+import PartialSocialMedia from '@/components/pages-partials/marketing-tool/social-media';
 import React from 'react';
 
-export default function WebsiteDomain() {
-  return <PartialWebsiteDomain />;
+export default function SocialMedia() {
+  return <PartialSocialMedia />;
 }

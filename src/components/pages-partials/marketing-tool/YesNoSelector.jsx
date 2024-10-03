@@ -34,13 +34,15 @@ const Text = styled.div`
   line-height: 20px;
 `;
 
-const YesNoSelector = ({ onSelect }) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+const YesNoSelector = ({ onSelect, selectedOption, readOnly = false }) => {
+  const [selected, setSelected] = useState(selectedOption);
 
   const handleSelect = (option) => {
-    setSelectedOption(option);
-    if (onSelect) {
-      onSelect(option);
+    if (!readOnly) {
+      setSelected(option);
+      if (onSelect) {
+        onSelect(option);
+      }
     }
   };
 
@@ -48,7 +50,7 @@ const YesNoSelector = ({ onSelect }) => {
     <OptionContainer>
       <Option onClick={() => handleSelect('Yes')}>
         <Icon>
-          {selectedOption === 'Yes' ? (
+          {selected === 'Yes' ? (
             <CheckboxIcon sx={{ color: COLORS.BLUE_TEXT }} />
           ) : (
             <CheckboxOutlineBlankIcon sx={{ color: COLORS.GRAY_400 }} />
@@ -58,7 +60,7 @@ const YesNoSelector = ({ onSelect }) => {
       </Option>
       <Option onClick={() => handleSelect('No')}>
         <Icon>
-          {selectedOption === 'No' ? (
+          {selected === 'No' ? (
             <CheckboxIcon sx={{ color: COLORS.BLUE_TEXT }} />
           ) : (
             <CheckboxOutlineBlankIcon sx={{ color: COLORS.GRAY_400 }} />
@@ -69,5 +71,4 @@ const YesNoSelector = ({ onSelect }) => {
     </OptionContainer>
   );
 };
-
 export default YesNoSelector;

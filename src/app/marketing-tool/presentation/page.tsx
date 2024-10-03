@@ -1,7 +1,6 @@
+import PartialPresentation from '@/components/pages-partials/marketing-tool/presentation';
 import React from 'react';
 
-import PartialWebsiteDomain from '@/components/pages-partials/marketing-tool/website-domain';
-
-export default function WebsiteDomain() {
-  return <PartialWebsiteDomain />;
+export default function Presentation() {
+  return <PartialPresentation />;
 }

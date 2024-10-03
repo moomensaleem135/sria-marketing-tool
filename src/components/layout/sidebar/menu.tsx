@@ -56,7 +56,7 @@ export const MenuITEMS = [
     title: 'Video',
     icon: <VideoIcon />,
     page: '',
-    path: '/marketing-tool/Video'
+    path: '/marketing-tool/video'
   },
   {
     title: 'Testimonial/ Endorsements/ Review',

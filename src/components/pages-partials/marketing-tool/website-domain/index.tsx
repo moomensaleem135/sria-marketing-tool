@@ -124,16 +124,8 @@ const questions = [
 
 export default function PartialWebsiteDomain() {
   const [isAdd, setIsAdd] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<{ [key: number]: string }>({});
   const [toggleQuestionsContainer, settoggleQuestionsContainer] = useState(false);
   const [toggleSignContainer, settoggleSignContainer] = useState(false);
-
-  const handleSelectedYesNo = (questionID: number, option: string) => {
-    setSelectedOption((prev) => ({
-      ...prev,
-      [questionID]: option
-    }));
-  };
 
   const handleClick = () => {
     setIsAdd(!isAdd);
@@ -169,19 +161,14 @@ export default function PartialWebsiteDomain() {
             sx={{ color: `${COLORS.BLUE_TEXT}`, padding: '0px', marginRight: '5px' }}
           >
             {isAdd ? <Remove /> : <Add />}
+            <TextBlue>Add Marketing Piece</TextBlue>
           </IconButton>
-          <TextBlue>Add Marketing Piece</TextBlue>
         </FlexRow>
         {isAdd && <AddMarketingPieceForm initialValues={initialValues} onSubmit={handleSubmit} />}
       </Container>
       {toggleQuestionsContainer && (
         <>
-          <QuestionSection
-            questions={questions}
-            selectedOption={selectedOption}
-            handleSelectedYesNo={handleSelectedYesNo}
-            openSignContainer={openSignContainer}
-          />
+          <QuestionSection questions={questions} openSignContainer={openSignContainer} />
         </>
       )}
 

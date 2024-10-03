@@ -6,6 +6,7 @@ const FieldInput = ({
   isEndContent,
   customPadding,
   fontWeight,
+  width,
   Left,
   ...props
 }: IInputProps) => {
@@ -17,6 +18,7 @@ const FieldInput = ({
       isEndContent={isEndContent}
       customPadding={customPadding}
       fontWeight={fontWeight}
+      width={width}
       {...props}
       InputProps={{
         style: { ...style }

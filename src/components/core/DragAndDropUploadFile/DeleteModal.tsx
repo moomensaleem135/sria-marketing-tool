@@ -1,9 +1,9 @@
+import { COLORS } from '@/constants/colors';
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
 
 interface DeleteModalProps {
   handleClickClearAll: () => void;
-  mainText: string;
   subText: string;
   setIsClearModal: (val: boolean) => void;
   submitBtnText?: string;
@@ -11,29 +11,31 @@ interface DeleteModalProps {
 
 const DeleteModal = ({
   handleClickClearAll,
-  mainText,
   subText,
   setIsClearModal,
   submitBtnText = 'Delete'
 }: DeleteModalProps) => {
   return (
     <Box textAlign="center">
-      <Typography variant="h6" gutterBottom>
-        {mainText}
-      </Typography>
       <Typography variant="body1" gutterBottom>
         {subText}
       </Typography>
       <Box mt={2}>
         <Button
           variant="contained"
-          color="primary"
           onClick={handleClickClearAll}
-          sx={{ marginRight: 2 }}
+          sx={{ marginRight: 2, background: COLORS.BLUE_600 }}
         >
           {submitBtnText}
         </Button>
-        <Button variant="outlined" color="secondary" onClick={() => setIsClearModal(false)}>
+        <Button
+          variant="outlined"
+          onClick={() => setIsClearModal(false)}
+          sx={{
+            borderColor: COLORS.BLUE_600,
+            color: COLORS.BLUE_600
+          }}
+        >
           Cancel
         </Button>
       </Box>

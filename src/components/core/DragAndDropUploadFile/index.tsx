@@ -1,10 +1,9 @@
-// import { deletePolicesFile } from '@/services/app';
-import DragDropIcon from '@/assets/images/svgs/icons/DragFile.svg';
-
 import { Box, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-
-import CustomModal from './CustomModal';
+import DragDropIcon from '@/assets/images/svgs/icons/DragFile.svg';
+import DeleteIcon from '@mui/icons-material/Delete';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import CustomModal from '../Modal';
 import DeleteModal from './DeleteModal';
 import {
   CustomBox,
@@ -14,6 +13,8 @@ import {
   FileNameDisplay,
   UploadIcon
 } from './index.styles';
+import { COLORS } from '@/constants/colors';
+import Button from '../Button';
 
 interface IUploadFile {
   formik: {
@@ -39,36 +40,6 @@ const FileUpload = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isRemoveModal, setIsRemoveModal] = useState<boolean>(false);
 
-  const handleDelete = () => {
-    setSelectedFileName(null);
-    setSelectedFile(null);
-    formik.setFieldValue(name, null);
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-
-    setIsRemoveModal(false);
-  };
-
-  // const handleDelete = async () => {
-  //   try {
-  //     const resp = await deletePolicesFile(String(filteredRowId));
-  //     if (resp) {
-  //       getPoliciesAndProcedureData();
-  //       setSelectedFileName(null);
-  //       setSelectedFile(null);
-  //       formik.setFieldValue(name, null);
-  //       if (fileInputRef.current) {
-  //         fileInputRef.current.value = '';
-  //       }
-  //       setIsRemoveModal(false);
-  //     }
-  //   } catch (error) {
-  //     console.log('error');
-  //   }
-  // };
-
   const browseDivRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -92,25 +63,42 @@ const FileUpload = ({
     }
   };
 
+  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setSelectedFileName(file.name);
+      formik.setFieldValue(name, file);
+    }
+  };
+
+  const handleDelete = () => {
+    setSelectedFileName(null);
+    setSelectedFile(null);
+    formik.setFieldValue(name, null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    setIsRemoveModal(false);
+  };
+
   useEffect(() => {
     if (formik?.values?.file?.file_name) {
       setSelectedFileName(formik.values.file.file_name);
       setSelectedFile(formik.values.file);
     }
   }, [formik?.values?.file?.file_name]);
-  console.log(
-    'formik',
-    formik?.values,
-    'selectedFileName',
-    selectedFileName,
-    'selectedFile',
-    selectedFile
-  );
 
   return (
     <>
-      <BrowseDiv onClick={browseFiles} ref={browseDivRef}>
-        <UploadIcon src={DragDropIcon} height={70} width={70} alt="" />
+      <BrowseDiv
+        onClick={browseFiles}
+        onDragOver={(e) => e.preventDefault()} // Prevent default behavior
+        onDrop={handleFileDrop}
+        ref={browseDivRef}
+      >
+        <UploadIcon src={DragDropIcon} height={70} width={70} alt="Drag and Drop Icon" />
         <Typography>
           Drag and drop files here or click to
           <span style={{ color: 'blue', fontWeight: '500' }}> browse </span> your files
@@ -129,7 +117,7 @@ const FileUpload = ({
         <FileNameDisplay>
           <DocDiv>
             <CustomBox>
-              <UploadIcon src={DragDropIcon} height={40} width={40} alt="" />
+              <UploadFileIcon style={{ fontSize: '40px' }} />
               <Box>
                 <Typography style={{ color: 'blue', textDecoration: 'underline' }}>
                   {selectedFileName}
@@ -138,13 +126,12 @@ const FileUpload = ({
                   {selectedFile.size ? `${Math.round(selectedFile.size / 1024)} KB` : '50kb'}
                 </Typography>
               </Box>
-              <UploadIcon src={DragDropIcon} height={25} width={30} alt="" />
             </CustomBox>
             {isDelete && (
               <span onClick={() => setIsRemoveModal(true)} style={{ cursor: 'pointer' }}>
                 <Typography
                   sx={{
-                    color: 'red',
+                    color: COLORS.RED_600,
                     fontSize: '0.9rem',
                     textDecoration: 'underline',
                     fontWeight: 500
@@ -160,29 +147,42 @@ const FileUpload = ({
         <FileNameDisplay>
           <DocDiv>
             <CustomBox>
-              <UploadIcon src={DragDropIcon} height={40} width={40} alt="" />
+              <UploadFileIcon style={{ fontSize: '40px' }} />
               <Box>
-                <Typography style={{ color: 'blue', textDecoration: 'underline' }}>
+                <Typography style={{ color: COLORS.BLUE_TEXT, textDecoration: 'underline' }}>
                   {selectedFileName}
                 </Typography>
                 <Typography>50kb</Typography>
               </Box>
-              <UploadIcon src={DragDropIcon} height={25} width={30} alt="" />
+              {isDelete && (
+                <span onClick={() => setIsRemoveModal(true)} style={{ cursor: 'pointer' }}>
+                  <Typography
+                    sx={{
+                      color: 'red',
+                      fontSize: '0.9rem',
+                      textDecoration: 'underline',
+                      fontWeight: 500
+                    }}
+                  >
+                    Remove
+                  </Typography>
+                </span>
+              )}
             </CustomBox>
-            {isDelete && (
-              <span onClick={() => setIsRemoveModal(true)} style={{ cursor: 'pointer' }}>
-                <Typography>Remove</Typography>
-              </span>
-            )}
           </DocDiv>
         </FileNameDisplay>
       ) : (
         <Typography sx={{ fontSize: '0.9rem', fontWeight: 800 }}>No file selected yet!</Typography>
       )}
-      <CustomModal value={isRemoveModal} setValue={setIsRemoveModal} maxWidth="25rem">
+
+      <CustomModal
+        openValue={isRemoveModal}
+        closeFunction={() => setIsRemoveModal(false)}
+        mainHeading="Delete File?"
+        closedIcon={true}
+      >
         <DeleteModal
           handleClickClearAll={handleDelete}
-          mainText="Delete File?"
           subText="This will delete your resource file permanently for the Compliance Program Overview."
           setIsClearModal={setIsRemoveModal}
           submitBtnText="Remove"

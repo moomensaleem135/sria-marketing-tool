@@ -1,9 +1,6 @@
-'use client';
 import { Box, Modal, useMediaQuery, Backdrop } from '@mui/material';
-import closeIcon from '@/assets/images/svgs/icons/closeIcon (2).svg';
-import Image from 'next/image';
 import React from 'react';
-// import closeIcon from '../../../assets/images/svgs/icons/closeIcon.svg';
+import CloseIcon from '@mui/icons-material/Close';
 import { CloseButton, MainHeadingTypo } from './index.styles';
 
 export interface IModal {
@@ -27,6 +24,7 @@ const CustomModal = ({
 }: IModal) => {
   const isSmallLaptop = useMediaQuery(' (max-height:800px)');
   const isMobile = useMediaQuery('(max-width:600px)');
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -48,33 +46,35 @@ const CustomModal = ({
   };
 
   return (
-    <>
-      <Modal
-        open={openValue}
-        onClose={closeFunction}
-        aria-labelledby="parent-modal-title"
-        aria-describedby="parent-modal-description"
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          style: backdropStyle
-        }}
-      >
-        <>
-          <Box sx={{ ...style }}>
-            {closedIcon && (
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <MainHeadingTypo>{mainHeading}</MainHeadingTypo>
-                <CloseButton onClick={closeFunction}>
-                  <Image src={closeIcon} alt="close" height={15} width={15} />
-                </CloseButton>
-              </Box>
-            )}
-            {children}
+    <Modal
+      open={openValue}
+      onClose={closeFunction}
+      aria-labelledby="parent-modal-title"
+      aria-describedby="parent-modal-description"
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        style: backdropStyle
+      }}
+    >
+      <Box sx={{ ...style }}>
+        {closedIcon && (
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <MainHeadingTypo>{mainHeading}</MainHeadingTypo>
+            <CloseButton onClick={closeFunction}>
+              <CloseIcon
+                sx={{
+                  height: '25px',
+                  width: '25px',
+                  color: '#2E3338'
+                }}
+              />
+            </CloseButton>
           </Box>
-        </>
-      </Modal>
-    </>
+        )}
+        <Box sx={{ maxHeight: '80vh', overflowY: 'auto' }}>{children}</Box>
+      </Box>
+    </Modal>
   );
 };
 

@@ -14,4 +14,5 @@ export type IInputProps = {
   isEndContent?: string;
   customPadding?: string;
   fontWeight?: string;
+  width?: string;
 } & TextFieldProps;
