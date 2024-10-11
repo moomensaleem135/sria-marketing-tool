@@ -60,12 +60,12 @@ export const Footer = styled.div`
 export const Row = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 20%;
+  width: 40%;
   padding: 10px 0px;
 `;
 
 export const Col = styled.div`
   display: flex;
   justify-content: flex-start;
-  width: 20%;
+  width: 40%;
 `;

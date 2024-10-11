@@ -15,22 +15,37 @@ export const Line = styled.hr`
   width: 100%;
   margin: 10px 0px;
 `;
+
 export const QuestionWrapper = styled.div`
   margin: 0px 15px;
+`;
+
+export const QuestionContainer = styled.div`
+  margin-bottom: 10px;
 `;
 
 export const QuestionDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 `;
+
+export const Note = styled.div`
+  font-family: 'Inter Regular';
+  font-size: 12px;
+  text-align: left;
+`;
+
+export const BoldText = styled.span`
+  font-family: 'Inter SemiBold';
+`;
+
 export const QuestionDetails = styled.div`
   padding-left: 10px;
 `;
 
 export const TextBlue = styled.p`
-  font-family: Inter SemiBold;
+  font-family: 'Inter SemiBold';
   font-size: 12px;
   color: ${COLORS.BLUE_TEXT};
   margin: 0px;
@@ -48,14 +63,14 @@ export const Question = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 89%;
-  font-family: Inter Regular;
+  font-family: 'Inter Regular';
   font-size: 14px;
   font-weight: 500;
   text-align: left;
 `;
 
 export const Example = styled.div`
-  font-family: Inter Regular;
+  font-family: 'Inter Regular';
   height: 'fit-content';
   border: 1px solid ${COLORS.GRAY_400};
   border-radius: 4px;
@@ -68,6 +83,7 @@ export const Example = styled.div`
 export const SubQuestionDiv = styled.div`
   margin-top: 10px;
 `;
+
 export const IsUpdatedDiv = styled.div`
   display: flex;
   justify-content: space-between;

@@ -55,7 +55,7 @@ const SignContainer: React.FC = () => {
         openValue={openReportReview}
         closeFunction={() => setOpenReportReview(false)}
         mainHeading=""
-        modalWidth={'80%'}
+        modalWidth={'700px'}
       >
         <ReviewReport />
       </CustomModal>

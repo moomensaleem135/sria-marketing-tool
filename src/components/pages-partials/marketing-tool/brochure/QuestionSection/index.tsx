@@ -21,7 +21,10 @@ import {
   Question,
   IsUpdatedDiv,
   ButtonRow,
-  Example
+  Example,
+  Note,
+  BoldText,
+  QuestionContainer
 } from './index.styles';
 
 import FieldInput from '@/components/core/FieldInput';
@@ -36,11 +39,12 @@ interface Question {
   subQuestions: string[];
   dragAndDrop?: string;
   isUpdated?: string;
+  note: string;
 }
 
 interface Props {
-  questions: Question[];
   openSignContainer: () => void;
+  questions: Question[];
 }
 
 const QuestionSection: React.FC<Props> = ({ questions, openSignContainer }) => {
@@ -61,6 +65,19 @@ const QuestionSection: React.FC<Props> = ({ questions, openSignContainer }) => {
     }));
   };
 
+  const shouldRenderSubQuestions = (question: any) => {
+    const selected = selectedOption[question.id];
+
+    if (question.note === 'Yes' && selected === 'Yes') {
+      return true;
+    }
+    if (question.note === 'No' && selected === 'No') {
+      return true;
+    }
+
+    return false;
+  };
+
   const initialValues = questions.reduce(
     (acc, q) => {
       acc[`example${q.id}`] = q.example || '';
@@ -69,7 +86,7 @@ const QuestionSection: React.FC<Props> = ({ questions, openSignContainer }) => {
       });
       acc[`upload_${q.id}`] = '';
       acc[`isUpdated_${q.id}`] = '';
-      acc[`option_${q.id}`] = '';
+      acc[`option${q.id}`] = '';
 
       return acc;
     },
@@ -90,19 +107,50 @@ const QuestionSection: React.FC<Props> = ({ questions, openSignContainer }) => {
             <Line />
             {questions.map((q, index) => (
               <QuestionWrapper key={q.id}>
-                <QuestionDiv>
-                  <Question>
-                    {index + 1}. {q.question}
-                  </Question>
-                  <YesNoSelector
-                    onSelect={(option: string) => {
-                      formik.setFieldValue(`option_${q.id}`, option);
-                      handleSelectedYesNo(q.id, option);
-                    }}
-                    selectedOption={() => {}}
-                  />
-                </QuestionDiv>
-                {selectedOption[q.id] === 'Yes' && (
+                <QuestionContainer>
+                  <QuestionDiv>
+                    <Question>
+                      {index + 1}. {q.question}
+                    </Question>
+                    <YesNoSelector
+                      onSelect={(option: string) => {
+                        formik.setFieldValue(`option${q.id}`, option);
+                        handleSelectedYesNo(q.id, option);
+                      }}
+                      selectedOption={() => {}}
+                    />
+                  </QuestionDiv>
+                  {q.note && index + 1 < questions.length && (
+                    <Note>
+                      {q.note === 'Yes' ? (
+                        <>
+                          <BoldText>Note: If yes,</BoldText> complete form below.{' '}
+                          <BoldText>If no, </BoldText>move on to question {index + 2}
+                        </>
+                      ) : (
+                        <>
+                          <BoldText>Note: If no,</BoldText> complete form below.{' '}
+                          <BoldText>If yes, </BoldText>move on to question {index + 2}
+                        </>
+                      )}
+                    </Note>
+                  )}
+                  {q.note && index === questions.length - 1 && (
+                    <Note>
+                      {q.note === 'Yes' ? (
+                        <>
+                          <BoldText>Note: If yes,</BoldText> complete form below.
+                        </>
+                      ) : (
+                        <>
+                          <BoldText>Note: If no,</BoldText> complete form below.
+                        </>
+                      )}
+                    </Note>
+                  )}
+                </QuestionContainer>
+
+                {shouldRenderSubQuestions(q) && (
                   <QuestionDetails>
                     <FlexRow>
                       <IconButton

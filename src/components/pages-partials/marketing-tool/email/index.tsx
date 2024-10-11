@@ -24,7 +24,8 @@ const questions = [
     subQuestions: ['Please specify the untrue statements.', 'Provide the omitted material facts.'],
     dragAndDrop: 'Updated Marketing Piece',
     isUpdated:
-      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'Yes'
   },
   {
     id: 2,
@@ -37,7 +38,8 @@ const questions = [
       'Steps taken to correct or substantiate the statement.'
     ],
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.*'
+      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.*',
+    note: 'Yes'
   },
   {
     id: 3,
@@ -51,7 +53,8 @@ const questions = [
     ],
     dragAndDrop: 'Updated Marketing Piece',
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'Yes'
   },
   {
     id: 4,
@@ -65,7 +68,8 @@ const questions = [
     ],
     dragAndDrop: 'Steps taken to include a fair and balanced treatment of the ad.',
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'Yes'
   },
   {
     id: 5,
@@ -78,7 +82,8 @@ const questions = [
       'Steps taken to include a fair and balanced treatment of the ad.'
     ],
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'Yes'
   },
   {
     id: 6,
@@ -91,7 +96,8 @@ const questions = [
     ],
     dragAndDrop: 'Steps taken to include a fair and balanced treatment of the ad.',
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'Yes'
   },
   {
     id: 7,
@@ -104,7 +110,8 @@ const questions = [
     ],
     dragAndDrop: 'Updated advertising piece without misleading words.',
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'Yes'
   },
   {
     id: 8,
@@ -118,11 +125,12 @@ const questions = [
     dragAndDrop:
       'Are you writing or speaking to a specific person or institution such as a retail vs institutional investor?',
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'No'
   }
 ];
 
-export default function PartialEmail() {
+export default function PartialWebsiteDomain() {
   const [isAdd, setIsAdd] = useState(false);
   const [toggleQuestionsContainer, settoggleQuestionsContainer] = useState(false);
   const [toggleSignContainer, settoggleSignContainer] = useState(false);

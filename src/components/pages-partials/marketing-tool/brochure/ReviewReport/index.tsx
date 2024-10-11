@@ -8,13 +8,13 @@ import {
   SubQuestionDiv,
   BoldText,
   RegularText,
-  FlexRow,
   Row,
   Footer,
   Col
 } from './index.styles';
 import { Line, QuestionWrapper } from '../QuestionSection/index.styles';
 import YesNoSelector from '../../YesNoSelector';
+import FieldInput from '@/components/core/FieldInput';
 
 const questions = [
   {
@@ -150,12 +150,13 @@ const ReviewReport: React.FC = () => {
               {index + 1}. {q.question}
             </RegularText>
             <YesNoSelector
+              // selectedOption={'Yes'}
               onSelect={() => {}}
-              selectedOption={answers[`option_${q.id}`] || null}
+              selectedOption={answers[`option${q.id}`] || null}
               readOnly
             />
           </QuestionDiv>
-          {answers[`option_${q.id}`] === 'Yes' && (
+          {answers[`option${q.id}`] === 'Yes' && (
             <SubQuestionDiv>
               {q.subQuestions.map((subQuestion, index) => (
                 <div key={index}>
@@ -176,8 +177,9 @@ const ReviewReport: React.FC = () => {
                 <>
                   <BoldText>{q.isUpdated}</BoldText>
                   <YesNoSelector
+                    // selectedOption={'Yes'}
                     onSelect={() => {}}
-                    selectedOption={answers[`isUpdated_${q.isUpdated}`] || null}
+                    selectedOption={answers[`isUpdated_${q.id}`] || null}
                     readOnly
                   />
                 </>
@@ -206,7 +208,7 @@ const ReviewReport: React.FC = () => {
         <Row>
           <BoldText>Signature:</BoldText>
           <Col>
-            <RegularText>_________</RegularText>
+            <FieldInput name="signature" variant="standard" customPadding="5px" />
           </Col>
         </Row>
       </Footer>

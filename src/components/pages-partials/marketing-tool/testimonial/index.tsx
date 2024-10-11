@@ -17,108 +17,97 @@ import SignContainer from './SignContainer';
 const questions = [
   {
     id: 1,
-    question:
-      'Does the piece include any untrue statements of material fact, or does it leave out any material fact?',
-    example:
-      '“During the last year our performance overall was positive.” Stating this when your overall performance was positive but underperformed the market.',
-    subQuestions: ['Please specify the untrue statements.', 'Provide the omitted material facts.'],
-    dragAndDrop: 'Updated Marketing Piece',
-    isUpdated:
-      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+    question: 'Is a disclosure displayed clearly and prominently by the testimonial/endorsement?',
+    details:
+      'A disclosure displayed clearly and prominently is required by the SEC for all testimonials posted. Click Here for an example of proper disclosure placement.',
+    subQuestions: [
+      'Details regarding the current location of the disclosure.',
+      'Steps taken to create and properly place the disclosure for the testimonial/endorsement.'
+    ],
+    dragAndDrop:
+      'Have you updated the disclosure? If not, you cannot publish or send to clients.* or prospective clients until addressed.Updated disclosure displayed clearly and prominently by testimonial/endorsement.*',
+    note: 'No'
   },
   {
     id: 2,
     question:
-      'Does the marketing contain a material statement of fact that cannot be substantiated?',
-    example:
-      'In your last newsletter a reference is made to performance of the market in a specific region, yet a copy of the benchmark isn’t kept in your records.',
+      'In the disclosure, does it state whether the person giving the testimonial is a current client? Skip if Endorsement (non-client)',
+    details:
+      'The SEC requires each disclosure to state if the person giving the testimonial is a current or former client. Click Here for a good example.',
     subQuestions: [
-      'Details regarding the unsubstantiated fact.',
-      'Steps taken to correct or substantiate the statement.'
+      'Details regarding what, if any, details regarding client status are made in disclosure.',
+      'Steps taken to update the disclosure.'
     ],
-    isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.*'
+    dragAndDrop: 'Updated disclosure stating client status.',
+    note: 'No'
   },
   {
     id: 3,
     question:
-      'Does the piece include information that may cause an untrue or misleading implication to be drawn by the investor regarding a material fact?',
-    example:
-      '“All my clients have seen profits from my model portfolio in each of the last 5 years.” This is true however the advisor only has 3 clients.',
+      'Was it stated, in the disclosure, whether the person giving the testimonial/endorsement received cash or non-cash (gifts or lower fees) compensation in exchange for their statement?',
+    details:
+      'SEC requires each disclosure to state if any compensation was exchanged and what type, cash or non-cash. Click Here to see an example of this statement in a disclosure.',
     subQuestions: [
-      'Details regarding the misleading implication relating to the investment adviser.',
-      'How has the statement been corrected?'
+      'Details regarding if any statement was made in the disclosure regarding compensation.',
+      'Steps taken to include a statement regarding whether compensation was given.'
     ],
-    dragAndDrop: 'Updated Marketing Piece',
-    isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+    dragAndDrop:
+      'Have you updated the disclosure? If not, you cannot publish or send to clients.* or prospective clients until addressed.Updated disclosure with a statement regarding whether compensation was given.*',
+    note: 'No'
   },
   {
     id: 4,
     question:
-      'Does your piece present the potential benefits of your specific investment advice without providing the fair and balanced treatment of the possible risks or drawbacks associated with the potential benefits?',
-    example:
-      'Presenting your results from last quarter on a website and not including a disclosure with the risks, limitations and potential downsides to the specific portfolio.',
-    subQuestions: [
-      'Presenting your results from last quarter on a website and not including a disclosure with the risks, limitations and potential downsides to the specific portfolio.',
-      'Steps taken to include a fair and balanced treatment of the ad.'
-    ],
-    dragAndDrop: 'Steps taken to include a fair and balanced treatment of the ad.',
-    isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Is there a material conflict of interest between you or your firm and the person giving the testimonial/endorsement?',
+    details:
+      'If compensation is exchanged for a testimonial or endorsement, then a material conflict of interest exists. It’s required to state this conflict in the disclosure. Click Here for an example.',
+    subQuestions: ['Details regarding why there is a conflict of interest.']
   },
   {
     id: 5,
-    question:
-      ' Does the piece include reference to specific investment advice where the advice is not presented in a fair and balanced way?',
-    example:
-      'Showing a client a positive case study as part of an investment strategy that resulted in unprofitable results, overall. The overall performance of the strategy must be disclosed during the time period of the case study.',
-    subQuestions: [
-      'Showing a client a positive case study as part of an investment strategy that resulted in unprofitable results, overall. The overall performance of the strategy must be disclosed during the time period of the case study.*',
-      'Steps taken to include a fair and balanced treatment of the ad.'
-    ],
-    isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+    question: 'Have you stated there is a material conflict present in the disclosure?',
+    details: 'Click Here for an example of a paid testimonial with a conflict of interest.',
+    subQuestions: ['Details regarding why the conflict of interest is not disclosed.'],
+    dragAndDrop:
+      'Have you updated the disclosure to include there is a conflict-of-interest present? If not, you cannot publish or send to clients or prospective clients until addressed.*Upload the updated disclosure with the material conflict of interest statement.*',
+    note: 'No'
   },
   {
     id: 6,
     question:
-      'Does your marketing piece show only positive performance results during a short period of time or over inconsistent time periods?',
-    example: 'When an adviser shows results in a portfolio for 9 out of the last 12 months.',
-    subQuestions: [
-      'When an adviser shows results in a portfolio for 9 out of the last 12 months.',
-      'When an adviser shows results in a portfolio for 9 out of the last 12 months.'
-    ],
-    dragAndDrop: 'Steps taken to include a fair and balanced treatment of the ad.',
-    isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'Was compensation given for $1,000 or more in exchange for the testimonial/endorsement?',
+    details:
+      'If compensation was given for $1,000 or more, a written agreement is required. A written agreement is not required for less than $1,000.',
+    subQuestions: ['Details regarding the form of compensation provided and the amount.'],
+    note: 'Yes'
   },
   {
     id: 7,
-    question:
-      'Are there words or phrases used in your marketing piece that are materially misleading ?',
-    example: 'Words such as “Trusted, best, top-rated, maximum wealth, most or only”',
-    subQuestions: [
-      'Words such as “Trusted, best, top-rated, maximum wealth, most or only”.',
-      'Steps taken to include different words and phrases that aren’t misleading.'
-    ],
-    dragAndDrop: 'Updated advertising piece without misleading words.',
-    isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+    question: 'Do you have a written agreement in place that details the following?',
+    details:
+      'Click Here for an example of a written agreement between you (the firm) and the client or promoter.',
+    subQuestions: [],
+    dragAndDrop:
+      'A written agreement must be in place if more than $1,000 was paid to promoter or client? If not, you cannot publish testimonial until agreement is signed.*Upload written agreement for testimonial compensation.*',
+    note: 'No'
   },
   {
     id: 8,
-    question: 'Does the ad take into consideration its target audience?',
-    example:
-      'Are you writing or speaking to a specific person or institution such as a retail vs institutional investor?',
-    subQuestions: [
-      'Are you writing or speaking to a specific person or institution such as a retail vs institutional investor?',
-      'Are you writing or speaking to a specific person or institution such as a retail vs institutional investor?'
-    ],
-    dragAndDrop:
-      'Are you writing or speaking to a specific person or institution such as a retail vs institutional investor?',
+    question: 'Is the person providing the testimonial or endorsement considered a ‘bad actor’?',
+    details:
+      'The SEC prohibits someone with securities law convictions or other violations from acting as a promoter for investment advisors.',
+    subQuestions: [],
     isUpdated:
-      'Has the advertising piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.'
+      'I understand testimonials provided by people with federal securities law violations cannot be used for promoting the company in any way. I agree not to use any testimonial or promotion made by ‘bad actors’.*',
+    note: 'No'
+  },
+  {
+    id: 9,
+    question:
+      'I have read the 7 marketing rule prohibitions and agree they are not present in my testimonials, endorsements, or reviews.',
+    details: ' ',
+    subQuestions: [],
+    note: 'Yes'
   }
 ];
 

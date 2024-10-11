@@ -24,7 +24,13 @@ const DeleteModal = ({
         <Button
           variant="contained"
           onClick={handleClickClearAll}
-          sx={{ marginRight: 2, background: COLORS.BLUE_600 }}
+          sx={{
+            marginRight: 2,
+            background: COLORS.BLUE_600,
+            '&:hover': {
+              background: COLORS.BLUE_600
+            }
+          }}
         >
           {submitBtnText}
         </Button>
@@ -33,7 +39,12 @@ const DeleteModal = ({
           onClick={() => setIsClearModal(false)}
           sx={{
             borderColor: COLORS.BLUE_600,
-            color: COLORS.BLUE_600
+            color: COLORS.BLUE_600,
+            '&:hover': {
+              borderColor: COLORS.BLUE_600,
+              backgroundColor: 'transparent',
+              color: COLORS.BLUE_600
+            }
           }}
         >
           Cancel

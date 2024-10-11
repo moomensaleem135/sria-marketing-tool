@@ -19,11 +19,24 @@ export const QuestionWrapper = styled.div`
   margin: 0px 15px;
 `;
 
+export const QuestionContainer = styled.div`
+  margin-bottom: 10px;
+`;
+
 export const QuestionDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+`;
+
+export const Note = styled.div`
+  font-family: 'Inter Regular';
+  font-size: 12px;
+  text-align: left;
+`;
+
+export const BoldText = styled.span`
+  font-family: 'Inter SemiBold';
 `;
 
 export const QuestionDetails = styled.div`

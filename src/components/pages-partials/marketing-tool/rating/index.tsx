@@ -24,7 +24,8 @@ const questions = [
     subQuestions: [],
     dragAndDrop: '',
     isConfirm:
-      'The surveys must be setup to make it easy for participants to respond with positive and negative responses alike. If they are not, the survey results cannot be used.'
+      'The surveys must be setup to make it easy for participants to respond with positive and negative responses alike. If they are not, the survey results cannot be used.',
+    note: 'No'
   },
   {
     id: 2,
@@ -34,7 +35,8 @@ const questions = [
     subQuestions: [],
     dragAndDrop: '',
     isConfirm:
-      'Click to confirm the survey results will not be used in your marketing until you can show the survey was not created with a predetermined result in mind.'
+      'Click to confirm the survey results will not be used in your marketing until you can show the survey was not created with a predetermined result in mind.',
+    note: 'No'
   },
   {
     id: 3,
@@ -45,7 +47,8 @@ const questions = [
     dragAndDrop: '',
     isUpdated:
       'Have you updated the location of the disclosure? If not, you cannot publish the third-party results.',
-    isConfirm: ''
+    isConfirm: '',
+    note: 'No'
   },
   {
     id: 4,
@@ -55,7 +58,8 @@ const questions = [
     subQuestions: [],
     dragAndDrop: 'Upload the disclosure with the 3 required elements included*',
     isConfirm:
-      'Have you updated the disclosure to include the 3 elements? If not, you cannot publish the rating.*'
+      'Have you updated the disclosure to include the 3 elements? If not, you cannot publish the rating.*',
+    note: 'No'
   },
   {
     id: 5,
@@ -66,7 +70,8 @@ const questions = [
     subQuestions: [],
     dragAndDrop:
       'Upload the survey or questionnaire used for the ratings. You cannot publish the rating until you locate this. *',
-    isConfirm: ''
+    isConfirm: '',
+    note: 'No'
   }
 ];
 
