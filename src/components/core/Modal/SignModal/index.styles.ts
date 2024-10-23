@@ -1,16 +1,15 @@
 import { COLORS } from '@/constants/colors';
 import styled from '@emotion/styled';
+import { Divider } from '@mui/material';
 
-export const Line = styled.hr`
-  border: 0.5px solid ${COLORS.GRAY_400};
-  width: 100%;
+export const Line = styled(Divider)`
   margin: 10px 0px;
+  border-color: ${COLORS.GRAY_400};
 `;
 
-export const RedLine = styled.hr`
-  border: 0.5px solid ${COLORS.RED_600};
-  width: 100%;
+export const RedLine = styled(Divider)`
   margin: 10px 0px;
+  border-color: ${COLORS.RED_600};
 `;
 
 export const FlexRow = styled.div`

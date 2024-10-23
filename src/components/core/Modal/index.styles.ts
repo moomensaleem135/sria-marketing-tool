@@ -46,11 +46,14 @@ export const CloseButton = styled(Button)`
   cursor: pointer;
   height: 2rem;
   min-width: 0px !important;
+  position: absolute;
+  right: 0;
 `;
+
 export const MainHeadingTypo = styled(Typography)`
   font-size: 1.3rem;
   font-weight: 700;
-  color: ${COLORS.BLUE_TEXT};
+  color: ${COLORS.BLACK_100};
 `;
 
 export const ScrollableBox = styled(Box)`

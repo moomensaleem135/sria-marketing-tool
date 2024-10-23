@@ -8,7 +8,7 @@ import {
   StyledList,
   StyledListItem
 } from './index.styles';
-import { Line } from '../QuestionSection/index.styles';
+import { Line } from '../../index.styles';
 import Button from '@/components/core/Button';
 
 interface Props {

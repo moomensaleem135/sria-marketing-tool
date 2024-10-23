@@ -12,7 +12,7 @@ import {
   Footer,
   Col
 } from './index.styles';
-import { Line, QuestionWrapper } from '../QuestionSection/index.styles';
+import { Line, QuestionWrapper } from '../../index.styles';
 import YesNoSelector from '../../YesNoSelector';
 import FieldInput from '@/components/core/FieldInput';
 

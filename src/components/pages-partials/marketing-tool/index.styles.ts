@@ -1,5 +1,11 @@
 import { COLORS } from '@/constants/colors';
 import styled from '@emotion/styled';
+import { Divider } from '@mui/material';
+
+export const Line = styled(Divider)`
+  margin: 10px 0px;
+  border-color: ${COLORS.GRAY_400};
+`;
 
 export const QuestionsHeading = styled.div`
   padding: 0;
@@ -8,12 +14,6 @@ export const QuestionsHeading = styled.div`
   font-weight: 600;
   line-height: 20px;
   text-align: left;
-`;
-
-export const Line = styled.hr`
-  border: 0.5px solid ${COLORS.GRAY_400};
-  width: 100%;
-  margin: 10px 0px;
 `;
 
 export const QuestionWrapper = styled.div`

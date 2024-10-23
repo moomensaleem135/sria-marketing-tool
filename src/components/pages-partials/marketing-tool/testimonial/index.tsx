@@ -8,7 +8,14 @@ import { Add, Remove } from '@mui/icons-material';
 
 import { COLORS } from '@/constants/colors';
 
-import React, { useState } from 'react';
+import React from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  toggleAdd,
+  toggleQuestionsContainer,
+  toggleSignContainer
+} from '@/store/marketingTools/componentSlices/testimonialSlice';
 
 import AddMarketingPieceForm from './MarketingPieceForm';
 import QuestionSection from './QuestionSection';
@@ -112,12 +119,15 @@ const questions = [
 ];
 
 export default function PartialTestimonial() {
-  const [isAdd, setIsAdd] = useState(false);
-  const [toggleQuestionsContainer, settoggleQuestionsContainer] = useState(false);
-  const [toggleSignContainer, settoggleSignContainer] = useState(false);
+  const dispatch = useDispatch();
 
+  // Get toggle states from Redux store
+  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
+    (state: any) => state.marketingTools.testimonial
+  );
+  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
   const handleClick = () => {
-    setIsAdd(!isAdd);
+    dispatch(toggleAdd());
   };
 
   const initialValues = {
@@ -129,11 +139,11 @@ export default function PartialTestimonial() {
   };
 
   const handleSubmit = () => {
-    settoggleQuestionsContainer(!toggleQuestionsContainer);
+    dispatch(toggleQuestionsContainer());
   };
 
   const openSignContainer = () => {
-    settoggleSignContainer(!toggleSignContainer);
+    dispatch(toggleSignContainer());
   };
 
   return (
@@ -155,13 +165,13 @@ export default function PartialTestimonial() {
         </FlexRow>
         {isAdd && <AddMarketingPieceForm initialValues={initialValues} onSubmit={handleSubmit} />}
       </Container>
-      {toggleQuestionsContainer && (
+      {isQuestionsContainerOpen && (
         <>
           <QuestionSection questions={questions} openSignContainer={openSignContainer} />
         </>
       )}
 
-      {toggleSignContainer && <SignContainer />}
+      {isSignContainerOpen && <SignContainer />}
     </SharedLayout>
   );
 }

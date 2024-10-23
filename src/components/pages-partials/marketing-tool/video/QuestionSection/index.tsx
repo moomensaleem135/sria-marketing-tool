@@ -25,7 +25,7 @@ import {
   Note,
   BoldText,
   QuestionContainer
-} from './index.styles';
+} from '../../index.styles';
 
 import FieldInput from '@/components/core/FieldInput';
 import Button from '@/components/core/Button';

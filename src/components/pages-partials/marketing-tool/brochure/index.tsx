@@ -8,7 +8,14 @@ import { Add, Remove } from '@mui/icons-material';
 
 import { COLORS } from '@/constants/colors';
 
-import React, { useState } from 'react';
+import React from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  toggleAdd,
+  toggleQuestionsContainer,
+  toggleSignContainer
+} from '@/store/marketingTools/componentSlices/brochureSlice';
 
 import AddMarketingPieceForm from './MarketingPieceForm';
 import QuestionSection from './QuestionSection';
@@ -130,13 +137,16 @@ const questions = [
   }
 ];
 
-export default function PartialWebsiteDomain() {
-  const [isAdd, setIsAdd] = useState(false);
-  const [toggleQuestionsContainer, settoggleQuestionsContainer] = useState(false);
-  const [toggleSignContainer, settoggleSignContainer] = useState(false);
+export default function PartialBrochure() {
+  const dispatch = useDispatch();
+
+  // Get toggle states from Redux store
+  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
+    (state: any) => state.marketingTools.brochure
+  );
 
   const handleClick = () => {
-    setIsAdd(!isAdd);
+    dispatch(toggleAdd());
   };
 
   const initialValues = {
@@ -148,11 +158,11 @@ export default function PartialWebsiteDomain() {
   };
 
   const handleSubmit = () => {
-    settoggleQuestionsContainer(!toggleQuestionsContainer);
+    dispatch(toggleQuestionsContainer());
   };
 
   const openSignContainer = () => {
-    settoggleSignContainer(!toggleSignContainer);
+    dispatch(toggleSignContainer());
   };
 
   return (
@@ -174,13 +184,13 @@ export default function PartialWebsiteDomain() {
         </FlexRow>
         {isAdd && <AddMarketingPieceForm initialValues={initialValues} onSubmit={handleSubmit} />}
       </Container>
-      {toggleQuestionsContainer && (
+      {isQuestionsContainerOpen && (
         <>
           <QuestionSection questions={questions} openSignContainer={openSignContainer} />
         </>
       )}
 
-      {toggleSignContainer && <SignContainer />}
+      {isSignContainerOpen && <SignContainer />}
     </SharedLayout>
   );
 }

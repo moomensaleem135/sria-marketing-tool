@@ -16,11 +16,11 @@ const DeleteModal = ({
   submitBtnText = 'Delete'
 }: DeleteModalProps) => {
   return (
-    <Box textAlign="center">
-      <Typography variant="body1" gutterBottom>
+    <Box textAlign="left">
+      <Typography py={3} variant="body1" gutterBottom>
         {subText}
       </Typography>
-      <Box mt={2}>
+      <Box mt={2} sx={{ display: 'flex', justifyContent: 'end' }}>
         <Button
           variant="contained"
           onClick={handleClickClearAll}

@@ -64,7 +64,7 @@ const CustomModal = ({
         padding={padding}
       >
         {closedIcon && (
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
             <MainHeadingTypo>{mainHeading}</MainHeadingTypo>
             <CloseButton onClick={closeFunction}>
               <CloseIcon

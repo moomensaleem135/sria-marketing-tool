@@ -10,7 +10,7 @@ import {
   SubQuestion,
   Answer
 } from './index.styles';
-import { Line, QuestionWrapper } from '../QuestionSection/index.styles';
+import { Line, QuestionWrapper } from '../../index.styles';
 import YesNoSelector from '../../YesNoSelector';
 
 interface Question {

@@ -9,7 +9,6 @@ import React, { useState } from 'react';
 
 import {
   Container,
-  FlexRow,
   Line,
   QuestionDiv,
   QuestionWrapper,
@@ -17,16 +16,20 @@ import {
   SubQuestionDiv,
   SubQuestion,
   QuestionsHeading,
-  TextBlue,
-  Question,
-  IsUpdatedDiv,
   ButtonRow,
-  Example,
-  BoldUnderline,
-  IsConfirmDiv,
   QuestionContainer,
   Note,
   BoldText
+} from '../../index.styles';
+
+import {
+  FlexRow,
+  TextBlue,
+  Question,
+  IsUpdatedDiv,
+  Example,
+  BoldUnderline,
+  IsConfirmDiv
 } from './index.styles';
 
 import FieldInput from '@/components/core/FieldInput';

@@ -1,7 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FlexCol, MainHeading, Text, Name, RegularText, ButtonRow } from './index.styles';
-import { BoldUnderline, Line } from '../QuestionSection/index.styles';
+import { BoldUnderline } from '../QuestionSection/index.styles';
+import { Line } from '../../index.styles';
 import Button from '@/components/core/Button';
 
 const Reviews = [
