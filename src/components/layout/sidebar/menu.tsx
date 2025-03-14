@@ -17,59 +17,72 @@ export const MenuITEMS = [
     path: '/marketing-tool/website-domain'
   },
   {
-    title: 'Email Campaign Name',
+    title: 'Email Campaigns, Newsletters',
     icon: <EmailCampaignIcon />,
     page: 'activities',
     path: '/marketing-tool/email'
   },
   {
-    title: 'Blog or Article',
+    title: 'Blogs or Articles',
     icon: <BlogIcon />,
     page: 'retrospective_review',
     path: '/marketing-tool/blog'
   },
   {
-    title: 'Presentation',
+    title: 'Presentations',
     icon: <PresentationIcon />,
     page: '',
     path: '/marketing-tool/presentation'
   },
   {
-    title: 'Performance Ad',
+    title: 'Performance Advertising',
     icon: <PerformanceAdIcon />,
     page: '',
     path: '/marketing-tool/performance'
   },
   {
-    title: 'Social Media, Comments & Report',
+    title: 'Social Media',
     icon: <SocialMediaIcon />,
     page: '',
     path: '/marketing-tool/social-media'
   },
   {
-    title: 'Brochure',
-    icon: <BrochureIcon />,
-    page: '',
-    path: '/marketing-tool/brochure'
-  },
-  {
-    title: 'Video',
-    icon: <VideoIcon />,
-    page: '',
-    path: '/marketing-tool/video'
-  },
-  {
-    title: 'Testimonial/ Endorsements/ Review',
+    title: 'Testimonials and Endorsements',
     icon: <TestimonialIcon />,
     page: '',
     path: '/marketing-tool/testimonial'
+  },
+  {
+    title: 'Reviews',
+    icon: <RatingIcon />,
+    page: '',
+    path: '/marketing-tool/rating'
   },
   {
     title: 'Third-Party Rating',
     icon: <RatingIcon />,
     page: '',
     path: '/marketing-tool/rating'
-  }
+  },
+  {
+    title: 'Brochures',
+    icon: <BrochureIcon />,
+    page: '',
+    path: '/marketing-tool/brochure'
+  },
+  {
+    title: 'Videos',
+    icon: <VideoIcon />,
+    page: '',
+    path: '/marketing-tool/video'
+  },
+  {
+    title: 'Reports',
+    icon: <VideoIcon />,
+    page: '',
+    path: '/marketing-tool/video'
+  },
+  
   // {
   //   title: 'Blog or Article',
   //   icon: <RetrospectiveReviewIcon />,

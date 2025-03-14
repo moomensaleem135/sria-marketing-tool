@@ -8,7 +8,7 @@ export const MainContainer = styled.div`
   flex-direction: column;
   align-items: space-arround;
   /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
-  background: #eff4f9;
+  background: #ffffff;
   padding: 20px 40px;
   height: 15%;
 `;

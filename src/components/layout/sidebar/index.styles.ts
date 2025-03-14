@@ -303,7 +303,7 @@ export const SidebarStyledListItem = styled(ListItem)`
   padding-bottom: 0px;
 `;
 export const DrawerFooterMainBox = styled(Box)`
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   display: flex;
   flex-direction: column;
   row-gap: 1rem;

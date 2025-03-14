@@ -51,7 +51,7 @@ const NavBar = () => {
           </Box>
         </LogoDiv>
         <IconsDiv>
-          <Paper
+          {/* <Paper
             component="form"
             sx={{
               p: '2px',
@@ -71,8 +71,8 @@ const NavBar = () => {
               placeholder="Search"
               inputProps={{ 'aria-label': 'search google maps' }}
             />
-          </Paper>
-          <Image src="/svgs/UI.svg" width={36} height={36} alt="" />
+          </Paper> */}
+          {/* <Image src="/svgs/UI.svg" width={36} height={36} alt="" /> */}
           <IconButton
             onClick={handleClick}
             size="small"

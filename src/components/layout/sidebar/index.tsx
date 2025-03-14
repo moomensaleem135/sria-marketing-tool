@@ -209,7 +209,6 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
             sx={{
               padding: 0,
               overflowX: 'hidden',
-              marginTop: '1.5rem'
             }}
           >
             {MenuITEMS.map((item: any) => (
@@ -448,7 +447,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           </DrawerFooterSubBox>
         </DrawerFooterMainBox>
       </StyledDrawer>
-      <MainStyle open={true} drawerwidth={drawerWidth} style={{ background: '#eff4f9' }}>
+      <MainStyle open={true} drawerwidth={drawerWidth} style={{ background: 'white', height: '100dvh' }}>
         {children}
       </MainStyle>
       {/* <CustomModal value={saveAlert} setValue={setSaveAlert} maxWidth="25rem">
