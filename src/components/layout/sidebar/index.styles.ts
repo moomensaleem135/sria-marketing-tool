@@ -108,7 +108,7 @@ export const MainStyle = styled('main', {
   width: `calc(100% - ${drawerwidth}px)`,
   transition: 'all 0.3s ease-in-out',
   ...(open && {
-    width: `calc(98% - ${drawerwidth}px)`,
+    width: `calc(100% - ${drawerwidth}px)`,
     marginLeft: drawerwidth,
     transition: 'all 0.1s ease-in-out',
     padding: '0 1rem 0 3rem', // 2nd value become to 0 from right padding

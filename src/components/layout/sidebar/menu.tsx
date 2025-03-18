@@ -8,6 +8,8 @@ import VideoIcon from '@/assets/images/svgs/icons/drawerIcons/videoIcon';
 import WebsiteDomainIcon from '@/assets/images/svgs/icons/drawerIcons/WebsiteDomain';
 import EmailCampaignIcon from '@/assets/images/svgs/icons/drawerIcons/emailIcon';
 import SocialMediaIcon from '@/assets/images/svgs/icons/drawerIcons/socialMediaIcon';
+import ThirdPartyRatings from '@/assets/images/svgs/icons/drawerIcons/thirdPartyRatings';
+import Reports from '@/assets/images/svgs/icons/drawerIcons/reports';
 
 export const MenuITEMS = [
   {
@@ -47,7 +49,7 @@ export const MenuITEMS = [
     path: '/marketing-tool/social-media'
   },
   {
-    title: 'Testimonials and Endorsements',
+    title: 'Testimonials & Endorsements',
     icon: <TestimonialIcon />,
     page: '',
     path: '/marketing-tool/testimonial'
@@ -60,7 +62,7 @@ export const MenuITEMS = [
   },
   {
     title: 'Third-Party Rating',
-    icon: <RatingIcon />,
+    icon: <ThirdPartyRatings/>,
     page: '',
     path: '/marketing-tool/rating'
   },
@@ -78,7 +80,7 @@ export const MenuITEMS = [
   },
   {
     title: 'Reports',
-    icon: <VideoIcon />,
+    icon: <Reports/>,
     page: '',
     path: '/marketing-tool/video'
   },

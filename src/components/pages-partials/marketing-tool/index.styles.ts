@@ -2,6 +2,8 @@ import { COLORS } from '@/constants/colors';
 import styled from '@emotion/styled';
 import { Divider } from '@mui/material';
 
+
+
 export const Line = styled(Divider)`
   margin: 10px 0px;
   border-color: ${COLORS.GRAY_400};
@@ -118,4 +120,21 @@ export const ButtonRow = styled.div`
   width: 100%;
   margin-top: 5px;
   padding-right: 15px;
+`;
+export const TopHeading = styled.h1`
+  font-family: Inter Bold;
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+`;
+export const SelectMarketingType = styled.h1`
+  font-family: Inter SemiBold;
+  font-size: 22px;
+  font-weight: 600;
+  color: ${COLORS.BLUE_TEXT};
+`;
+export const SelectMarketingTypeDis = styled.p`
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
 `;

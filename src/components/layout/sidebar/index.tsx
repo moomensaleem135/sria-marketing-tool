@@ -191,6 +191,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
               <ChevronLeftIcon />
             </IconSpan>
           )}
+          
         </CollapseArrowBox>
         <DrawerHeader>
           <Box sx={{ cursor: 'pointer' }} onClick={handleLogoClick}>
