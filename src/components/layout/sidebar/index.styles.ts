@@ -111,7 +111,7 @@ export const MainStyle = styled('main', {
     width: `calc(100% - ${drawerwidth}px)`,
     marginLeft: drawerwidth,
     transition: 'all 0.1s ease-in-out',
-    padding: '0 1rem 0 3rem', // 2nd value become to 0 from right padding
+    padding: '0 3rem 0 3rem', // 2nd value become to 0 from right padding
 
     marginRight: '0 !important'
     // maxWidth:'1100px'

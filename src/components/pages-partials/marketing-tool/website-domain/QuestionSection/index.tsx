@@ -124,12 +124,12 @@ const QuestionSection: React.FC<Props> = ({ questions, openSignContainer }) => {
                     <Note>
                       {q.note === 'Yes' ? (
                         <>
-                          <BoldText>Note: If yes,</BoldText> complete form below.{' '}
+                          <BoldText>If yes,</BoldText> complete form below.{' '}
                           <BoldText>If no, </BoldText>move on to question {index + 2}
                         </>
                       ) : (
                         <>
-                          <BoldText>Note: If no,</BoldText> complete form below.{' '}
+                          <BoldText>If no,</BoldText> complete form below.{' '}
                           <BoldText>If yes, </BoldText>move on to question {index + 2}
                         </>
                       )}
@@ -139,11 +139,11 @@ const QuestionSection: React.FC<Props> = ({ questions, openSignContainer }) => {
                     <Note>
                       {q.note === 'Yes' ? (
                         <>
-                          <BoldText>Note: If yes,</BoldText> complete form below.
+                          <BoldText>If yes,</BoldText> complete form below.
                         </>
                       ) : (
                         <>
-                          <BoldText>Note: If no,</BoldText> complete form below.
+                          <BoldText>If no,</BoldText> complete form below.
                         </>
                       )}
                     </Note>

@@ -10,6 +10,7 @@ export const TopHeading = styled.h1`
   font-size: 22px;
   font-weight: 600;
   text-align: center;
+  margin-top: 0px;
 `;
 
 export const Text = styled.p`
@@ -36,7 +37,7 @@ export const ButtonRightRow = styled.div`
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-  margin-top: 15px;
+  // margin-top: 15px;
 `;
 
 export const ButtonLeftRow = styled.div`

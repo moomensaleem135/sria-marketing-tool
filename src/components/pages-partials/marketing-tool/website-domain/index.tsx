@@ -1,7 +1,7 @@
 'use client';
 import SharedLayout from '@/components/layout/shared-layout';
 
-import { Container, FlexRow, Text, TextBlue, TextBold, TopHeading } from './index.styles';
+import { ButtonRightRow, Container, FlexCol, FlexRow, Label, Text, TextBlue, TextBold, TopHeading } from './index.styles';
 
 import IconButton from '@mui/material/IconButton';
 import { Add, Remove } from '@mui/icons-material';
@@ -20,6 +20,33 @@ import {
 import AddMarketingPieceForm from './MarketingPieceForm';
 import QuestionSection from './QuestionSection';
 import SignContainer from './SignContainer';
+
+
+
+import { Grid } from '@mui/material';
+
+import { Form, Formik } from 'formik';
+
+
+
+import Button from '@/components/core/Button';
+import DatePickerWithIcon from '@/components/core/DatePickerTask';
+import FileUpload from '@/components/core/DragAndDropUploadFile';
+import FieldInput from '@/components/core/FieldInput';
+
+
+interface FormValues {
+  name: string;
+  advisor: string;
+  date: string;
+  URL: string;
+  upload: string;
+}
+
+interface Props {
+  initialValues: FormValues;
+  onSubmit: (values: FormValues) => void;
+}
 
 const questions = [
   {
@@ -150,7 +177,6 @@ export default function PartialWebsiteDomain() {
   };
 
   const initialValues = {
-    
     name: '',
     advisor: '',
     date: '',
@@ -168,23 +194,62 @@ export default function PartialWebsiteDomain() {
 
   return (
     <SharedLayout>
-      <TopHeading>RIA Marketing Rule Review Tool</TopHeading>
-      <Container>
-        <Text>
-          <TextBold>Instruction:</TextBold> Click the + sign to add a new marketing piece for
-          review, then select from the dropdown to begin.
-        </Text>
-        <FlexRow>
-          <IconButton
-            onClick={handleClick}
-            sx={{ color: `${COLORS.BLUE_TEXT}`, padding: '0px', marginRight: '5px' }}
-          >
-            {isAdd ? <Remove /> : <Add />}
-            <TextBlue>Add Marketing Piece</TextBlue>
-          </IconButton>
-        </FlexRow>
-        {isAdd && <AddMarketingPieceForm initialValues={initialValues} onSubmit={handleSubmit} />}
-      </Container>
+      <TopHeading>Websites </TopHeading>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        {(formik) => (
+          <Form style={{border:'1px solid #C3CAD2', padding:'1.5rem', borderRadius:'10px'}}>
+            <FlexRow>
+              <Grid container display={'flex'} direction={'row'} columnSpacing={2}>
+                <Grid item md={5}>
+                  <FlexCol>
+                    <Label htmlFor="name">Name or Title:</Label>
+                    <FieldInput
+                      {...formik.getFieldProps('name')}
+                      placeholder=""
+                      isShadow={false}
+                      Left={1}
+                    />
+                  </FlexCol>
+                </Grid>
+                <Grid item md={5}>
+                  <FlexCol>
+                    <Label htmlFor="advisor">Advisor(s)</Label>
+                    <FieldInput
+                      {...formik.getFieldProps('advisor')}
+                      placeholder=""
+                      isShadow={false}
+                      Left={1}
+                    />
+                  </FlexCol>
+                </Grid>
+                <Grid item md={2}>
+                  <FlexCol>
+                    <Label htmlFor="date">Date:</Label>
+                    <DatePickerWithIcon formik={formik} name="date" />
+                  </FlexCol>
+                </Grid>
+              </Grid>
+            </FlexRow>
+            <FlexRow>
+              <FlexCol>
+                <Label htmlFor="URL">Location of Ad or URL:</Label>
+                <FieldInput {...formik.getFieldProps('URL')} />
+              </FlexCol>
+            </FlexRow>
+            <FlexRow>
+              <FlexCol>
+                <Label htmlFor="Upload">
+                  Upload your Advertisement (Screenshot, PDF, Word Doc or PPT):
+                </Label>
+                <FileUpload formik={formik} isDelete name="upload" />
+              </FlexCol>
+            </FlexRow>
+            <ButtonRightRow>
+              <Button type="submit">Click to Begin</Button>
+            </ButtonRightRow>
+          </Form>
+        )}
+      </Formik>
       {isQuestionsContainerOpen && (
         <>
           <QuestionSection questions={questions} openSignContainer={openSignContainer} />

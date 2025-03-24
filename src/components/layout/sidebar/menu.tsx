@@ -13,7 +13,7 @@ import Reports from '@/assets/images/svgs/icons/drawerIcons/reports';
 
 export const MenuITEMS = [
   {
-    title: 'Website Domain',
+    title: 'Websites',
     icon: <WebsiteDomainIcon />,
     page: 'home',
     path: '/marketing-tool/website-domain'
