@@ -62,7 +62,7 @@ export const MenuITEMS = [
   },
   {
     title: 'Third-Party Rating',
-    icon: <ThirdPartyRatings/>,
+    icon: <ThirdPartyRatings />,
     page: '',
     path: '/marketing-tool/rating'
   },
@@ -80,11 +80,11 @@ export const MenuITEMS = [
   },
   {
     title: 'Reports',
-    icon: <Reports/>,
+    icon: <Reports />,
     page: '',
     path: '/marketing-tool/video'
-  },
-  
+  }
+
   // {
   //   title: 'Blog or Article',
   //   icon: <RetrospectiveReviewIcon />,

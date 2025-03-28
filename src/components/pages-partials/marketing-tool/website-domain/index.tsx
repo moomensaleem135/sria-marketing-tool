@@ -1,7 +1,17 @@
 'use client';
 import SharedLayout from '@/components/layout/shared-layout';
 
-import { ButtonRightRow, Container, FlexCol, FlexRow, Label, Text, TextBlue, TextBold, TopHeading } from './index.styles';
+import {
+  ButtonRightRow,
+  Container,
+  FlexCol,
+  FlexRow,
+  Label,
+  Text,
+  TextBlue,
+  TextBold,
+  TopHeading
+} from './index.styles';
 
 import IconButton from '@mui/material/IconButton';
 import { Add, Remove } from '@mui/icons-material';
@@ -21,19 +31,14 @@ import AddMarketingPieceForm from './MarketingPieceForm';
 import QuestionSection from './QuestionSection';
 import SignContainer from './SignContainer';
 
-
-
 import { Grid } from '@mui/material';
 
 import { Form, Formik } from 'formik';
-
-
 
 import Button from '@/components/core/Button';
 import DatePickerWithIcon from '@/components/core/DatePickerTask';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import FieldInput from '@/components/core/FieldInput';
-
 
 interface FormValues {
   name: string;
@@ -197,7 +202,7 @@ export default function PartialWebsiteDomain() {
       <TopHeading>Websites </TopHeading>
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {(formik) => (
-          <Form style={{border:'1px solid #C3CAD2', padding:'1.5rem', borderRadius:'10px'}}>
+          <Form style={{ border: '1px solid #C3CAD2', padding: '1.5rem', borderRadius: '10px' }}>
             <FlexRow>
               <Grid container display={'flex'} direction={'row'} columnSpacing={2}>
                 <Grid item md={5}>

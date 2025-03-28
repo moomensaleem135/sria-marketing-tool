@@ -2,8 +2,6 @@ import { COLORS } from '@/constants/colors';
 import styled from '@emotion/styled';
 import { Divider } from '@mui/material';
 
-
-
 export const Line = styled(Divider)`
   margin: 10px 0px;
   border-color: ${COLORS.GRAY_400};

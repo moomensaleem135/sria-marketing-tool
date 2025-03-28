@@ -191,7 +191,6 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
               <ChevronLeftIcon />
             </IconSpan>
           )}
-          
         </CollapseArrowBox>
         <DrawerHeader>
           <Box sx={{ cursor: 'pointer' }} onClick={handleLogoClick}>
@@ -209,7 +208,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           <List
             sx={{
               padding: 0,
-              overflowX: 'hidden',
+              overflowX: 'hidden'
             }}
           >
             {MenuITEMS.map((item: any) => (
@@ -448,7 +447,11 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           </DrawerFooterSubBox>
         </DrawerFooterMainBox>
       </StyledDrawer>
-      <MainStyle open={true} drawerwidth={drawerWidth} style={{ background: 'white', height: '100dvh' }}>
+      <MainStyle
+        open={true}
+        drawerwidth={drawerWidth}
+        style={{ background: 'white', height: '100dvh' }}
+      >
         {children}
       </MainStyle>
       {/* <CustomModal value={saveAlert} setValue={setSaveAlert} maxWidth="25rem">
