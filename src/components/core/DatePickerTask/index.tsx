@@ -56,11 +56,14 @@ function DatePickerWithIcon({ formik, name, disable }: DatePickerWithIconProps) 
                   onClick={handleIconClick}
                   style={{
                     cursor: disable ? 'default' : 'pointer',
-                    opacity: disable ? 0.4 : 1
+                    opacity: disable ? 0.4 : 1,
+                    height: '20px',
+                    width: '20px'
                   }}
                 />
               </InputAdornment>
             }
+            sx={{ fontSize: '0.9rem' }}
             error={error}
           />
         }

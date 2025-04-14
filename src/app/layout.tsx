@@ -4,9 +4,10 @@ import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import { MainProvider } from '@/components/providers/MainProvider';
+import SharedLayout from '@/components/layout/shared-layout';
 
 export const metadata: Metadata = {
-  title: 'Securia CCO Portal',
+  title: 'Marketing Review Tool',
   description: '🚀'
 };
 
@@ -19,7 +20,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
     <html lang="en">
       <body className={'font-primary'} suppressHydrationWarning>
         <MainProvider>
-          <main>{children}</main>
+          <SharedLayout>
+            <main>{children}</main>
+          </SharedLayout>
         </MainProvider>
       </body>
     </html>

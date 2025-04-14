@@ -20,16 +20,14 @@ interface StyledListItemButtonProps {
   path: string;
   itemPath: string;
 }
-export const DrawerHeader = styled('div')(() => ({
+export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
-  alignItems: 'start',
+  alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
   // paddingTop: '1rem',
-  paddingLeft: '1rem',
-  height: '7rem',
-  paddingTop: '1rem',
-  paddingBottom: '0.5rem'
+  // marginTop: '-0.5rem',
+  minHeight: '8rem'
 }));
 
 export const FlexRow = styled.div`
@@ -100,24 +98,27 @@ export const MainStyle = styled('main', {
   open?: boolean;
   drawerwidth: number;
 }>(({ open, drawerwidth }) => ({
-  marginTop: '6rem',
-  position: 'absolute',
-  marginLeft: drawerwidth + 120,
-
+  // marginTop: '6rem',
+  // position: 'absolute',
+  // marginLeft: drawerwidth + 120,
   // height: '50%',
   width: `calc(100% - ${drawerwidth}px)`,
   transition: 'all 0.3s ease-in-out',
+  // border:'1px solid green',
+  // padding:'0 15%',
+  margin: '6rem 2rem 1rem 2rem',
   ...(open && {
     width: `calc(100% - ${drawerwidth}px)`,
-    marginLeft: drawerwidth,
+    // marginLeft: drawerwidth - 20,
     transition: 'all 0.1s ease-in-out',
-    padding: '0 3rem 0 3rem', // 2nd value become to 0 from right padding
-
-    marginRight: '0 !important'
+    // padding: '0 0 0 3rem',
+    // marginRight: '0 !important',
+    // border:'1px solid red',
+    // padding:'0 15%',
+    margin: '6rem 2rem 1rem 2rem'
     // maxWidth:'1100px'
-  })
-  // '& .MuiContainer-root': { marginInline: '0', overflow: 'hidden' }
-  // '& .MuiContainer-root': { marginInline: '0' }
+  }),
+  '& .MuiContainer-root': { marginInline: '0', overflow: 'hidden' }
 }));
 
 export const DivRow = styled.div`
@@ -226,10 +227,9 @@ export const MainHeadingTypo = styled(Typography)`
 // sub menu item style
 export const ListItemTextSubMenuStyledActive = styled(ListItemText)(() => ({
   '& .MuiTypography-root': {
-    fontWeight: 400,
+    fontWeight: 700,
     fontSize: '14px',
-    // color: `${COLORS.BLUE_600}`,
-    color: 'white',
+    color: `${COLORS.BLUE_THEME_MAIN}`,
     whiteSpace: 'nowrap'
   }
 }));
@@ -242,19 +242,34 @@ export const ListItemTextSubMenuStyledInActive = styled(ListItemText)(() => ({
   }
 }));
 export const CustomListItemText = styled(Typography)`
-  font-weight: 400 !important;
-  color: white;
+  font-weight: 700 !important;
+  color: 'white';
 `;
 export const StyledListItemButton = styled(ListItemButton)<StyledListItemButtonProps>(
-  ({ path, itemPath }) => ({
-    backgroundColor: path.includes(itemPath) ? COLORS.BLUE_600 : 'white',
+  ({ theme, path, itemPath }) => ({
+    backgroundColor: path.includes(itemPath)
+      ? itemPath === '/policies' && path.includes('annualreviewtool')
+        ? 'white'
+        : COLORS.BLUE_THEME_MAIN
+      : 'white',
     borderRadius: '10px',
     marginRight: '23px !important',
-    fill: path.includes(itemPath) ? 'white' : 'black',
-    color: path.includes(itemPath) ? 'white' : 'black',
-    fontWeight: '400 !important',
+    fill: path.includes(itemPath)
+      ? itemPath === '/policies' && path.includes('annualreviewtool')
+        ? 'black'
+        : 'white'
+      : 'black',
+    color: path.includes(itemPath)
+      ? itemPath === '/policies' && path.includes('annualreviewtool')
+        ? 'black'
+        : 'white'
+      : 'black',
     '&:hover': {
-      backgroundColor: path.includes(itemPath) ? COLORS.BLUE_600 : 'white'
+      backgroundColor: path.includes(itemPath)
+        ? itemPath === '/policies' && path.includes('annualreviewtool')
+          ? COLORS.GREY_200
+          : COLORS.BLUE_THEME_MAIN
+        : COLORS.GREY_200
     },
     display: 'flex',
     justifyContent: 'space-between',
@@ -263,20 +278,12 @@ export const StyledListItemButton = styled(ListItemButton)<StyledListItemButtonP
   })
 );
 export const CollapseArrowBox = styled(Box)`
-  position: fixed;
-  top: 2.7rem;
-  display: flex;
-  align-items: center;
-  border-radius: 8px;
-  background-color: white;
+  position: absolute;
+  right: 10px;
+  /* top: 10px; */
 `;
 export const IconSpan = styled('span')`
   cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  border-radius: 8px;
-  overflow: hidden;
 `;
 
 export const SideBarNavList = styled(List)`
@@ -289,11 +296,11 @@ export const SideBarNavList = styled(List)`
 export const StyledDrawer = styled(Drawer)`
   flex-shrink: 0;
   position: relative;
+
   & .MuiDrawer-paper {
     box-sizing: border-box;
     transition: all 0.1s ease-in-out;
-
-    /* box-shadow: 8px 0 10px -6px rgba(0, 0, 0, 0.5); */
+    box-shadow: 8px 0 10px -6px rgba(0, 0, 0, 0.5);
   }
 `;
 export const SidebarStyledListItem = styled(ListItem)`
@@ -301,24 +308,4 @@ export const SidebarStyledListItem = styled(ListItem)`
   align-items: center;
   justify-content: space-between;
   padding-bottom: 0px;
-`;
-export const DrawerFooterMainBox = styled(Box)`
-  margin-bottom: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
-`;
-export const DrawerFooterSubBox = styled(Box)`
-  display: flex;
-  gap: 0.6rem;
-`;
-export const HelpTypo = styled(Typography)`
-  font-family: Inter Regular;
-  font-size: 0.9rem;
-`;
-export const LogputTypo = styled(Typography)`
-  font-size: 0.9rem;
-  color: ${COLORS.RED_600};
-  font-weight: 500;
-  font-family: Inter Regular;
 `;

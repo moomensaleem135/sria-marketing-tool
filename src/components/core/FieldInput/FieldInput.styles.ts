@@ -58,4 +58,5 @@ export const FieldInputStyled = styled(TextField)<{
     font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '800')};
     padding: ${({ customPadding }) => (customPadding ? customPadding : '12px 14px')};
   }
+  font-weight: 'normal !important';
 `;

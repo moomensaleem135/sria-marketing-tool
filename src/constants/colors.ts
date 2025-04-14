@@ -1,10 +1,4 @@
 export const COLORS = {
-  BLUE_TEXT: '#3A6FB6',
-  BLUE_600: '#3A6FB6',
-  RED_600: '#C72222',
-  WHITE: '#FCFDFF',
-  GRAY_400: '#C3CAD2',
-
   NAV_COLOR: '#F8FBFF',
   FOOTER_COLOR: '#F8FBFF',
   BLACK_100: '#000',
@@ -21,16 +15,43 @@ export const COLORS = {
   GREY_BF: '#BFBFBF',
   THEME_COLOR: '#8DA9DB',
   GREEN_THEME: '#8BC152',
+  GREEN_200: '#BFEFBE',
+  GREEN_400: 'rgba(37, 163, 42, 1)',
   GREY_LABEL: '#808080',
   PINK_200: ' #ff7d90',
   GREY_100: '#4f4f4f',
+  GREY_200: 'rgba(244, 245, 246, 1)',
+  GREY_400: '#C3CAD2',
+  GREY_600: 'rgba(92, 102, 112, 1)',
+  GREY_800: '#2E3338',
+  GREY_1000: 'rgba(21, 22, 24, 1)',
+  GREY_WHITE: 'rgba(255, 255, 255, 1)',
+  GREY_20: 'rgba(244, 245, 246, 1)',
+  GREY_30: 'rgba(217, 217, 217, 1)',
   GREY_2: '#F2F2F2',
+  GREY_BORDER: '#d6d9db',
   RED_100: 'red',
+  RED_200: 'rgba(252, 184, 184, 1)',
+  RED_400: '#F25858',
+  RED_600: '#C72222',
+  RED_800: 'rgba(137, 6, 6, 1)',
   BLUE_100: '#4281EE',
   YELLOW_THEME: '#F9AD4B',
   SKY_BLUE_THEME: '#6ED5D0',
   BACKGROUND_COLOR: '#EFF0F5',
   LIGHT_GREEN: '#e8f3dc',
   BUTTON_COLOR: '#f05f97',
-  BLUE_200: '#0263D1'
+
+  BLUE_500: '#0977EC',
+
+  BLUE_600: '#3A6FB6',
+  BLUE_200: '#0263D1',
+  BLUE_800: '#0659B1',
+  GREEN_600: '#095A1B',
+  GREEN_800: 'rgba(9, 90, 27, 1)',
+  BLUE_THEME_LIGHT: '#4d74aa',
+  BLUE_THEME_MAIN: '#3a6fb6',
+  // BLUE_600:'rgba(9, 119, 236, 1)'
+  //status
+  PENDING_STATUS: '#AED1FF'
 };

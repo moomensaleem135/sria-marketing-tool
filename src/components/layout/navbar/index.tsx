@@ -1,5 +1,5 @@
-'use client';
-import { Logout, Search } from '@mui/icons-material';
+import { COLORS } from '@/constants/colors';
+import { Logout, Search, Support } from '@mui/icons-material';
 import {
   Box,
   IconButton,
@@ -11,14 +11,25 @@ import {
   Typography
 } from '@mui/material';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+// import { useRouter } from 'nextjs-toploader/app';
 import React, { useEffect, useState } from 'react';
 
-import { IconsDiv, LogoDiv, MainContainer, NavBarMain, UserNameText } from './index.styles';
+import logo from '../../../../public/svgs/lpcLogo.svg';
+import { HIDDEN_ROUTES_LEFT_DRAWER } from '../sidebar';
+import {
+  IconsDiv,
+  LogoDiv,
+  MainContainer,
+  NavBarMain,
+  StyledProfileDropDownItem,
+  UserNameText
+} from './index.styles';
 
 const NavBar = () => {
   const [loggedUser, setLoggedUser] = useState('user');
-
+  const router = useRouter();
+  const path = usePathname();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -42,13 +53,28 @@ const NavBar = () => {
   });
 
   return (
-    <MainContainer>
+    <MainContainer
+      style={{
+        padding: '1rem 2rem 0rem 2rem'
+      }}
+    >
       <NavBarMain>
         <LogoDiv>
+          {/* {!HIDDEN_ROUTES_LEFT_DRAWER.find((route) => route === path) ? ( */}
           <Box>
-            <UserNameText>Hey, {loggedUser.toUpperCase()}</UserNameText>
-            <Typography sx={{ fontSize: '0.95rem' }}>Welcome Back!</Typography>
+            <UserNameText>
+              {' '}
+              Hey, Lauren
+              {/* {loggedUser ? loggedUser.split(/[\s\-,]/)[0] : 'Lauren'} */}
+            </UserNameText>
+            <Typography>Welcome Back!</Typography>
           </Box>
+          {/* // ) : (
+          //   <span onClick={() => router.push('/home')} style={{ cursor: 'pointer' }}>
+          //     <Image src={'/svgs/lpcLogo.svg'} height={50} width={170} alt="" />
+          //   </span>
+          //   // <Typography>hello</Typography>
+          // )} */}
         </LogoDiv>
         <IconsDiv>
           {/* <Paper
@@ -90,6 +116,7 @@ const NavBar = () => {
         open={open}
         onClose={handleClose}
         onClick={handleClose}
+        disableScrollLock
         PaperProps={{
           elevation: 0,
           sx: {
@@ -119,12 +146,20 @@ const NavBar = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
+        <StyledProfileDropDownItem
+          onClick={() => router.push('/#')}
+          sx={{
+            color: path.includes('/profile') ? COLORS.BLUE_600 : 'black',
+            fontWeight: path.includes('/profile') ? 'bold' : 'normal'
+          }}
+        >
+          <Image src={'/svgs/helpIcon.svg'} height={20} width={20} alt="profile" />
+          Help
+        </StyledProfileDropDownItem>
+        <StyledProfileDropDownItem onClick={handleLogout}>
+          <Logout fontSize="small" />
           Logout
-        </MenuItem>
+        </StyledProfileDropDownItem>
       </Menu>
     </MainContainer>
   );

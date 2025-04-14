@@ -5,84 +5,86 @@ import PerformanceAdIcon from '@/assets/images/svgs/icons/drawerIcons/performanc
 import RatingIcon from '@/assets/images/svgs/icons/drawerIcons/ratingIcon';
 import TestimonialIcon from '@/assets/images/svgs/icons/drawerIcons/testimonialIcon';
 import VideoIcon from '@/assets/images/svgs/icons/drawerIcons/videoIcon';
-import WebsiteDomainIcon from '@/assets/images/svgs/icons/drawerIcons/WebsiteDomain';
+// import WebsiteDomainIcon from '@/assets/images/svgs/icons/drawerIcons/WebsiteDomain';
 import EmailCampaignIcon from '@/assets/images/svgs/icons/drawerIcons/emailIcon';
 import SocialMediaIcon from '@/assets/images/svgs/icons/drawerIcons/socialMediaIcon';
 import ThirdPartyRatings from '@/assets/images/svgs/icons/drawerIcons/thirdPartyRatings';
 import Reports from '@/assets/images/svgs/icons/drawerIcons/reports';
+import WebsitesIcon from '@/assets/images/svgs/icons/drawerIcons/websitesIcon';
+import BlogsArticleIcon from '@/assets/images/svgs/icons/drawerIcons/blogIcon';
 
 export const MenuITEMS = [
   {
     title: 'Websites',
-    icon: <WebsiteDomainIcon />,
-    page: 'home',
-    path: '/marketing-tool/website-domain'
+    icon: <WebsitesIcon />,
+    page: 'websites',
+    path: '/websites'
   },
   {
-    title: 'Email Campaigns, Newsletters',
+    title: 'Email Campaigns or Newsletters',
     icon: <EmailCampaignIcon />,
-    page: 'activities',
-    path: '/marketing-tool/email'
+    page: 'email-campaigns',
+    path: '/email-campaigns'
   },
   {
     title: 'Blogs or Articles',
-    icon: <BlogIcon />,
-    page: 'retrospective_review',
-    path: '/marketing-tool/blog'
+    icon: <BlogsArticleIcon />,
+    page: 'blog-articles',
+    path: '/blog-articles'
   },
   {
     title: 'Presentations',
     icon: <PresentationIcon />,
-    page: '',
-    path: '/marketing-tool/presentation'
+    page: 'presentations',
+    path: '/presentations'
   },
   {
     title: 'Performance Advertising',
     icon: <PerformanceAdIcon />,
-    page: '',
-    path: '/marketing-tool/performance'
+    page: 'performance-advertising',
+    path: '/performance-advertising'
   },
   {
     title: 'Social Media',
     icon: <SocialMediaIcon />,
-    page: '',
-    path: '/marketing-tool/social-media'
+    page: 'social-media',
+    path: '/social-media'
   },
   {
     title: 'Testimonials & Endorsements',
     icon: <TestimonialIcon />,
-    page: '',
-    path: '/marketing-tool/testimonial'
+    page: 'testimonial-endorsements',
+    path: '/testimonial-endorsements'
   },
   {
     title: 'Reviews',
     icon: <RatingIcon />,
-    page: '',
-    path: '/marketing-tool/rating'
+    page: 'reviews',
+    path: '/reviews'
   },
   {
-    title: 'Third-Party Rating',
+    title: 'Third-Party Ratings',
     icon: <ThirdPartyRatings />,
-    page: '',
-    path: '/marketing-tool/rating'
+    page: 'thirdParty-ratings',
+    path: '/thirdParty-ratings'
   },
   {
     title: 'Brochures',
     icon: <BrochureIcon />,
-    page: '',
-    path: '/marketing-tool/brochure'
+    page: 'brochures',
+    path: '/brochures'
   },
   {
     title: 'Videos',
     icon: <VideoIcon />,
-    page: '',
-    path: '/marketing-tool/video'
+    page: 'videos',
+    path: '/videos'
   },
   {
     title: 'Reports',
     icon: <Reports />,
-    page: '',
-    path: '/marketing-tool/video'
+    page: 'reports',
+    path: '/reports'
   }
 
   // {

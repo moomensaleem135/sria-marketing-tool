@@ -42,7 +42,7 @@ export const ModalBox = styled(Box)<ModalBoxProps>(
   })
 );
 
-export const CloseButton = styled(Button)`
+export const CloseButton = styled(Box)`
   cursor: pointer;
   height: 2rem;
   min-width: 0px !important;

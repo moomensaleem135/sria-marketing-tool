@@ -1,6 +1,7 @@
 import { COLORS } from '@/constants/colors';
 import styled from '@emotion/styled';
-import { Box, Paper, Typography } from '@mui/material';
+import { ColorizeSharp } from '@mui/icons-material';
+import { Box, MenuItem, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
 
 export const MainContainer = styled.div`
@@ -8,8 +9,8 @@ export const MainContainer = styled.div`
   flex-direction: column;
   align-items: space-arround;
   /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
-  background: #ffffff;
-  padding: 20px 40px;
+  background-color: white;
+  /* padding: 20px 40px; */
   height: 15%;
 `;
 
@@ -54,8 +55,9 @@ export const SearchIcon = styled(Image)`
   margin-left: 10px;
 `;
 export const UserNameText = styled(Typography)`
-  color: ${COLORS.BLUE_600};
+  color: ${COLORS.BLUE_THEME_MAIN};
   font-weight: 600;
+  text-transform: capitalize;
 `;
 export const NavBarSearchInput = styled(Paper)`
   padding: 2px;
@@ -70,4 +72,9 @@ export const NavBarMain = styled(Box)`
   display: flex;
   justify-content: space-between;
   padding-top: 10px;
+`;
+export const StyledProfileDropDownItem = styled(MenuItem)`
+  display: flex;
+  column-gap: 0.4rem;
+  align-items: center;
 `;

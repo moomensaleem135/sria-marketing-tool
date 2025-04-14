@@ -16,13 +16,13 @@ export const ButtonStyled = styled.button<{ isTransparent?: boolean; isHover?: b
     isTransparent
       ? `
         font-family: "Inter SemiBold", sans-serif;
-        background: ${COLORS.WHITE};
+        background: white;
         border: 1px solid ${COLORS.BLUE_600};
         color: ${COLORS.BLUE_600};
       `
       : `
         background-color: ${COLORS.BLUE_600};
-        color: ${COLORS.WHITE};
+        color: white;
       `}
 
   ${({ isHover }) =>

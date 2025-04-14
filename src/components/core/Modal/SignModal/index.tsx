@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import { Box, Radio } from '@mui/material';
-import { Line, RedLine, FlexRow, BoldText, Text, SignatureCol, DateCol } from './index.styles';
+import { RedLine, FlexRow, BoldText, Text, SignatureCol, DateCol } from './index.styles';
 import Button from '../../Button';
 import { COLORS } from '@/constants/colors';
+import { Line } from '@/components/pages-partials/index.styles';
 
 interface SignModalProps {
   closeFunction: () => void;

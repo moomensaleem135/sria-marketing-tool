@@ -98,11 +98,13 @@ const FileUpload = ({
         onDrop={handleFileDrop}
         ref={browseDivRef}
       >
-        <UploadIcon src={DragDropIcon} height={70} width={70} alt="Drag and Drop Icon" />
-        <Typography>
-          Drag and drop files here or click to
-          <span style={{ color: 'blue', fontWeight: '500' }}> browse </span> your files
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <UploadIcon src={DragDropIcon} height={50} width={50} alt="Drag and Drop Icon" />
+          <Typography>
+            Drag and drop files here or click to
+            <span style={{ color: 'blue', fontWeight: '500' }}> browse </span> your files
+          </Typography>
+        </Box>
         <FileInput
           name={name}
           type="file"
@@ -149,7 +151,7 @@ const FileUpload = ({
             <CustomBox>
               <UploadFileIcon style={{ fontSize: '40px' }} />
               <Box>
-                <Typography style={{ color: COLORS.BLUE_TEXT, textDecoration: 'underline' }}>
+                <Typography style={{ color: COLORS.BLUE_THEME_MAIN, textDecoration: 'underline' }}>
                   {selectedFileName}
                 </Typography>
                 <Typography>50kb</Typography>
@@ -172,7 +174,9 @@ const FileUpload = ({
           </DocDiv>
         </FileNameDisplay>
       ) : (
-        <Typography sx={{ fontSize: '0.9rem', fontWeight: 800 }}>No file selected yet!</Typography>
+        <Typography sx={{ fontSize: '0.7rem', fontWeight: 'bold' }}>
+          No file selected yet!
+        </Typography>
       )}
 
       <CustomModal

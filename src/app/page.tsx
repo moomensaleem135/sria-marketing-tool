@@ -1,5 +1,5 @@
-import MarketingTool from '@/components/pages-partials/marketing-tool';
+import PartialHome from '@/components/pages-partials/home';
 
 export default function LandingPage() {
-  return <MarketingTool />;
+  return <PartialHome />;
 }

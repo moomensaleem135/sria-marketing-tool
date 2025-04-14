@@ -1,12 +1,5 @@
 'use client';
-// import { modalStyle } from '@/constants/variables';
-import logo from '@/assets/images/svgs/icons/lpcLogo.svg';
-import MiniLogo from '@/assets/images/svgs/icons/lpcMiniLogo.svg';
-import helpIcon from '@/assets/images/svgs/icons/helpIcon.svg';
-import logoutIcon from '@/assets/images/svgs/icons/logoutIcon.svg';
-
 import styled from '@emotion/styled';
-
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -15,21 +8,31 @@ import {
   Menu,
   MenuItem,
   MenuProps,
-  Tooltip,
+  Modal,
   Typography,
   useMediaQuery
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-
 import Image from 'next/image';
-import { useParams, usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+
 import * as React from 'react';
 import { useEffect } from 'react';
+
+// import CustomModal from '@/components/core/CustomModal';
+// import {
+//   CloseButtonAddTask,
+//   DoneButtonAddTask
+// } from '@/components/core/TaskBuilderNav/index.styles';
+
+import logo from '../../../../public/svgs/lpcLogo.svg';
+import MiniLogo from '../../../../public/svgs/lpcMiniLogo.svg';
 import { COLORS } from '../../../constants/colors';
 import NavBar from '../navbar';
 import {
@@ -46,11 +49,7 @@ import {
   IconSpan,
   SideBarNavList,
   StyledDrawer,
-  SidebarStyledListItem,
-  DrawerFooterMainBox,
-  DrawerFooterSubBox,
-  HelpTypo,
-  LogputTypo
+  SidebarStyledListItem
 } from './index.styles';
 import { MenuITEMS } from './menu';
 
@@ -58,6 +57,7 @@ interface Props {
   children: React.ReactNode;
   pageTitle: string;
 }
+export const HIDDEN_ROUTES_LEFT_DRAWER = ['/', '/login', '/profile', '/support'];
 
 export default function LeftDrawer({ children, pageTitle }: Props) {
   const router = useRouter();
@@ -69,8 +69,6 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
   const [pushedRoute, setPushedRoute] = React.useState<string>('');
 
   const [openMenu, setOpenMenu] = React.useState<string | null>('');
-  const [open1, setOpen] = React.useState<boolean>(true);
-
   const [saveAlert, setSaveAlert] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpenD(true);
@@ -87,11 +85,10 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
     setCollapse(isTablet);
   }, [isTablet]);
 
-  const drawerWidth = collapse ? 80 : 300;
+  const drawerWidth = collapse ? 80 : 330;
 
   const path = usePathname();
   const handleClickMenu = (event: React.MouseEvent<HTMLElement>, menu: string) => {
-    console.log('event', event, 'menu', menu);
     if (openMenu === menu) {
       // If the menu is already open, close it
       setAnchorEl(null);
@@ -106,18 +103,15 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
     setAnchorEl(event.currentTarget);
     setOpenMenu(menu);
   };
-  // const { taskId } = useParams();
-  // const handleRoutePush = (route: string) => {
-  //   if (path === '/activities/tasks' || path === `/activities/tasks/${taskId}`) {
-  //     const isSaved = localStorage.getItem('isSaved');
-
-  //     setSaveAlert(true);
-  //   } else {
-  //     router.push(route);
-  //   }
-  // };
+  const { taskId } = useParams();
   const handleRoutePush = (route: string) => {
-    router.push(route);
+    if (path === '/activities/tasks' || path === `/activities/tasks/${taskId}`) {
+      const isSaved = localStorage.getItem('isSaved');
+
+      setSaveAlert(true);
+    } else {
+      router.push(route);
+    }
   };
   const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -132,7 +126,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
       }}
       {...props}
     />
-  ))(() => ({
+  ))(({ theme }) => ({
     '& .MuiPaper-root': {
       borderRadius: 6,
       minWidth: 180,
@@ -148,28 +142,35 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
       }
     }
   }));
+  const open = Boolean(anchorEl);
 
   const handleClose = () => {
     setAnchorEl(null);
   };
   const handleLogoClick = () => {
-    router.push('/home');
+    router.push('/');
   };
-
-  const handleCloseMenu = () => {
-    setOpen(!open1);
-  };
+  // const isHiddenRoute = HIDDEN_ROUTES_LEFT_DRAWER.find((route) => route === path);
+  const isHiddenRoute = false;
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBarStyle
-        position="fixed"
-        open={true}
-        drawerwidth={drawerWidth}
-        sx={{ boxShadow: 'none !important' }}
-      >
-        <NavBar />
-      </AppBarStyle>
+      <Box>
+        <AppBarStyle
+          position={
+            path === '/activities/tasks' || path === `/activities/tasks/${taskId}`
+              ? 'absolute'
+              : 'fixed'
+          }
+          open={!isHiddenRoute}
+          drawerwidth={isHiddenRoute ? 0 : drawerWidth}
+          sx={{ boxShadow: 'none !important' }}
+        >
+          <NavBar />
+        </AppBarStyle>
+      </Box>
+      {/* // this will hide the left drawer for these routes */}
+      {/* {!isHiddenRoute && ( */}
       <StyledDrawer
         variant="permanent"
         open={openD}
@@ -181,7 +182,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           }
         }}
       >
-        <CollapseArrowBox sx={{ left: collapse ? ' 4.2rem' : '18rem' }}>
+        <CollapseArrowBox sx={{ top: collapse ? '5px' : '10px' }}>
           {collapse ? (
             <IconSpan onClick={handleDrawerClose}>
               <ChevronRightIcon />
@@ -194,14 +195,18 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
         </CollapseArrowBox>
         <DrawerHeader>
           <Box sx={{ cursor: 'pointer' }} onClick={handleLogoClick}>
-            {collapse ? <Image src={MiniLogo} alt="" height={50} /> : <Image src={logo} alt="" />}
+            {collapse ? (
+              <Image src={MiniLogo} height={50} width={50} alt="" />
+            ) : (
+              <Image src={logo} alt="" />
+            )}
           </Box>
         </DrawerHeader>
         <Divider
           sx={
             collapse
               ? { width: '4rem', marginInline: 'auto' }
-              : { width: '16rem', marginInline: 'auto' }
+              : { width: '12rem', marginInline: 'auto' }
           }
         />
         <DIV>
@@ -211,246 +216,181 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
               overflowX: 'hidden'
             }}
           >
-            {MenuITEMS.map((item: any) => (
+            {MenuITEMS.map((item) => (
               <>
-                {item && item.submenu && item?.submenu?.length > 0 ? (
-                  <SideBarNavList aria-labelledby="nested-list-subheader">
-                    {collapse ? (
-                      <StyledListItemButton
-                        onClick={(e) => {
-                          //  setAnchorEl(e.currentTarget); // Set the clicked button as the anchor element
-                          handleClickMenuIcon(e, item.title); // Toggle the submenu
-                        }}
-                        path={path}
-                        itemPath={item.path}
-                        //  id="demo-customized-button"
-                        //  aria-controls={open ? 'demo-customized-menu' : undefined}
-                        //  aria-haspopup="true"
-                        //  aria-expanded={open ? 'true' : undefined}
-                        sx={{ ml: collapse ? -1 : 0 }}
-                      >
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <ListItemIcon sx={{ minWidth: '0', marginRight: '15px' }}>
-                            {item.icon}
-                          </ListItemIcon>
-                        </Box>
-                      </StyledListItemButton>
-                    ) : (
-                      <StyledListItemButton
-                        onClick={(e) => {
-                          handleClickMenu(e, item.title);
-                          handleCloseMenu();
-                        }}
-                        path={path}
-                        itemPath={item.path}
-                        sx={{
-                          minHeight: '48px'
-                        }}
-                      >
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <ListItemIcon
-                            sx={{
-                              minWidth: '0',
-                              marginRight: '15px'
-                            }}
-                          >
-                            {item.icon}
-                          </ListItemIcon>
+                {/* {item?.submenu && item?.submenu?.length > 0 ? (
+                    <SideBarNavList aria-labelledby="nested-list-subheader">
+                      {collapse ? (
+                        <StyledListItemButton
+                          onClick={(e) => {
+                            //  setAnchorEl(e.currentTarget); // Set the clicked button as the anchor element
+                            handleClickMenuIcon(e, item.title); // Toggle the submenu
+                          }}
+                          path={path}
+                          itemPath={item.path}
+                          //  id="demo-customized-button"
+                          //  aria-controls={open ? 'demo-customized-menu' : undefined}
+                          //  aria-haspopup="true"
+                          //  aria-expanded={open ? 'true' : undefined}
+                          sx={{ ml: collapse ? -1 : 0 }}
+                        >
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <ListItemIcon sx={{ minWidth: '0', marginRight: '15px' }}>
+                              {item.icon}
+                            </ListItemIcon>
+                          </Box>
+                        </StyledListItemButton>
+                      ) : (
+                        <StyledListItemButton
+                          onClick={(e) => handleClickMenu(e, item.title)}
+                          path={path}
+                          itemPath={item.path}
+                        >
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <ListItemIcon sx={{ minWidth: '0', marginRight: '15px' }}>
+                              {item.icon}
+                            </ListItemIcon>
 
-                          {path.includes(item.path) ? (
-                            <CustomListItemText>{item.title}</CustomListItemText>
-                          ) : (
-                            <Typography>{item.title}</Typography>
-                          )}
-                        </Box>
-
-                        {openMenu === item.title ? <ExpandLess /> : <ExpandMore />}
-                      </StyledListItemButton>
-                    )}
-
-                    {collapse ? (
-                      //submenu when collapse
-                      <StyledMenu
-                        id="demo-customized-menu"
-                        MenuListProps={{
-                          'aria-labelledby': 'demo-customized-button'
-                        }}
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl) && openMenu === item.title}
-                        onClose={handleClose}
-                      >
-                        {item.submenu.map((ele: any, index: number) => (
-                          <MenuItem
-                            sx={{
-                              background: path === ele.path ? `${COLORS.BLUE_600}` : 'white',
-                              borderRadius: '8px',
-                              margin: '0.3rem',
-                              '&:hover': {
-                                background: path === ele.path ? `${COLORS.BLUE_600}` : `white`,
-                                color: path === ele.path ? `${COLORS.BLUE_600}` : `#184063`
-                              }
-                            }}
-                            key={index}
-                            onClick={() => {
-                              setPushedRoute(ele.path);
-                              handleRoutePush(ele.path);
-                              handleClose();
-                            }}
-                          >
-                            {path === ele.path || path.includes(ele.path) ? (
-                              <ListItemTextSubMenuStyledActive primary={ele.title} />
+                            {path.includes(item.path) ? (
+                              item.path === '/policies' && path.includes('annualreviewtool') ? (
+                                <Typography sx={{ color: 'black' }}>{item.title}</Typography>
+                              ) : (
+                                <Typography sx={{ color: 'white' }}>{item.title}</Typography>
+                              )
                             ) : (
-                              <ListItemTextSubMenuStyledInActive primary={ele.title} />
+                              <Typography sx={{ color: 'black' }}>{item.title}</Typography>
                             )}
-                          </MenuItem>
-                        ))}
-                      </StyledMenu>
-                    ) : (
-                      //this is submenu item without collapsable
-                      <Collapse
-                        // in={openMenu === item.title}
-                        in={true}
-                        timeout="auto"
-                        unmountOnExit
-                        orientation="vertical"
-                      >
-                        <Box style={{ marginTop: '10px' }}>
-                          {item.submenu.map((ele: any, index: number) => {
-                            return (
-                              <List
-                                component="div"
-                                key={index}
-                                disablePadding
-                                onClick={() => {
-                                  setPushedRoute(ele.path);
-                                  handleRoutePush(ele.path);
-                                }}
-                                style={{
-                                  // borderLeft: '1px dashed white',
-                                  marginLeft: '18px',
-                                  paddingLeft: '23px',
-                                  borderRadius: '8px',
-                                  background:
-                                    path === ele.path || path.includes(ele.path)
-                                      ? `
-                                  ${COLORS.BLUE_600}
-                                  `
-                                      : 'transparent'
-                                }}
-                              >
-                                <ListItemButton sx={{ pl: 2, borderRadius: '5px' }}>
-                                  {path === ele.path || path.includes(ele.path) ? (
-                                    <ListItemTextSubMenuStyledActive primary={ele.title} />
-                                  ) : (
-                                    <ListItemTextSubMenuStyledInActive primary={ele.title} />
-                                  )}
-                                </ListItemButton>
-                              </List>
-                            );
-                          })}
-                        </Box>
-                      </Collapse>
-                    )}
-                  </SideBarNavList>
-                ) : (
-                  <SidebarStyledListItem key={item.title}>
-                    {/* collapsable menu icon */}
-                    <ListItemButton
+                          </Box>
+
+                          {openMenu === item.title ? <ExpandLess /> : <ExpandMore />}
+                        </StyledListItemButton>
+                      )}
+
+                      {collapse ? (
+                        <StyledMenu
+                          id="demo-customized-menu"
+                          MenuListProps={{
+                            'aria-labelledby': 'demo-customized-button'
+                          }}
+                          anchorEl={anchorEl}
+                          open={Boolean(anchorEl) && openMenu === item.title}
+                          onClose={handleClose}
+                        >
+                          {item.submenu.map((ele, index) => (
+                            <MenuItem
+                              key={index}
+                              onClick={() => {
+                                setPushedRoute(ele.path);
+                                handleRoutePush(ele.path); // Handle route navigation
+                                handleClose(); // Close menu after selection
+                              }}
+                            >
+                              {path === ele.path || path.includes(ele.path) ? (
+                                <ListItemTextSubMenuStyledActive primary={ele.title} />
+                              ) : (
+                                <ListItemTextSubMenuStyledInActive primary={ele.title} />
+                              )}
+                            </MenuItem>
+                          ))}
+                        </StyledMenu>
+                      ) : (
+                        <Collapse
+                          in={openMenu === item.title}
+                          timeout="auto"
+                          unmountOnExit
+                          orientation="vertical"
+                        >
+                          <Box style={{ marginTop: '10px' }}>
+                            {item.submenu.map((ele, index) => {
+                              return (
+                                <List
+                                  component="div"
+                                  key={index}
+                                  disablePadding
+                                  onClick={(e) => {
+                                    setPushedRoute(ele.path);
+                                    handleRoutePush(ele.path);
+                                  }}
+                                  style={{
+                                    borderLeft: '1px dashed white',
+                                    marginLeft: '18px',
+                                    paddingLeft: '23px'
+                                  }}
+                                >
+                                  <ListItemButton
+                                    sx={{ pl: 2, borderRadius: '5px' }}
+                                    disabled={ele.isDisabled}
+                                  >
+                                    {path === ele.path || path.includes(ele.path) ? (
+                                      <ListItemTextSubMenuStyledActive primary={ele.title} />
+                                    ) : (
+                                      <ListItemTextSubMenuStyledInActive primary={ele.title} />
+                                    )}
+                                  </ListItemButton>
+                                </List>
+                              );
+                            })}
+                          </Box>
+                        </Collapse>
+                      )}
+                    </SideBarNavList>
+                  ) : ( */}
+                <SidebarStyledListItem key={item.title}>
+                  <ListItemButton
+                    sx={{
+                      minHeight: 48,
+                      background: path.includes(item.path)
+                        ? `${COLORS.BLUE_THEME_MAIN}`
+                        : 'transparent',
+                      '&:hover': {
+                        background: path.includes(item.path) ? '#184063' : `${COLORS.GREY_200}`,
+                        color: path.includes(item.path) ? `${COLORS.GREY_200}` : `#184063`
+                      },
+                      borderRadius: '10px',
+                      display: 'flex'
+                    }}
+                    disabled={item.path === '/resources'}
+                    onClick={(e) => {
+                      setPushedRoute(item.path);
+                      handleRoutePush(item.path);
+                    }}
+                  >
+                    <ListItemIcon
                       sx={{
-                        minHeight: 48,
-                        background:
-                          path === item.path || path.includes(item.path)
-                            ? `
-                            ${COLORS.BLUE_600}
-                            `
-                            : 'transparent',
-                        '&:hover': {
-                          background:
-                            path === item.path || path.includes(item.path)
-                              ? `${COLORS.BLUE_600}`
-                              : `white`,
-                          color: path === item.path ? `${COLORS.BLUE_600}` : `#184063`
-                        },
-                        borderRadius: '10px',
-                        display: 'flex'
-                      }}
-                      onClick={() => {
-                        setPushedRoute(item.path);
-                        handleRoutePush(item.path);
+                        mr: collapse ? 0 : 3,
+                        ml: collapse ? -1 : 0,
+                        alignItems: 'center',
+                        minWidth: '0 !important',
+                        fill: path.includes(item.path) ? 'white' : `black`
                       }}
                     >
-                      <Tooltip
-                        title={collapse && item.title}
-                        placement="right"
-                        arrow
-                        componentsProps={{
-                          tooltip: {
-                            sx: {
-                              backgroundColor: `${COLORS.BLUE_600}`,
-                              color: 'white',
-                              fontSize: '0.8rem',
-                              padding: '10px',
-                              marginLeft: '1.6rem !important'
-                            }
-                          },
-                          arrow: {
-                            sx: {
-                              color: `${COLORS.BLUE_600}`
-                            }
-                          }
-                        }}
-                      >
-                        <ListItemIcon
-                          sx={{
-                            mr: collapse ? 0 : 3,
-                            ml: collapse ? -1 : 0,
-                            alignItems: 'center',
-                            minWidth: '0 !important',
-                            fill: path === item.path || path.includes(item.path) ? 'white' : 'black'
-                          }}
-                        >
-                          {item.icon}
-                        </ListItemIcon>
-                      </Tooltip>
-                      {!collapse &&
-                        (path === item.path || path.includes(item.path) ? (
-                          <ListItemTextStyledActive
-                            sx={{
-                              color: 'white',
-                              fontWeight: '500'
-                            }}
-                          >
-                            {item.title}
-                          </ListItemTextStyledActive>
-                        ) : (
-                          <Typography>{item.title}</Typography>
-                        ))}
-                    </ListItemButton>
-                  </SidebarStyledListItem>
-                )}
+                      {item.icon}
+                    </ListItemIcon>
+                    {!collapse &&
+                      (path === item.path || path.includes(item.path) ? (
+                        <ListItemTextStyledActive sx={{ color: 'white', fontWeight: '500' }}>
+                          {item.title}
+                        </ListItemTextStyledActive>
+                      ) : (
+                        <Typography>{item.title}</Typography>
+                      ))}
+                  </ListItemButton>
+                </SidebarStyledListItem>
+                {/* )} */}
               </>
             ))}
           </List>
         </DIV>
-        <DrawerFooterMainBox sx={{ paddingLeft: collapse ? '1.8rem' : '1.4rem' }}>
-          <DrawerFooterSubBox>
-            <Box>
-              <Image src={helpIcon} alt="helpIcon" height={!collapse ? 20 : 25} />
-            </Box>
-            {!collapse && <HelpTypo>Help</HelpTypo>}
-          </DrawerFooterSubBox>
-          <DrawerFooterSubBox sx={{ cursor: 'pointer' }} onClick={() => router.push('/')}>
-            <Box>
-              <Image src={logoutIcon} alt="logoutIcon" height={!collapse ? 20 : 25} />
-            </Box>
-            {!collapse && <LogputTypo>Logout Account</LogputTypo>}
-          </DrawerFooterSubBox>
-        </DrawerFooterMainBox>
       </StyledDrawer>
+      {/* // )} */}
+
       <MainStyle
+        // open={isHiddenRoute ? false : true}
+        // drawerwidth={isHiddenRoute ? 15 : drawerWidth}
+        // style={{ padding: isHiddenRoute ? '0 15%' : '0 0' }}
         open={true}
         drawerwidth={drawerWidth}
-        style={{ background: 'white', height: '100dvh' }}
+        style={{ padding: '0 0' }}
       >
         {children}
       </MainStyle>
