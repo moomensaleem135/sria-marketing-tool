@@ -337,7 +337,7 @@ const fieldData = [
 
 export default function PartialTestimonial() {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(true);
+  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
   const [answers, setAnswers] = useState<AnswerData[]>([]);
   const dispatch = useDispatch();
 
