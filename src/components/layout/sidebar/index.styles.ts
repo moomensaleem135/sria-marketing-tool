@@ -27,7 +27,7 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   // paddingTop: '1rem',
   // marginTop: '-0.5rem',
-  minHeight: '8rem'
+  minHeight: '6rem'
 }));
 
 export const FlexRow = styled.div`

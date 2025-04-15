@@ -1,22 +1,11 @@
 'use client';
 import styled from '@emotion/styled';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import {
-  Collapse,
-  Menu,
-  MenuItem,
-  MenuProps,
-  Modal,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Menu, MenuProps, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Image from 'next/image';
@@ -24,12 +13,6 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 
 import * as React from 'react';
 import { useEffect } from 'react';
-
-// import CustomModal from '@/components/core/CustomModal';
-// import {
-//   CloseButtonAddTask,
-//   DoneButtonAddTask
-// } from '@/components/core/TaskBuilderNav/index.styles';
 
 import logo from '../../../../public/svgs/lpcLogo.svg';
 import MiniLogo from '../../../../public/svgs/lpcMiniLogo.svg';
@@ -41,13 +24,8 @@ import {
   AppBarStyle,
   DIV,
   ListItemTextStyledActive,
-  CustomListItemText,
-  ListItemTextSubMenuStyledActive,
-  ListItemTextSubMenuStyledInActive,
-  StyledListItemButton,
   CollapseArrowBox,
   IconSpan,
-  SideBarNavList,
   StyledDrawer,
   SidebarStyledListItem
 } from './index.styles';
@@ -198,7 +176,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
             {collapse ? (
               <Image src={MiniLogo} height={50} width={50} alt="" />
             ) : (
-              <Image src={logo} alt="" />
+              <Image src={logo} height={180} width={200} alt="logo" />
             )}
           </Box>
         </DrawerHeader>
@@ -218,123 +196,6 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           >
             {MenuITEMS.map((item) => (
               <>
-                {/* {item?.submenu && item?.submenu?.length > 0 ? (
-                    <SideBarNavList aria-labelledby="nested-list-subheader">
-                      {collapse ? (
-                        <StyledListItemButton
-                          onClick={(e) => {
-                            //  setAnchorEl(e.currentTarget); // Set the clicked button as the anchor element
-                            handleClickMenuIcon(e, item.title); // Toggle the submenu
-                          }}
-                          path={path}
-                          itemPath={item.path}
-                          //  id="demo-customized-button"
-                          //  aria-controls={open ? 'demo-customized-menu' : undefined}
-                          //  aria-haspopup="true"
-                          //  aria-expanded={open ? 'true' : undefined}
-                          sx={{ ml: collapse ? -1 : 0 }}
-                        >
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <ListItemIcon sx={{ minWidth: '0', marginRight: '15px' }}>
-                              {item.icon}
-                            </ListItemIcon>
-                          </Box>
-                        </StyledListItemButton>
-                      ) : (
-                        <StyledListItemButton
-                          onClick={(e) => handleClickMenu(e, item.title)}
-                          path={path}
-                          itemPath={item.path}
-                        >
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <ListItemIcon sx={{ minWidth: '0', marginRight: '15px' }}>
-                              {item.icon}
-                            </ListItemIcon>
-
-                            {path.includes(item.path) ? (
-                              item.path === '/policies' && path.includes('annualreviewtool') ? (
-                                <Typography sx={{ color: 'black' }}>{item.title}</Typography>
-                              ) : (
-                                <Typography sx={{ color: 'white' }}>{item.title}</Typography>
-                              )
-                            ) : (
-                              <Typography sx={{ color: 'black' }}>{item.title}</Typography>
-                            )}
-                          </Box>
-
-                          {openMenu === item.title ? <ExpandLess /> : <ExpandMore />}
-                        </StyledListItemButton>
-                      )}
-
-                      {collapse ? (
-                        <StyledMenu
-                          id="demo-customized-menu"
-                          MenuListProps={{
-                            'aria-labelledby': 'demo-customized-button'
-                          }}
-                          anchorEl={anchorEl}
-                          open={Boolean(anchorEl) && openMenu === item.title}
-                          onClose={handleClose}
-                        >
-                          {item.submenu.map((ele, index) => (
-                            <MenuItem
-                              key={index}
-                              onClick={() => {
-                                setPushedRoute(ele.path);
-                                handleRoutePush(ele.path); // Handle route navigation
-                                handleClose(); // Close menu after selection
-                              }}
-                            >
-                              {path === ele.path || path.includes(ele.path) ? (
-                                <ListItemTextSubMenuStyledActive primary={ele.title} />
-                              ) : (
-                                <ListItemTextSubMenuStyledInActive primary={ele.title} />
-                              )}
-                            </MenuItem>
-                          ))}
-                        </StyledMenu>
-                      ) : (
-                        <Collapse
-                          in={openMenu === item.title}
-                          timeout="auto"
-                          unmountOnExit
-                          orientation="vertical"
-                        >
-                          <Box style={{ marginTop: '10px' }}>
-                            {item.submenu.map((ele, index) => {
-                              return (
-                                <List
-                                  component="div"
-                                  key={index}
-                                  disablePadding
-                                  onClick={(e) => {
-                                    setPushedRoute(ele.path);
-                                    handleRoutePush(ele.path);
-                                  }}
-                                  style={{
-                                    borderLeft: '1px dashed white',
-                                    marginLeft: '18px',
-                                    paddingLeft: '23px'
-                                  }}
-                                >
-                                  <ListItemButton
-                                    sx={{ pl: 2, borderRadius: '5px' }}
-                                    disabled={ele.isDisabled}
-                                  >
-                                    {path === ele.path || path.includes(ele.path) ? (
-                                      <ListItemTextSubMenuStyledActive primary={ele.title} />
-                                    ) : (
-                                      <ListItemTextSubMenuStyledInActive primary={ele.title} />
-                                    )}
-                                  </ListItemButton>
-                                </List>
-                              );
-                            })}
-                          </Box>
-                        </Collapse>
-                      )}
-                    </SideBarNavList>
-                  ) : ( */}
                 <SidebarStyledListItem key={item.title}>
                   <ListItemButton
                     sx={{

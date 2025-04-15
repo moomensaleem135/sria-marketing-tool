@@ -1,3 +1,6 @@
+@tailwind base;
+// @tailwind components;
+@tailwind utilities;
 :root {
   // @apply bg-gray-100;
 }
@@ -147,3 +150,53 @@ body {
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
+// ag grid styling
+.ag-header-row.ag-header-row-column {
+  background-color: #3a6fb6;
+  color: white !important;
+  font-size: 1.3rem;
+}
+.ag-theme-quartz {
+  /* disable all borders */
+  --ag-borders: none;
+  /* then add back a border between rows */
+  --ag-row-border-style: solid !important;
+  --ag-row-border-width: 0px !important;
+  --ag-row-border-color: transparent !important;
+  /* --ag-foreground-color: rgb(14, 68, 145) !important; */
+  /* Changes the color of the grid background */
+  --ag-background-color: rgba(45, 27, 129, 0%) !important;
+  --ag-grid-size: 7px !important;
+  --ag-list-item-height: 40px !important;
+  --ag-row-height: 50px !important;
+}
+span.ag-icon.ag-icon-menu {
+  color: white;
+  display: inline-block;
+}
+.ag-icon.ag-icon-menu::before {
+  // content: url("../../public//images//svgs//fourdots.svg"); /* Specify the path to your custom image */
+  display: inline-block;
+  width: 16px; /* Adjust the width and height as needed */
+  height: 16px;
+}
+.ag-theme-quartz .ag-row:hover {
+  /* background-color: red !important; */
+  background: rgba(45, 27, 129, 7%) !important;
+}
+.ag-ltr .ag-header-viewport .ag-header-cell-resize::after {
+  background-color: white;
+}
+.ag-header-cell-text {
+  font-size: 0.8rem;
+}
+
+.custom-date-picker {
+  border: 1px solid #c3cad2 !important;
+  border-radius: 5px !important;
+  width: 100%;
+  height: 45px;
+  position: relative;
+}
+
+// input.relative.duration-300.py-2\.5.pl-4.pr-14.w-full.border-none.rounded-lg.placeholder-subheadingColor.\!text-\[\#64698E\].\!text-base.font-medium.\!bg-transparent.focus\:border-none.focus\:outline-0.border.border-gray-300

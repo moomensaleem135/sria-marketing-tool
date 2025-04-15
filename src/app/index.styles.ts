@@ -1,5 +1,6 @@
 import { COLORS } from '@/constants/colors';
 import styled from '@emotion/styled';
+import { Typography } from '@mui/material';
 import { ToastContainer } from 'react-toastify';
 
 export const StyledToastContainer = styled(ToastContainer)`
@@ -39,4 +40,8 @@ export const StyledToastContainer = styled(ToastContainer)`
   .Toastify__toast--error {
     background: ${COLORS.RED_100};
   }
+`;
+export const PlaceHolder = styled(Typography)`
+  font-size: 1rem;
+  font-weight: 500;
 `;

@@ -7,13 +7,13 @@ export const RegularityEditBtn = styled(Button)<{
   textColor?: string;
   border?: string;
 }>`
-  background-color: ${({ bg }) => bg || COLORS.BLUE_600};
+  background-color: ${({ bg }) => bg || COLORS.BLUE_600} !important;
   color: ${({ textColor }) => textColor || 'white'};
   text-transform: capitalize;
   border: ${({ border }) => border || 'none'};
 
   &:hover {
-    background-color: ${({ bg }) => bg || COLORS.BLUE_600};
+    background-color: ${({ bg }) => bg || COLORS.BLUE_600} !important;
     color: ${({ textColor }) => textColor || 'white'};
   }
 `;

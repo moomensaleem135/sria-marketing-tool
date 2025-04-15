@@ -14,7 +14,7 @@ export const StyledOutlinedInput = styled(OutlinedInput)<StyledOutlinedInputProp
   height: ${({ height }) => (height ? height : '44px')};
   padding: 10px 5px;
   border-radius: 5px;
-  border: 1px solid rgba(16, 24, 40, 0.05);
+  /* border: 1px solid rgba(16, 24, 40, 0.05); */
 
   input#outlined-adornment-weight {
     height: ${({ height }) => (height ? height : '0.5rem')};

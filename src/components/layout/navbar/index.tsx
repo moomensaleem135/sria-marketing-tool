@@ -1,15 +1,6 @@
 import { COLORS } from '@/constants/colors';
-import { Logout, Search, Support } from '@mui/icons-material';
-import {
-  Box,
-  IconButton,
-  InputBase,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Paper,
-  Typography
-} from '@mui/material';
+import { Logout, LogoutSharp } from '@mui/icons-material';
+import { Box, IconButton, Menu, Typography } from '@mui/material';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 // import { useRouter } from 'nextjs-toploader/app';
@@ -69,36 +60,8 @@ const NavBar = () => {
             </UserNameText>
             <Typography>Welcome Back!</Typography>
           </Box>
-          {/* // ) : (
-          //   <span onClick={() => router.push('/home')} style={{ cursor: 'pointer' }}>
-          //     <Image src={'/svgs/lpcLogo.svg'} height={50} width={170} alt="" />
-          //   </span>
-          //   // <Typography>hello</Typography>
-          // )} */}
         </LogoDiv>
         <IconsDiv>
-          {/* <Paper
-            component="form"
-            sx={{
-              p: '2px',
-              display: 'flex',
-              alignItems: 'center',
-              width: 145,
-              height: 36,
-              background: '#F4F5F6',
-              borderRadius: '80px'
-            }}
-          >
-            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-              <Search />
-            </IconButton>
-            <InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder="Search"
-              inputProps={{ 'aria-label': 'search google maps' }}
-            />
-          </Paper> */}
-          {/* <Image src="/svgs/UI.svg" width={36} height={36} alt="" /> */}
           <IconButton
             onClick={handleClick}
             size="small"

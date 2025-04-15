@@ -9,7 +9,7 @@ export const Line = styled(Divider)`
 
 export const QuestionsHeading = styled.div`
   padding: 0;
-  margin: 0px 15px 5px 15px;
+  /* margin: 0px 15px 5px 15px; */
   font-size: 22px;
   font-weight: 600;
   line-height: 20px;

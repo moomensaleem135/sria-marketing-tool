@@ -58,7 +58,7 @@ const CustomInputField = ({
           aria-describedby="outlined-weight-helper-text"
           name={name}
           placeholder={placeholder}
-          startAdornment={icon ? <Image src={icon} alt="icon" /> : ''}
+          startAdornment={icon ? <Image src={icon} alt="icon" height={20} width={20} /> : ''}
           endAdornment={
             type === 'password' ? (
               <InputAdornment position="end">

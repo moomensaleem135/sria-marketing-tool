@@ -306,14 +306,6 @@ export default function PartialWebsiteDomain() {
           />
         </Box>
       )}
-
-      {/* {isSignContainerOpen && <SignContainer />} */}
-      {/* {answers.filter((ans) => ans.isUpdated === 'No').length > 0 &&
-        isSignInOpen &&
-        answers.length === questions.length && <NoContainer />}
-      {answers.filter((ans) => ans.isUpdated === 'No').length === 0 &&
-        isSignInOpen &&
-        answers.length === questions.length && <SignContainer />} */}
     </Box>
   );
 }

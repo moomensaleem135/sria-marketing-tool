@@ -32,6 +32,7 @@ import { AnswerData } from '@/store/app/types';
 import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import NoContainer from '../../websites/SignContainer/noContainer';
 import SignContainer from '../../websites/SignContainer';
+import CustomModal from '@/components/core/Modal';
 
 interface SubQuestion {
   text: string;
@@ -85,6 +86,7 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
 
   const [selectedOption, setSelectedOption] = useState<{ [key: number]: string }>({});
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
+  const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
 
   const openSignContainer = () => {
     setIsSignInOpen(true);
@@ -267,11 +269,27 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
       </>
     );
   };
+  const handleClearAll = () => {
+    setAnswers([]);
+    setIsClearAllModal(false);
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Container>
-        <QuestionsHeading>{questions.length} Questions</QuestionsHeading>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '4px 15px'
+          }}
+        >
+          <QuestionsHeading>{questions.length} Questions</QuestionsHeading>
+          <span style={{ cursor: 'pointer' }} onClick={() => setIsClearAllModal(true)}>
+            <Typography sx={{ fontSize: '0.8rem', color: 'red' }}>Clear All</Typography>
+          </span>
+        </Box>
         <Line />
         {questions.map((q, index) => {
           const answer = getAnswer(q.id);
@@ -302,34 +320,7 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
                     />
                   )}
                 </QuestionDiv>
-                {/* {q.note && index + 1 < questions.length && (
-                  <Note>
-                    {q.note === 'Yes' ? (
-                      <>
-                        <BoldText>If yes,</BoldText> complete form below.{' '}
-                        <BoldText>If no, </BoldText>move on to question {index + 2}
-                      </>
-                    ) : (
-                      <>
-                        <BoldText>If no,</BoldText> complete form below.{' '}
-                        <BoldText>If yes, </BoldText>move on to question {index + 2}
-                      </>
-                    )}
-                  </Note>
-                )}
-                {q.note && index === questions.length - 1 && (
-                  <Note>
-                    {q.note === 'Yes' ? (
-                      <>
-                        <BoldText>If yes,</BoldText> complete form below.
-                      </>
-                    ) : (
-                      <>
-                        <BoldText>If no,</BoldText> complete form below.
-                      </>
-                    )}
-                  </Note>
-                )} */}
+
                 {q?.answerInstructions && (
                   <Typography sx={{ fontSize: '0.8rem' }}>{q?.answerInstructions}</Typography>
                 )}
@@ -419,6 +410,35 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
       {answers.filter((ans) => ans.isUpdated === 'No').length === 0 &&
         isSignInOpen &&
         answers.length === questions.length && <SignContainer />}
+      <CustomModal
+        openValue={isClearAllModal}
+        closeFunction={() => setIsClearAllModal(false)}
+        closedIcon={true}
+        modalWidth={'25rem'}
+      >
+        <Box sx={{ marginTop: '1rem' }}>
+          <Typography sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Are you sure?</Typography>
+          <Typography sx={{ fontSize: '0.9rem' }}>
+            This will delete all your responses for this section
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'end',
+              columnGap: '0.5rem',
+              marginTop: '1rem'
+            }}
+          >
+            <ButtonWitnLoading
+              text="Cancel"
+              handleClick={() => setIsClearAllModal(false)}
+              bg="black"
+            />
+            <ButtonWitnLoading text="Clear" handleClick={handleClearAll} />
+          </Box>
+        </Box>
+      </CustomModal>
     </form>
   );
 };
