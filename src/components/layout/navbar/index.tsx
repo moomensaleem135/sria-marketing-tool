@@ -31,9 +31,9 @@ const NavBar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('isAuthenticated');
-    window.location.href = '/login';
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('isAuthenticated');
+    // window.location.href = '/login';
   };
   useEffect(() => {
     const localUser = localStorage.getItem('user');
