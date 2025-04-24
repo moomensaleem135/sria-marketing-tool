@@ -2,11 +2,10 @@ import CustomModal from '@/components/core/Modal';
 import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { FlexCol, FlexRow } from '../index.styles';
-import { BoldText, Col, MainHeading, Row } from '../../blogs-article/ReviewReport/index.styles';
-import { Text } from '../../blogs-article/index.styles';
-import { Line } from '../../index.styles';
+
 import FieldInput from '@/components/core/FieldInput';
 import { RegularText } from '../../testimonial-endorsements/Wriiten-Agreement/index.styles';
+import { BoldText } from '@/components/core/Modal/SignModal/index.styles';
 
 const ReviewAgreement = () => {
   const [isDisclouserModal, setIsDisclouserModal] = useState<boolean>(false);
