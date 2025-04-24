@@ -3,18 +3,13 @@ import styled from '@emotion/styled';
 export const FlexCol = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 1rem 0;
 `;
 
 export const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-export const MainHeading = styled.div`
-  font-size: 24px;
-  text-align: center;
-  margin-bottom: 10px;
 `;
 
 export const QuestionWrapper = styled.div`
@@ -36,25 +31,6 @@ export const SubQuestionDiv = styled.div`
   //   margin-top: 10px;
 `;
 
-export const BoldText = styled.div`
-  font-size: 0.9rem;
-
-  font-weight: bold;
-`;
-
 export const Footer = styled.div`
-  margin: 15px;
-`;
-
-export const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 40%;
-  padding: 10px 0px;
-`;
-
-export const Col = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  width: 40%;
+  /* margin: 15px; */
 `;

@@ -21,13 +21,14 @@ export const QuestionWrapper = styled.div`
 `;
 
 export const QuestionContainer = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 `;
 
 export const QuestionDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 4px;
 `;
 
 export const Note = styled.div`
@@ -80,13 +81,14 @@ export const IsUpdatedDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0px 5px 0px;
+  margin: 1.2rem 0 0.3rem 0;
 `;
 
 export const SubQuestion = styled.div`
   font-size: 13px;
   text-align: left;
   margin-bottom: 5px;
+  font-weight: bold;
 `;
 
 export const Container = styled.div`

@@ -1,5 +1,5 @@
 'use client';
-import { AnswerData } from '@/store/app/types';
+import { Answer } from '@/store/app/types';
 import { Box, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
@@ -188,7 +188,7 @@ const fieldData = [
 const ThirdPartyRating = () => {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<AnswerData[]>([]);
+  const [answers, setAnswers] = useState<Answer[]>([]);
   const formik = useFormik({
     initialValues: {
       rating_name: '',
@@ -229,10 +229,10 @@ const ThirdPartyRating = () => {
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={answers}
             setAnswers={setAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

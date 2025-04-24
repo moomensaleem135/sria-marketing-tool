@@ -187,9 +187,10 @@ const FileUpload = ({
       >
         <DeleteModal
           handleClickClearAll={handleDelete}
-          subText="This will delete your resource file permanently for the Compliance Program Overview."
+          mainText="Are you sure?"
+          subText="This will delete your resource permanently."
           setIsClearModal={setIsRemoveModal}
-          submitBtnText="Remove"
+          submitBtnText="Delete"
         />
       </CustomModal>
     </>

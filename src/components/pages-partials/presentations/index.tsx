@@ -4,19 +4,14 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  toggleAdd,
-  toggleQuestionsContainer,
-  toggleSignContainer
-} from '@/store/marketingTools/componentSlices/presentationSlice';
+import { useDispatch } from 'react-redux';
 
 import { Box } from '@mui/material';
 import InitialForm from '../initialForm';
 import { useFormik } from 'formik';
-import QuestionSection from '../websites/QuestionSection';
-import { AnswerData } from '@/store/app/types';
+import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
+import QuestionSection from '../performance-advertising/QuestionSection';
 
 const fieldData = [
   {
@@ -64,25 +59,9 @@ const fieldData = [
 const PartialPresentation = () => {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [presentationAnswers, setPresentationAnswers] = useState<AnswerData[]>([]);
+  const [presentationAnswers, setPresentationAnswers] = useState<Answer[]>([]);
   const dispatch = useDispatch();
 
-  // Get toggle states from Redux store
-  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
-    (state: any) => state.marketingTools.presentation
-  );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
-
-  const handleSubmit = () => {
-    dispatch(toggleQuestionsContainer());
-  };
-
-  const openSignContainer = () => {
-    dispatch(toggleSignContainer());
-  };
   const formik = useFormik({
     initialValues: {
       presentation_name: '',
@@ -119,10 +98,10 @@ const PartialPresentation = () => {
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={presentationAnswers}
             setAnswers={setPresentationAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

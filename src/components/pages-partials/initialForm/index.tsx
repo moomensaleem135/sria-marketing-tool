@@ -42,6 +42,7 @@ const InitialForm = ({ fieldsData, formik, isAllFieldModal, setIsAllFieldModal }
           </Grid>
         ))}
       </Grid>
+      {/* <SignContainer/> */}
       <ButtonRightRow>
         <ButtonWitnLoading type="submit" text="Click to Begin" />
       </ButtonRightRow>

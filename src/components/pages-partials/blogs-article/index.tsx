@@ -4,19 +4,14 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  toggleAdd,
-  toggleQuestionsContainer,
-  toggleSignContainer
-} from '@/store/marketingTools/componentSlices/blogSlice';
+import { useSelector } from 'react-redux';
 
 import InitialForm from '../initialForm';
 import { useFormik } from 'formik';
-import { AnswerData } from '@/store/app/types';
+import { Answer } from '@/store/app/types';
 import { Box } from '@mui/material';
-import QuestionSection from '../websites/QuestionSection';
 import { questions } from '../websites';
+import QuestionSection from '../performance-advertising/QuestionSection';
 
 const fieldData = [
   {
@@ -64,25 +59,14 @@ const fieldData = [
 const PartialBlogArticle = () => {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [blogAnswers, setBlogAnswers] = useState<AnswerData[]>([]);
-  const dispatch = useDispatch();
+  const [blogAnswers, setBlogAnswers] = useState<Answer[]>([]);
 
   // Get toggle states from Redux store
   const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
     (state: any) => state.marketingTools.blog
   );
   console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
 
-  const handleSubmit = () => {
-    dispatch(toggleQuestionsContainer());
-  };
-
-  const openSignContainer = () => {
-    dispatch(toggleSignContainer());
-  };
   const formik = useFormik({
     initialValues: {
       blog_title: '',
@@ -119,10 +103,10 @@ const PartialBlogArticle = () => {
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={blogAnswers}
             setAnswers={setBlogAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

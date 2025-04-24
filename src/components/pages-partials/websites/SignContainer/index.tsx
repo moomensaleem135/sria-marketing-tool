@@ -5,18 +5,22 @@ import Button from '@/components/core/Button';
 import { ButtonLeftRow, SignContainerText, SignContainerTextBold } from '../index.styles';
 import CustomModal from '@/components/core/Modal';
 import SignModal from '@/components/core/Modal/SignModal';
-import ReviewReport from '../ReviewReport';
-import RecordKeepingModal from '../RecordKeepingModal';
+import ReviewReport from './ReviewReport';
+import RecordKeepingModal from './RecordKeepingModal';
 import { Container } from '../../blogs-article/index.styles';
+import { IQuestionReportContainer } from '@/store/app/types';
 
-const SignContainer: React.FC = () => {
+const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionReportContainer) => {
   const [openSignModal, setOpenSignModal] = useState(false);
   const [openReportReview, setOpenReportReview] = useState(false);
   const [isRecordKeepModal, setIsRecordKeepModal] = useState<boolean>(false);
+  const [signatureText, setSignatureText] = useState<string>('');
+
   const handleApproveSignature = () => {
     setOpenSignModal(false);
     setOpenReportReview(true);
   };
+  console.log('answer', answers, 'fieldData', fieldData);
 
   return (
     <Container>
@@ -46,15 +50,23 @@ const SignContainer: React.FC = () => {
         <SignModal
           closeFunction={() => setOpenSignModal(false)}
           handleApprove={handleApproveSignature}
+          setSignatureText={setSignatureText}
+          signatureText={signatureText}
         />
       </CustomModal>
       <CustomModal
         openValue={openReportReview}
         closeFunction={() => setOpenReportReview(false)}
         mainHeading=""
-        modalWidth={'700px'}
+        modalWidth={'800px'}
       >
-        <ReviewReport />
+        <ReviewReport
+          answers={answers}
+          questions={questions}
+          fieldData={fieldData}
+          formik={formik}
+          signatureText={signatureText}
+        />
       </CustomModal>
       <CustomModal
         openValue={isRecordKeepModal}
@@ -64,6 +76,7 @@ const SignContainer: React.FC = () => {
       >
         <RecordKeepingModal setIsRecordKeepModal={setIsRecordKeepModal} />
       </CustomModal>
+      {/* <ReviewReport  /> */}
     </Container>
   );
 };

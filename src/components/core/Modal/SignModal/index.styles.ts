@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Divider } from '@mui/material';
 
 export const RedLine = styled(Divider)`
-  margin: 10px 0px;
+  margin: 10px 0 5px 0px;
   border-color: ${COLORS.RED_600};
 `;
 
@@ -33,7 +33,7 @@ export const Text = styled.div`
 `;
 
 export const BoldText = styled.div`
-  font-family: Inter SemiBold;
-  font-size: 14px;
+  font-size: 1rem;
   text-align: left;
+  font-weight: bold;
 `;

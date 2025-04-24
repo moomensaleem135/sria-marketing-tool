@@ -3,9 +3,7 @@ import { Add, Remove } from '@mui/icons-material';
 
 import { COLORS } from '@/constants/colors';
 
-import { useFormik } from 'formik';
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Container,
@@ -28,11 +26,12 @@ import {
 import FieldInput from '@/components/core/FieldInput';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import YesNoSelector from '../../YesNoSelector';
-import { AnswerData } from '@/store/app/types';
+import { AnswerData, IQuestionSection } from '@/store/app/types';
 import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import NoContainer from '../../websites/SignContainer/noContainer';
 import SignContainer from '../../websites/SignContainer';
 import CustomModal from '@/components/core/Modal';
+import DeleteModal from '@/components/core/DragAndDropUploadFile/DeleteModal';
 
 interface SubQuestion {
   text: string;
@@ -65,7 +64,13 @@ interface Props {
 }
 type FormFieldValue = string | boolean | File | null;
 type InitialValues = Record<string, FormFieldValue>;
-const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) => {
+const QuestionSection = ({
+  questions,
+  answers,
+  setAnswers,
+  fieldData,
+  formik
+}: IQuestionSection) => {
   const [expandedSections, setExpandedSections] = useState<{
     [key: number]: {
       example?: boolean;
@@ -87,7 +92,33 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
   const [selectedOption, setSelectedOption] = useState<{ [key: number]: string }>({});
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
   const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
+  const [visibleQuestions, setVisibleQuestions] = useState<number[]>([questions[0].id]);
 
+  // Function to check if we should show the next question
+  const shouldShowNextQuestion = (currentQuestionId: number) => {
+    const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
+    if (currentIndex === -1 || currentIndex === questions.length - 1) return false;
+
+    const currentAnswer = answers.find((a) => a.id === currentQuestionId);
+    const currentQuestion = questions.find((q) => q.id === currentQuestionId);
+
+    // Check if mainAnswer exists and is not equal to the question's note
+    return (
+      (currentAnswer?.mainAnswer && currentQuestion?.note !== currentAnswer?.mainAnswer) ||
+      currentAnswer?.isUpdated !== undefined
+    );
+  };
+
+  // Function to add the next question to visible questions
+  const handleShowNextQuestion = (currentQuestionId: number) => {
+    const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
+    if (currentIndex === -1 || currentIndex === questions.length - 1) return;
+
+    const nextQuestionId = questions[currentIndex + 1].id;
+    if (!visibleQuestions.includes(nextQuestionId)) {
+      setVisibleQuestions([...visibleQuestions, nextQuestionId]);
+    }
+  };
   const openSignContainer = () => {
     setIsSignInOpen(true);
   };
@@ -111,36 +142,6 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
 
     return false;
   };
-
-  const initialValues = questions.reduce<InitialValues>((acc, q) => {
-    // Handle example field
-    acc[`example${q.id}`] =
-      typeof q.example === 'string'
-        ? q.example
-        : q.example
-          ? 'Has example' // Convert JSX to simple string
-          : '';
-
-    // Handle subQuestions
-    q.subQuestions?.forEach((_, index) => {
-      acc[`subQuestion_${q.id}_${index}`] = '';
-    });
-
-    // Other fields
-    acc[`upload_${q.id}`] = null;
-    acc[`isUpdated_${q.id}`] = false;
-    acc[`option${q.id}`] = '';
-
-    return acc;
-  }, {});
-
-  const formik = useFormik({
-    initialValues,
-    onSubmit: (values) => {
-      localStorage.setItem('reviewAnswers', JSON.stringify(values));
-      openSignContainer();
-    }
-  });
 
   const handleInputChange = (questionId: number, field: string, value: string) => {
     setAnswers((prev: AnswerData[]) => {
@@ -196,6 +197,9 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         ];
       }
     });
+    if (subKey === 'isUpdated' && value) {
+      handleShowNextQuestion(questionId);
+    }
     setIsSignInOpen(false);
   };
 
@@ -221,12 +225,20 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         ];
       }
     });
+
     setIsSignInOpen(false);
   };
 
   const getAnswer = (questionId: number) => {
     return answers.find((a) => a.id === questionId);
   };
+  useEffect(() => {
+    questions.forEach((q) => {
+      if (visibleQuestions.includes(q.id) && shouldShowNextQuestion(q.id)) {
+        handleShowNextQuestion(q.id);
+      }
+    });
+  }, [answers]);
   const toggleSection = (id: number, section: 'example' | 'notes' | 'details' | 'notes2') => {
     setExpandedSections((prev) => ({
       ...prev,
@@ -273,9 +285,13 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
     setAnswers([]);
     setIsClearAllModal(false);
   };
+  const handleReviewComplete = () => {
+    // localStorage.setItem('reviewAnswers', JSON.stringify(values));
+    openSignContainer();
+  };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <Box>
       <Container>
         <Box
           sx={{
@@ -292,6 +308,7 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         </Box>
         <Line />
         {questions.map((q, index) => {
+          if (!visibleQuestions.includes(q.id)) return null;
           const answer = getAnswer(q.id);
 
           return (
@@ -325,19 +342,19 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
                   <Typography sx={{ fontSize: '0.8rem' }}>{q?.answerInstructions}</Typography>
                 )}
               </QuestionContainer>
-
+              <Box>
+                {renderExpandableSection(q.id, 'example', q.example, 'Example')}
+                {renderExpandableSection(
+                  q.id,
+                  'notes',
+                  q.notes,
+                  `${q.isMultipleNotes === true ? 'Note 1 of 2' : 'Notes'}`
+                )}
+                {renderExpandableSection(q.id, 'notes2', q.notes2, 'Note 2 of 2')}
+                {renderExpandableSection(q.id, 'details', q.details, 'Details')}
+              </Box>
               {shouldRenderSubQuestions(q) && (
                 <QuestionDetails>
-                  {renderExpandableSection(q.id, 'example', q.example, 'Example')}
-                  {renderExpandableSection(
-                    q.id,
-                    'notes',
-                    q.notes,
-                    `${q.isMultipleNotes === true ? 'Note 1 of 2' : 'Notes'}`
-                  )}
-                  {renderExpandableSection(q.id, 'notes2', q.notes2, 'Note 2 of 2')}
-                  {renderExpandableSection(q.id, 'details', q.details, 'Details')}
-
                   {q?.subQuestions?.map((subQuestion, subIndex) => (
                     <SubQuestionDiv
                       key={subIndex}
@@ -386,8 +403,9 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
                   {answer?.isUpdated && (
                     <Typography
                       sx={{
-                        fontSize: '0.7rem',
+                        fontSize: '0.9rem',
                         marginBottom: '1rem',
+                        fontWeight: 'bold',
                         color: answer.isUpdated === 'Yes' ? 'green' : 'red'
                       }}
                     >
@@ -401,7 +419,11 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         })}
         <Line />
         <ButtonRow>
-          <ButtonWitnLoading type="submit" text="Complete Review" />
+          <ButtonWitnLoading
+            type="button"
+            text="Complete Review"
+            handleClick={handleReviewComplete}
+          />
         </ButtonRow>
       </Container>
       {answers.filter((ans) => ans.isUpdated === 'No').length > 0 &&
@@ -409,37 +431,30 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         answers.length === questions.length && <NoContainer />}
       {answers.filter((ans) => ans.isUpdated === 'No').length === 0 &&
         isSignInOpen &&
-        answers.length === questions.length && <SignContainer />}
+        answers.length === questions.length && (
+          <SignContainer
+            answers={answers}
+            fieldData={fieldData}
+            formik={formik}
+            questions={questions}
+          />
+        )}
+
       <CustomModal
         openValue={isClearAllModal}
         closeFunction={() => setIsClearAllModal(false)}
         closedIcon={true}
         modalWidth={'25rem'}
       >
-        <Box sx={{ marginTop: '1rem' }}>
-          <Typography sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Are you sure?</Typography>
-          <Typography sx={{ fontSize: '0.9rem' }}>
-            This will delete all your responses for this section
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'end',
-              columnGap: '0.5rem',
-              marginTop: '1rem'
-            }}
-          >
-            <ButtonWitnLoading
-              text="Cancel"
-              handleClick={() => setIsClearAllModal(false)}
-              bg="black"
-            />
-            <ButtonWitnLoading text="Clear" handleClick={handleClearAll} />
-          </Box>
-        </Box>
+        <DeleteModal
+          handleClickClearAll={handleClearAll}
+          mainText="Are you sure?"
+          subText="This will delete all your responses for this section."
+          setIsClearModal={setIsClearAllModal}
+          submitBtnText="Clear"
+        />
       </CustomModal>
-    </form>
+    </Box>
   );
 };
 

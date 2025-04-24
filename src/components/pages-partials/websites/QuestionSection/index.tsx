@@ -1,11 +1,9 @@
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 
 import { COLORS } from '@/constants/colors';
 
-import { useFormik } from 'formik';
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Container,
@@ -21,22 +19,18 @@ import {
   Question,
   IsUpdatedDiv,
   ButtonRow,
-  Example,
-  Note,
-  QuestionContainer
+  Example
 } from '../../index.styles';
 
 import FieldInput from '@/components/core/FieldInput';
-import Button from '@/components/core/Button';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import YesNoSelector from '../../YesNoSelector';
-import CustomInputField from '@/components/core/FormikCustomInput';
-import { AnswerData } from '@/store/app/types';
+import { AnswerData, IQuestionSection } from '@/store/app/types';
 import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import NoContainer from '../SignContainer/noContainer';
 import SignContainer from '../SignContainer';
-import { BoldText } from '../../blogs-article/ReviewReport/index.styles';
 import CustomModal from '@/components/core/Modal';
+import DeleteModal from '@/components/core/DragAndDropUploadFile/DeleteModal';
 
 interface Question {
   id: number;
@@ -55,9 +49,17 @@ interface Props {
   questions: Question[];
   answers: AnswerData[];
   setAnswers: (value: any) => void;
+  fieldData: any;
+  formik1: any;
 }
 
-const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) => {
+const QuestionSection = ({
+  questions,
+  answers,
+  setAnswers,
+  fieldData,
+  formik
+}: IQuestionSection) => {
   const [exampleSwitch, setExampleSwitch] = useState<{ [key: number]: boolean }>(
     questions.reduce(
       (acc, q) => {
@@ -71,6 +73,33 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
   const [selectedOption, setSelectedOption] = useState<{ [key: number]: string }>({});
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
   const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
+  const [visibleQuestions, setVisibleQuestions] = useState<number[]>([questions[0].id]);
+  // console.log('answer', answers,'fieldData',fieldData);
+  // Function to check if we should show the next question
+  const shouldShowNextQuestion = (currentQuestionId: number) => {
+    const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
+    if (currentIndex === -1 || currentIndex === questions.length - 1) return false;
+
+    const currentAnswer = answers.find((a) => a.id === currentQuestionId);
+    const currentQuestion = questions.find((q) => q.id === currentQuestionId);
+
+    // Check if mainAnswer exists and is not equal to the question's note
+    return (
+      (currentAnswer?.mainAnswer && currentQuestion?.note !== currentAnswer?.mainAnswer) ||
+      currentAnswer?.isUpdated !== undefined
+    );
+  };
+
+  // Function to add the next question to visible questions
+  const handleShowNextQuestion = (currentQuestionId: number) => {
+    const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
+    if (currentIndex === -1 || currentIndex === questions.length - 1) return;
+
+    const nextQuestionId = questions[currentIndex + 1].id;
+    if (!visibleQuestions.includes(nextQuestionId)) {
+      setVisibleQuestions([...visibleQuestions, nextQuestionId]);
+    }
+  };
   const openSignContainer = () => {
     setIsSignInOpen(true);
   };
@@ -102,28 +131,13 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
     return false;
   };
 
-  const initialValues = questions.reduce(
-    (acc, q) => {
-      acc[`example${q.id}`] = q.example || '';
-      q.subQuestions.forEach((_, index) => {
-        acc[`subQuestion_${q.id}_${index}`] = '';
-      });
-      acc[`upload_${q.id}`] = '';
-      acc[`isUpdated_${q.id}`] = '';
-      acc[`option${q.id}`] = '';
-
-      return acc;
-    },
-    {} as { [key: string]: string }
-  );
-
-  const formik = useFormik({
-    initialValues,
-    onSubmit: (values) => {
-      localStorage.setItem('reviewAnswers', JSON.stringify(values));
-      openSignContainer();
-    }
-  });
+  // const formik = useFormik({
+  //   initialValues,
+  //   onSubmit: (values) => {
+  //     localStorage.setItem('reviewAnswers', JSON.stringify(values));
+  //     openSignContainer();
+  //   }
+  // });
 
   const handleInputChange = (questionId: number, field: string, value: string) => {
     setAnswers((prev: AnswerData[]) => {
@@ -147,8 +161,18 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         ];
       }
     });
+    if (field === 'isUpdated' && value) {
+      handleShowNextQuestion(questionId);
+    }
     setIsSignInOpen(false);
   };
+  useEffect(() => {
+    questions.forEach((q) => {
+      if (visibleQuestions.includes(q.id) && shouldShowNextQuestion(q.id)) {
+        handleShowNextQuestion(q.id);
+      }
+    });
+  }, [answers]);
 
   const handleSubInputChange = (questionId: number, subKey: string, value: string) => {
     setAnswers((prev: AnswerData[]) => {
@@ -216,7 +240,7 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
   };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={() => {}}>
       <Container>
         <Box
           sx={{
@@ -233,11 +257,12 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         </Box>
         <Line />
         {questions.map((q, index) => {
+          if (!visibleQuestions.includes(q.id)) return null;
           const answer = getAnswer(q.id);
 
           return (
             <QuestionWrapper key={q.id}>
-              <QuestionContainer>
+              <Box>
                 <QuestionDiv>
                   <Question>
                     {index + 1}. {q.question}
@@ -253,33 +278,34 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
                 {q?.answerInstructions && (
                   <Typography sx={{ fontSize: '0.8rem' }}>{q?.answerInstructions}</Typography>
                 )}
-              </QuestionContainer>
-
+              </Box>
+              <Box sx={{ padding: '2px 0 7px 0' }}>
+                <FlexRow>
+                  <Box
+                    onClick={() => toggleExample(q.id)}
+                    sx={{
+                      color: `${COLORS.BLUE_THEME_MAIN}`,
+                      padding: '0px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {!exampleSwitch[q.id] ? (
+                      <Add sx={{ height: '20px', width: '17px' }} />
+                    ) : (
+                      <Remove sx={{ height: '20px', width: '17px' }} />
+                    )}
+                    <TextBlue>Example</TextBlue>
+                  </Box>
+                </FlexRow>
+                {exampleSwitch[q.id] && <Example>{q.example}</Example>}
+              </Box>
               {shouldRenderSubQuestions(q) && (
                 <QuestionDetails>
-                  <FlexRow>
-                    <Box
-                      onClick={() => toggleExample(q.id)}
-                      sx={{
-                        color: `${COLORS.BLUE_THEME_MAIN}`,
-                        padding: '0px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      {!exampleSwitch[q.id] ? (
-                        <Add sx={{ height: '20px', width: '17px' }} />
-                      ) : (
-                        <Remove sx={{ height: '20px', width: '17px' }} />
-                      )}
-                      <TextBlue>Example</TextBlue>
-                    </Box>
-                  </FlexRow>
-                  {exampleSwitch[q.id] && <Example>{q.example}</Example>}
-                  {q.subQuestions.map((subQuestion, subIndex) => (
+                  {q?.subQuestions?.map((subQuestion, subIndex) => (
                     <SubQuestionDiv key={subIndex}>
-                      <SubQuestion>{subQuestion}</SubQuestion>
+                      <SubQuestion>{subQuestion.text}</SubQuestion>
                       <FieldInput
                         name="sub"
                         value={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
@@ -305,17 +331,20 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
                       />
                     </IsUpdatedDiv>
                   )}
-                  {answer?.isUpdated && (
-                    <Typography
-                      sx={{
-                        fontSize: '0.7rem',
-                        marginBottom: '1rem',
-                        color: answer.isUpdated === 'Yes' ? 'green' : 'red'
-                      }}
-                    >
-                      {answer.isUpdated === 'Yes' ? q.isUpdatedTrue : q.isUpdatedFalse}
-                    </Typography>
-                  )}
+                  <Box sx={{ marginBottom: '1.4rem' }}>
+                    {answer?.isUpdated && (
+                      <Typography
+                        sx={{
+                          fontSize: '0.9rem',
+                          marginBottom: '1rem',
+                          fontWeight: 'bold',
+                          color: answer.isUpdated === 'Yes' ? 'green' : 'red'
+                        }}
+                      >
+                        {answer.isUpdated === 'Yes' ? q.isUpdatedTrue : q.isUpdatedFalse}
+                      </Typography>
+                    )}
+                  </Box>
                 </QuestionDetails>
               )}
             </QuestionWrapper>
@@ -331,35 +360,29 @@ const QuestionSection: React.FC<Props> = ({ questions, answers, setAnswers }) =>
         answers.length === questions.length && <NoContainer />}
       {answers.filter((ans) => ans.isUpdated === 'No').length === 0 &&
         isSignInOpen &&
-        answers.length === questions.length && <SignContainer />}
+        answers.length === questions.length && (
+          <SignContainer
+            answers={answers}
+            questions={questions}
+            fieldData={fieldData}
+            formik={formik}
+          />
+        )}
+
       <CustomModal
         openValue={isClearAllModal}
         closeFunction={() => setIsClearAllModal(false)}
         closedIcon={true}
-        modalWidth={'25rem'}
+        modalWidth={'30rem'}
+        mainHeading="Clear Responses?"
       >
-        <Box sx={{ marginTop: '1rem' }}>
-          <Typography sx={{ fontSize: '1rem', fontWeight: 'bold' }}>Are you sure?</Typography>
-          <Typography sx={{ fontSize: '0.9rem' }}>
-            This will delete all your responses for this section
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'end',
-              columnGap: '0.5rem',
-              marginTop: '1rem'
-            }}
-          >
-            <ButtonWitnLoading
-              text="Cancel"
-              handleClick={() => setIsClearAllModal(false)}
-              bg="black"
-            />
-            <ButtonWitnLoading text="Clear" handleClick={handleClearAll} />
-          </Box>
-        </Box>
+        <DeleteModal
+          handleClickClearAll={handleClearAll}
+          mainText="Are you sure?"
+          subText="This will delete all your responses for this section."
+          setIsClearModal={setIsClearAllModal}
+          submitBtnText="Clear"
+        />
       </CustomModal>
     </form>
   );

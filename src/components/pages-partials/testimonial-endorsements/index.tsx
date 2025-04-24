@@ -4,17 +4,9 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  toggleAdd,
-  toggleQuestionsContainer,
-  toggleSignContainer
-} from '@/store/marketingTools/componentSlices/testimonialSlice';
-
 import { Box, Typography } from '@mui/material';
 import InitialForm from '../initialForm';
-import { AnswerData } from '@/store/app/types';
-import AdProhibitation from '../performance-advertising/adProhibitation';
+import { Answer } from '@/store/app/types';
 import { useFormik } from 'formik';
 import QuestionSection from '../performance-advertising/QuestionSection';
 import TestimonialEndorsementModal from './testimonalExemptionModal';
@@ -338,17 +330,7 @@ const fieldData = [
 export default function PartialTestimonial() {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<AnswerData[]>([]);
-  const dispatch = useDispatch();
-
-  // Get toggle states from Redux store
-  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
-    (state: any) => state.marketingTools.testimonial
-  );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
   const formik = useFormik({
     initialValues: {
@@ -376,14 +358,6 @@ export default function PartialTestimonial() {
     }
   });
 
-  const handleSubmit = () => {
-    dispatch(toggleQuestionsContainer());
-  };
-
-  const openSignContainer = () => {
-    dispatch(toggleSignContainer());
-  };
-
   return (
     <Box>
       <TopHeading>Testimonials & Endorsements</TopHeading>
@@ -394,16 +368,14 @@ export default function PartialTestimonial() {
         setIsAllFieldModal={setIsAllFieldModal}
       />
 
-      {/* </form> */}
-
       {isBeginReview && (
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={answers}
             setAnswers={setAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

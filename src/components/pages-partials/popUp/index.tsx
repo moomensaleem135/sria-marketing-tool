@@ -33,22 +33,6 @@ const MyPopover = () => {
 
   const popoverContent = (
     <>
-      {/* <Typography variant="body1">VALUATION & FEES</Typography>
-      <Typography variant="body2">
-        Client Billing Review - Quarterly<br />
-        Scheduled 3//10<br /><br />
-        Every quarter you'll need to examine a sampling of your client's
-        billing activity. The goal of this review is to ensure your
-        client's bills are accurate and match the fee schedule set forth
-        in their advisory agreement and form ADV 2A.
-      </Typography>
-      <Typography variant="body2">
-        RESOURCES<br />
-        Checklist<br />
-        Billing Workbook<br />
-        NOT STARTED<br />
-        Begin Review
-      </Typography> */}
       <Main>
         <UpperContainer>
           <TopDiv>

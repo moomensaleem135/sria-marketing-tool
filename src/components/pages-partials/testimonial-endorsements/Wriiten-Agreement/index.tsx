@@ -7,8 +7,8 @@ import { BoldText } from '@/components/core/Modal/SignModal/index.styles';
 import FieldInput from '@/components/core/FieldInput';
 import { Box, Typography } from '@mui/material';
 import CustomModal from '@/components/core/Modal';
-import { MainHeading } from '../../blogs-article/ReviewReport/index.styles';
 import { Text } from '../../blogs-article/index.styles';
+import { MainHeadingTypo } from '@/components/core/Modal/index.styles';
 
 const WrittenAgreement = () => {
   const [isDisclouserModal, setIsDisclouserModal] = useState<boolean>(false);
@@ -33,7 +33,7 @@ const WrittenAgreement = () => {
       >
         <Box>
           <FlexCol>
-            <MainHeading>Testimonial/ Endorsements/ Review</MainHeading>
+            <MainHeadingTypo>Testimonial/ Endorsements/ Review</MainHeadingTypo>
             <Text>Question</Text>
             <Line />
             <BoldText style={{ textAlign: 'center' }}>Testimonial Agreement</BoldText>

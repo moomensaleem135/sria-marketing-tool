@@ -1,7 +1,6 @@
 'use client';
-import SharedLayout from '@/components/layout/shared-layout';
 import { SelectMarketingType, SelectMarketingTypeDis, TopHeading } from '../index.styles';
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 
 export default function PartialHome() {
   return (

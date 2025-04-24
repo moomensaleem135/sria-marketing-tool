@@ -16,18 +16,6 @@ const CustomHeader = ({ title }: ICustomHeader) => {
   return (
     <>
       <HeaderTag>{title}</HeaderTag>
-      {/* <Image
-        src={"/svgs/arrowUp.svg"}
-        height={20}
-        width={20}
-        onClick={onPressSort}
-      />
-      <Image
-        src={"/svgs/arrowDown.svg"}
-        height={20}
-        width={20}
-        onClick={onPressUnSort}
-      /> */}
     </>
   );
 };

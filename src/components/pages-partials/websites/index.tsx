@@ -4,30 +4,13 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleAdd } from '@/store/marketingTools/componentSlices/websiteDomainSlice';
-
-import QuestionSection from './QuestionSection';
-
 import { Box } from '@mui/material';
 
 import { useFormik } from 'formik';
 
-import { AnswerData } from '@/store/app/types';
+import { Answer } from '@/store/app/types';
 import InitialForm from '../initialForm';
-
-interface FormValues {
-  name: string;
-  advisor: string;
-  date: string;
-  URL: string;
-  upload: string;
-}
-
-interface Props {
-  initialValues: FormValues;
-  onSubmit: (values: FormValues) => void;
-}
+import QuestionSection from '../performance-advertising/QuestionSection';
 
 export const questions = [
   {
@@ -39,8 +22,14 @@ export const questions = [
     example:
       '“During the last year our performance overall was positive.” Stating this when your overall performance was positive but underperformed the market.',
     subQuestions: [
-      '*Details regarding untrue statements or the specific omission of material fact.',
-      '*How has the statement been corrected?'
+      {
+        text: '*Details regarding untrue statements or the specific omission of material fact.',
+        isCheckbox: false
+      },
+      {
+        text: '*How has the statement been corrected?',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated Marketing Piece',
     isUpdated:
@@ -59,8 +48,14 @@ export const questions = [
     example:
       'In your last newsletter a reference is made to performance of the market in a specific region, yet a copy of the benchmark isn’t kept in your records.',
     subQuestions: [
-      '*Details regarding the unsubstantiated fact.',
-      '*Steps taken to correct or substantiate the statement.'
+      {
+        text: '*Details regarding the unsubstantiated fact.',
+        isCheckbox: false
+      },
+      {
+        text: '*Steps taken to correct or substantiate the statement.',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated Marketing Piece',
     isUpdated:
@@ -79,8 +74,14 @@ export const questions = [
     example:
       '“All my clients have seen profits from my model portfolio in each of the last 5 years.” This is true however the advisor only has 3 clients.',
     subQuestions: [
-      '*Details regarding the misleading implication relating to the investment adviser.',
-      '*How has the statement been corrected?'
+      {
+        text: '*Details regarding the misleading implication relating to the investment adviser.',
+        isCheckbox: false
+      },
+      {
+        text: '*How has the statement been corrected?',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated Marketing Piece',
     isUpdated:
@@ -99,8 +100,14 @@ export const questions = [
     example:
       'Presenting your results from last quarter on a website and not including a disclosure with the risks, limitations and potential downsides to the specific portfolio.',
     subQuestions: [
-      '*Details regarding how and why the ad did not provide the risks, limitations and drawbacks to the adviser’s advice.',
-      '*Steps taken to include a fair and balanced treatment of the ad.'
+      {
+        text: '*Details regarding how and why the ad did not provide the risks, limitations and drawbacks to the adviser’s advice.',
+        isCheckbox: false
+      },
+      {
+        text: '*Steps taken to include a fair and balanced treatment of the ad.',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated Marketing Piece',
     isUpdated:
@@ -119,8 +126,14 @@ export const questions = [
     example:
       'Showing a client a positive case study as part of an investment strategy that resulted in unprofitable results, overall. The overall performance of the strategy must be disclosed during the same time period of the case study.',
     subQuestions: [
-      '*Details regarding how the content is not presented in a fair and balanced way',
-      '*How has the marketing content been corrected?'
+      {
+        text: '*Details regarding how the content is not presented in a fair and balanced way',
+        isCheckbox: false
+      },
+      {
+        text: '*How has the marketing content been corrected?',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated Marketing Piece',
     isUpdated:
@@ -138,8 +151,14 @@ export const questions = [
 
     example: 'When an adviser shows results in a portfolio for 9 out of the last 12 months.',
     subQuestions: [
-      '*Details regarding how and why partial or inconsistent time periods are shown in the advertisement.',
-      '*Steps taken to include a more complete time period.'
+      {
+        text: '*Details regarding how and why partial or inconsistent time periods are shown in the advertisement.',
+        isCheckbox: false
+      },
+      {
+        text: '*Steps taken to include a more complete time period.',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated marketing piece with complete time period.”',
     isUpdated:
@@ -158,8 +177,14 @@ export const questions = [
     example:
       'Using words such as “Trusted, Best, Top-Rated, Maximum Wealth, Most. Guaranteed, Risk Free or Only.”',
     subQuestions: [
-      '*List the words used and how they are materially misleading.',
-      '*Steps taken to include different words and phrases that aren’t misleading?'
+      {
+        text: '*List the words used and how they are materially misleading.',
+        isCheckbox: false
+      },
+      {
+        text: '*Steps taken to include different words and phrases that aren’t misleading?',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated content without the misleading words.',
     isUpdated:
@@ -177,8 +202,14 @@ export const questions = [
     example:
       'Are you writing or speaking to a specific person or institution such as a retail vs institutional investor?',
     subQuestions: [
-      '*Details on how the ad is not considering its target audience.',
-      '*Steps taken to update the ad and consider your target audience.'
+      {
+        text: '*Details on how the ad is not considering its target audience.',
+        isCheckbox: false
+      },
+      {
+        text: '*Steps taken to update the ad and consider your target audience.',
+        isCheckbox: false
+      }
     ],
     dragAndDrop: '*Updated advertising piece clearly speaking to a specific audience.',
     isUpdated:
@@ -234,26 +265,8 @@ const fieldData = [
 export default function PartialWebsiteDomain() {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<AnswerData[]>([]);
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
-  const dispatch = useDispatch();
-
-  // Get toggle states from Redux store
-  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
-    (state: any) => state.marketingTools.websiteDomain
-  );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
-
-  // const initialValues = {
-  //   pageName: '',
-  //   advisor: '',
-  //   date: '',
-  //   URL: '',
-  //   upload: ''
-  // };
   const formik = useFormik({
     initialValues: {
       pageName: '',
@@ -276,11 +289,6 @@ export default function PartialWebsiteDomain() {
       }
     }
   });
-  const handleSubmit = () => {
-    // dispatch(toggleQuestionsContainer());
-
-    setIsAllFieldModal(true);
-  };
 
   return (
     <Box>
@@ -299,10 +307,10 @@ export default function PartialWebsiteDomain() {
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={answers}
             setAnswers={setAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

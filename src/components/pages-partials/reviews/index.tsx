@@ -4,17 +4,10 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  toggleAdd,
-  toggleQuestionsContainer,
-  toggleSignContainer
-} from '@/store/marketingTools/componentSlices/ratingSlice';
-
 import { Box, Typography } from '@mui/material';
 import InitialForm from '../initialForm';
 import { useFormik } from 'formik';
-import { AnswerData } from '@/store/app/types';
+import { Answer } from '@/store/app/types';
 import QuestionSection from '../performance-advertising/QuestionSection';
 import ReviewDisclouser from './modals/reviewDisclouser';
 import TestimonialDisclouserExample from './modals/testimonialDisclouserExample';
@@ -329,17 +322,7 @@ const fieldData = [
 const PartialReviews = () => {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<AnswerData[]>([]);
-  const dispatch = useDispatch();
-
-  // Get toggle states from Redux store
-  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
-    (state: any) => state.marketingTools.rating
-  );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
   const formik = useFormik({
     initialValues: {
@@ -367,14 +350,6 @@ const PartialReviews = () => {
     }
   });
 
-  const handleSubmit = () => {
-    dispatch(toggleQuestionsContainer());
-  };
-
-  const openSignContainer = () => {
-    dispatch(toggleSignContainer());
-  };
-
   return (
     <Box>
       <TopHeading>Reviews</TopHeading>
@@ -391,10 +366,10 @@ const PartialReviews = () => {
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={answers}
             setAnswers={setAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

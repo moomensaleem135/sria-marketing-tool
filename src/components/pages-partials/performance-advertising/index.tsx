@@ -4,28 +4,54 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  toggleAdd,
-  toggleQuestionsContainer,
-  toggleSignContainer
-} from '@/store/marketingTools/componentSlices/performanceAdSlice';
+import { useDispatch } from 'react-redux';
 
 import InitialForm from '../initialForm';
 import { Box, Typography } from '@mui/material';
 import { useFormik } from 'formik';
-import { AnswerData } from '@/store/app/types';
+import { Answer } from '@/store/app/types';
 import QuestionSection from './QuestionSection';
 import AdProhibitation from './adProhibitation';
+import { Question } from '../index.styles';
 
 const questions = [
   {
     id: 1,
     question:
-      'Does the piece include any untrue statements of material fact, or does it leave out any material fact?',
+      'Are the results in your performance advertising displayed in a way that is fair and balanced?',
     answerInstructions: 'If no, complete forms below. If yes, move on to 2.',
-    notes:
-      'Gross performance in your ad must be accompanied with net performance, however net performance can stand alone without gross performance. Net performance is calculated after the deduction of fees and expenses that your client has paid.',
+    details:
+      'Results and time periods displayed in any performance advertisement must be shown in a fair and balanced way. Excluding certain results or periods of time in your ad is strictly prohibitive.',
+
+    subQuestions: [
+      {
+        text: '*Provide specific details how the ad is not fair and balanced.',
+        isCheckbox: false
+      },
+      {
+        text: '*How will the ad be corrected to ensure the performance results are presented in both a fair and balanced manner?',
+        isCheckbox: false
+      },
+      {
+        text: '*Has the ad been updated to include performance results that are fair and balanced?',
+        isCheckbox: true
+      }
+    ],
+    dragAndDrop: '*Updated the corrected version of the ad here.',
+    // isUpdated:
+    //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
+    note: 'No',
+    isUpdatedTrue: 'Great. Move on to the next question.',
+    isUpdatedFalse:
+      'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
+  },
+  {
+    id: 2,
+    question:
+      'Does your performance advertisement include both gross and net performance presentation?',
+    answerInstructions: 'If no, complete forms below. If yes, move on to 3.',
+    details:
+      'Gross performance in your ad must be accompanied with net performance; however net performance can stand alone without gross performance. Net performance is calculated after the deduction of fees and expenses that your client has paid.',
 
     subQuestions: [
       {
@@ -37,7 +63,7 @@ const questions = [
         isCheckbox: true
       }
     ],
-    dragAndDrop: '*Updated Marketing Piece',
+    dragAndDrop: '*Updated the corrected version of the ad here.',
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
@@ -46,7 +72,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 2,
+    id: 3,
     question:
       'Is net performance displayed in your ad with equal prominence and calculated in the same manner as gross performance?',
     answerInstructions: 'If no, complete forms below. If yes, move on to 3.',
@@ -68,7 +94,7 @@ const questions = [
         isCheckbox: true
       }
     ],
-    dragAndDrop: '*Updated Marketing Piece',
+    dragAndDrop: '*Updated the corrected version of the ad here.',
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
@@ -77,22 +103,28 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 3,
-    question:
-      'Does the investment performance shown in your advertisement contain results for the same portfolio for each of the following?',
-    answerInstructions: 'If no, complete forms below. If yes, move on to 4.',
-
-    details: (
-      <ul>
-        <li>
-          One, five, and ten-year periods or since inception if one, five, and ten years do not
-          exist.
-        </li>
-        <li>All results are shown with equal prominence.</li>
-        <li>Each has an ending date no less recent than the most recent calendar year-end.</li>
-      </ul>
+    id: 4,
+    question: (
+      <Box>
+        <Question>
+          Does the investment performance shown in your advertisement contain results for the same
+          portfolio for each of the following?
+        </Question>
+        <Box>
+          <Question>
+            - &nbsp; &nbsp;&nbsp; One, five and ten-year periods or since inception if one, five and
+            ten year do not exist.
+          </Question>
+          <Question>- &nbsp; &nbsp;&nbsp; All results are shown with equal prominence.</Question>
+          <Question>
+            - &nbsp; &nbsp;&nbsp; Each has an ending date no less recent than the most recent
+            calendar year-end.
+          </Question>
+        </Box>
+      </Box>
     ),
-    notes:
+    answerInstructions: 'If no, complete forms below. If yes, move on to 4.',
+    details:
       'Other than private funds, your results must meet each of the three criteria shown above to help facilitate comparison among different advertisements to avoid cherry-picking the best results. If you can’t calculate the three required time periods immediately following the calendar year-end, you may use more timely quarter-end performance (e.g., 1, 5, and 8 years).',
     subQuestions: [
       {
@@ -117,7 +149,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 4,
+    id: 5,
     question:
       'Was it implied or explicitly stated that the calculation or presentation of your performance results were approved or reviewed by the SEC?',
     answerInstructions: 'If no, move onto 5. If yes, complete forms below.',
@@ -144,7 +176,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 5,
+    id: 6,
     question:
       'Does the advertisement include the results of other portfolios with related performance?',
     answerInstructions: 'If no, move onto 6. If yes, complete forms below.',
@@ -175,7 +207,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 6,
+    id: 7,
     question:
       'Are performance results from a subset of investments extracted from a single portfolio shown in the advertisement?',
     answerInstructions: 'If no, move onto 7. If yes, complete forms below.',
@@ -224,7 +256,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 7,
+    id: 8,
     question:
       'Are performance results from a subset of investments extracted from a single portfolio shown in the advertisement?',
     answerInstructions: 'If no, move onto 10. If yes, complete forms below.',
@@ -286,7 +318,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 8,
+    id: 9,
     question:
       'If the advertisement does contain hypothetical performance, has it met the following 3 conditions?',
     answerInstructions:
@@ -330,7 +362,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 9,
+    id: 10,
     question:
       'Will you distribute your hypothetical performance advertisements to investors who fall into one of two categories?If the answer is yes to either scenario, you cannot distribute your performance advertisements to these investors.',
     answerInstructions:
@@ -367,7 +399,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 10,
+    id: 11,
     question: 'Is there predecessor performance in the performance advertising?',
     answerInstructions: 'If no, move onto 13. If yes, move onto 11.',
 
@@ -390,7 +422,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 11,
+    id: 12,
     question:
       'Are all 4 guidelines below being met with the predecessor performance? If you’re not meeting all four, you can’t use the predecessor performance in your advertising.',
     answerInstructions: 'If Yes, move onto 13. If no, complete the forms. If N/A, move onto 13.',
@@ -434,7 +466,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 12,
+    id: 13,
     question: 'Do you have all the relevant documentation related to the predecessor performance?',
     answerInstructions:
       'If N/A, move onto 13. If no, complete the confirmation below. If yes, move onto 13.',
@@ -458,7 +490,7 @@ const questions = [
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
   },
   {
-    id: 13,
+    id: 14,
     question: <AdProhibitation />,
     // 'In addition to your advertisement addressing the 12 questions above, does it also comply with the seven general prohibitions outlined here?',
     answerInstructions: 'If no, complete the confirmation. If yes, complete review.',
@@ -536,25 +568,9 @@ const fieldData = [
 const PartialPerformanceAd = () => {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [presentationAnswers, setPresentationAnswers] = useState<AnswerData[]>([]);
+  const [presentationAnswers, setPresentationAnswers] = useState<Answer[]>([]);
   const dispatch = useDispatch();
 
-  // Get toggle states from Redux store
-  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
-    (state: any) => state.marketingTools.performanceAd
-  );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
-
-  const handleSubmit = () => {
-    dispatch(toggleQuestionsContainer());
-  };
-
-  const openSignContainer = () => {
-    dispatch(toggleSignContainer());
-  };
   const formik = useFormik({
     initialValues: {
       ad_name: '',
@@ -595,10 +611,10 @@ const PartialPerformanceAd = () => {
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={presentationAnswers}
             setAnswers={setPresentationAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            formik={formik}
+            fieldData={fieldData}
           />
         </Box>
       )}

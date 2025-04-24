@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface IAppState {
   loading: boolean;
   status: string;
@@ -38,4 +40,55 @@ export interface AgGridI {
   animateRows?: any;
   groupDefaultExpanded?: any;
   domLayout?: any;
+}
+interface SubAnswers {
+  [key: `sub_${number}`]: string; // Dynamic keys like sub_0, sub_1, etc.
+}
+
+export interface Answer {
+  id: number;
+  mainAnswer: string;
+  subAnswers?: SubAnswers; // Optional since some answers don't have sub-questions
+  isUpdated?: string; // Optional since not all answers have this field
+}
+interface SubQuestion {
+  text: string;
+  isCheckbox?: boolean;
+  isRadio?: boolean;
+}
+
+interface Question {
+  id: number;
+  question: string | ReactNode;
+  answerInstructions?: string;
+  details?: string;
+  notes?: string | ReactNode;
+  example?: string | ReactNode;
+  notes2?: string | ReactNode;
+  isMultipleNotes?: boolean;
+  subQuestions?: SubQuestion[];
+  dragAndDrop?: string;
+  note: string;
+  isUpdated?: string;
+  isUpdatedTrue: string;
+  isUpdatedFalse: string;
+  isQuestionWithNA?: boolean;
+}
+interface FieldData {
+  id: number;
+  name: string;
+  fieldTitle: string;
+  type: string; // Extend this union if more types are possible
+  isFileUpload: boolean;
+  columnSize: number;
+}
+export interface IQuestionReportContainer {
+  answers: Answer[];
+  questions: Question[];
+  fieldData: FieldData[];
+  formik: any;
+}
+export interface IQuestionSection extends IQuestionReportContainer {
+  setAnswers: (value: any) => void;
+  // formik1:any
 }

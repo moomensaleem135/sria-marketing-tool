@@ -4,19 +4,12 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  toggleAdd,
-  toggleQuestionsContainer,
-  toggleSignContainer
-} from '@/store/marketingTools/componentSlices/socialMediaSlice';
-
 import { Box } from '@mui/material';
 import InitialForm from '../initialForm';
 import { useFormik } from 'formik';
-import { AnswerData } from '@/store/app/types';
-import QuestionSection from '../websites/QuestionSection';
+import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
+import QuestionSection from '../performance-advertising/QuestionSection';
 
 const fieldData = [
   {
@@ -71,17 +64,8 @@ const fieldData = [
 export default function PartialSocialMedia() {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<AnswerData[]>([]);
-  const dispatch = useDispatch();
+  const [answers, setAnswers] = useState<Answer[]>([]);
 
-  // Get toggle states from Redux store
-  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
-    (state: any) => state.marketingTools.socialMedia
-  );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
   const formik = useFormik({
     initialValues: {
       post_title: '',
@@ -108,14 +92,6 @@ export default function PartialSocialMedia() {
     }
   });
 
-  const handleSubmit = () => {
-    dispatch(toggleQuestionsContainer());
-  };
-
-  const openSignContainer = () => {
-    dispatch(toggleSignContainer());
-  };
-
   return (
     <Box>
       <TopHeading>Social Media</TopHeading>
@@ -127,16 +103,14 @@ export default function PartialSocialMedia() {
         setIsAllFieldModal={setIsAllFieldModal}
       />
 
-      {/* </form> */}
-
       {isBeginReview && (
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={answers}
             setAnswers={setAnswers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

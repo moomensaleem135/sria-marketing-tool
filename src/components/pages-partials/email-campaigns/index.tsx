@@ -4,19 +4,12 @@ import { TopHeading } from './index.styles';
 
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  toggleAdd,
-  toggleQuestionsContainer,
-  toggleSignContainer
-} from '@/store/marketingTools/componentSlices/emailSlice';
-
 import { Box } from '@mui/material';
 import { useFormik } from 'formik';
 import InitialForm from '../initialForm';
-import QuestionSection from '../websites/QuestionSection';
-import { AnswerData } from '@/store/app/types';
+import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
+import QuestionSection from '../performance-advertising/QuestionSection';
 
 const fieldData = [
   {
@@ -63,34 +56,8 @@ const fieldData = [
 export default function PartialEmailsCampaings() {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [emailCampaingsAnswers, setEmailCampaingsAnwers] = useState<AnswerData[]>([]);
-  const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const [emailCampaingsAnswers, setEmailCampaingsAnwers] = useState<Answer[]>([]);
 
-  // Get toggle states from Redux store
-  const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
-    (state: any) => state.marketingTools.email
-  );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-  const handleClick = () => {
-    dispatch(toggleAdd());
-  };
-
-  const initialValues = {
-    name: '',
-    advisor: '',
-    date: '',
-    URL: '',
-    upload: ''
-  };
-
-  const handleSubmit = () => {
-    dispatch(toggleQuestionsContainer());
-  };
-
-  const openSignContainer = () => {
-    dispatch(toggleSignContainer());
-  };
   const formik = useFormik({
     initialValues: {
       campaign_name: '',
@@ -117,23 +84,6 @@ export default function PartialEmailsCampaings() {
   return (
     <Box>
       <TopHeading>Email Campaigns or Newsletters</TopHeading>
-      {/* <Container>
-        <Text>
-          <TextBold>Instruction:</TextBold> Click the + sign to add a new marketing piece for
-          review, then select from the dropdown to begin.
-        </Text>
-        <FlexRow>
-          <IconButton
-            onClick={handleClick}
-            sx={{ color: `${COLORS.BLUE_THEME_MAIN}`, padding: '0px', marginRight: '5px' }}
-          >
-            {isAdd ? <Remove /> : <Add />}
-            <TextBlue>Add Marketing Piece</TextBlue>
-          </IconButton>
-        </FlexRow>
-        {isAdd && <AddMarketingPieceForm initialValues={initialValues} onSubmit={handleSubmit} />}
-      </Container> */}
-      {/* <AddMarketingPieceForm initialValues={initialValues} onSubmit={handleSubmit} /> */}
 
       <InitialForm
         fieldsData={fieldData}
@@ -145,10 +95,10 @@ export default function PartialEmailsCampaings() {
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
-            // openSignContainer={openSignContainer}
             answers={emailCampaingsAnswers}
             setAnswers={setEmailCampaingsAnwers}
-            // setIsSignInOpen={setIsSignInOpen}
+            fieldData={fieldData}
+            formik={formik}
           />
         </Box>
       )}

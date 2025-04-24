@@ -1,7 +1,7 @@
 import CustomModal from '@/components/core/Modal';
 import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { RecordKeepHeader } from '../../websites/RecordKeepingModal/index.styles';
+import { RecordKeepHeader } from '../../websites/SignContainer/RecordKeepingModal/index.styles';
 const testimonialData = [
   'About the client or investor’s experience with the investment adviser or its supervised persons.',
   'That directly or indirectly solicits any current or prospective client or investor to be a client of, or an investor in a private fund advised by, the investment adviser; or',
