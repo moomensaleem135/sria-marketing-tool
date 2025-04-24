@@ -372,7 +372,18 @@ const QuestionSection = ({
                           selectedOption={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
                         />
                       ) : subQuestion.isRadio ? (
-                        <Radio />
+                        <Radio
+                          onChange={(e) =>
+                            handleSubInputChange(q.id, `sub_${subIndex}`, e.target.value)
+                          }
+                          name="sub"
+                          sx={{
+                            accentColor: COLORS.BLUE_600,
+                            '&.Mui-checked': {
+                              color: COLORS.BLUE_600 // Checked color
+                            }
+                          }}
+                        />
                       ) : (
                         <FieldInput
                           name="sub"

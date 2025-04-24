@@ -13,13 +13,14 @@ import ReactSignatureCanvas from 'react-signature-canvas';
 import moment from 'moment';
 import { IQuestionReportContainer } from '@/store/app/types';
 import { BoldText } from '@/components/core/Modal/SignModal/index.styles';
+import { COLORS } from '@/constants/colors';
 
 interface IReviewReport extends IQuestionReportContainer {
   signatureText: string;
 }
 const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: IReviewReport) => {
   const sigCanvas = useRef<ReactSignatureCanvas>(null);
-
+  console.log('answers', answers, 'questions', questions);
   useEffect(() => {
     if (signatureText && sigCanvas.current) {
       const canvas = sigCanvas.current.getCanvas();
@@ -186,14 +187,12 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
                         </label>
                       </div>
                     ) : subQ.isRadio ? (
-                      <Box
-                        sx={{
-                          height: '2rem',
-                          width: '2rem',
-                          background: 'red',
-                          borderRadius: '50%'
-                        }}
-                      ></Box>
+                      <input
+                        type="checkbox"
+                        checked={true}
+                        readOnly
+                        style={{ marginRight: '5px' }}
+                      />
                     ) : (
                       <div>
                         <Typography sx={{ fontSize: '0.9rem' }}>
