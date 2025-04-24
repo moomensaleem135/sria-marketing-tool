@@ -22,6 +22,7 @@ export const ModalBox = styled(Box)<ModalBoxProps>(
     boxShadow: '24px',
     padding: `${padding * 8}px`, // converts padding to px
     paddingTop: `${isSmallLaptop ? 24 : 32}px`, // 24px = 3, 32px = 4
+    paddingBottom: `${isSmallLaptop ? 24 : 32}px`, // 24px = 3, 32px = 4
     zIndex: 10,
     overflowY: 'auto', // Enable vertical scrolling if content overflows
 

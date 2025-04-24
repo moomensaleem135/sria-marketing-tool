@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Box } from '@mui/material';
 
 export const FlexCol = styled.div`
   display: flex;
@@ -31,6 +32,14 @@ export const SubQuestionDiv = styled.div`
   //   margin-top: 10px;
 `;
 
-export const Footer = styled.div`
-  /* margin: 15px; */
+export const Footer = styled.div``;
+export const UserDataBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+`;
+export const ReportRow = styled(Box)`
+  display: flex;
+  align-items: center;
+  column-gap: 2rem;
 `;

@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import { FlexCol, Footer } from './index.styles';
+import { FlexCol, Footer, ReportRow, UserDataBox } from './index.styles';
 import { Line } from '../../../index.styles';
 
 import {
@@ -123,7 +123,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
         return (
           <div key={question.id} style={{ marginBottom: '10px' }}>
             {/* Main Question */}
-            <BoldText>
+            <BoldText style={{ display: 'flex', alignItems: 'start', columnGap: '0.2rem' }}>
               {question.id}. {question.question}
             </BoldText>
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px', margin: '5px 15px' }}>
@@ -235,30 +235,33 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
               </div>
             )}
 
-            <Line />
+            {/* <Line /> */}
           </div>
         );
       })}
+      <Line />
+
       <Footer>
-        <RegularText sx={{ marginBottom: '10px' }}>
+        <RegularText sx={{ marginBottom: '15px' }}>
           I have reviewed the attached marketing piece and answered all questions for the review
           truthfully and to the best of my knowledge.
         </RegularText>
-        <Row>
-          <BoldText>CCO Name:</BoldText>
-          <Col>
+        <UserDataBox>
+          <ReportRow>
+            <BoldText style={{ minWidth: '3rem' }}>CCO Name:</BoldText>
+            {/* <Col> */}
             <RegularText>Name</RegularText>
-          </Col>
-        </Row>
-        <Row>
-          <BoldText>Date:</BoldText>
-          <Col>
+            {/* </Col> */}
+          </ReportRow>
+          <ReportRow>
+            <BoldText style={{ minWidth: '5rem' }}>Date:</BoldText>
+            {/* <Col> */}
             <RegularText>{moment().format('MM-DD-YYYY')}</RegularText>
-          </Col>
-        </Row>
-        <Row>
-          <BoldText>Signature:</BoldText>
-          <Col>
+            {/* </Col> */}
+          </ReportRow>
+          <ReportRow>
+            <BoldText style={{ minWidth: '3rem' }}>Signature:</BoldText>
+            {/* <Col> */}
             <ReactSignatureCanvas
               ref={sigCanvas}
               penColor="black"
@@ -271,8 +274,9 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
               backgroundColor="transparent"
               clearOnResize={false}
             />
-          </Col>
-        </Row>
+            {/* </Col> */}
+          </ReportRow>
+        </UserDataBox>
       </Footer>
       {/* <Line /> */}
     </FlexCol>

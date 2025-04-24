@@ -44,6 +44,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -74,6 +76,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -103,6 +107,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -125,6 +131,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'Yes',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -150,6 +158,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -172,6 +182,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'Yes',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -210,6 +222,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -234,6 +248,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'No',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'
@@ -270,6 +286,8 @@ const questions = [
     // isUpdated:
     //   'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     note: 'Yes',
+    isUpdated:
+      'Has the updated marketing piece been corrected? If no, you cannot publish or send to clients or prospective clients until addressed.',
     isUpdatedTrue: 'Great. Move on to the next question.',
     isUpdatedFalse:
       'Be sure to correct the marketing material before you publish or send out to clients. Not correcting this error results in a violation of the marketing rule.'

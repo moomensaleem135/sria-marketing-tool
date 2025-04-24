@@ -39,7 +39,7 @@ const TestimonialDisclouserExample = () => {
         modalWidth={'45rem'}
         closedIcon={true}
       >
-        <Box>
+        <Box sx={{ paddingBottom: '0.1rem' }}>
           <Box>
             <RecordKeepHeader>Testimonial / Endorsement Definitions</RecordKeepHeader>
             <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.5rem' }}>
