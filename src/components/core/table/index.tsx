@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Main, StyledDataGrid } from './index.styles';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface ITable {
   rows: any[];

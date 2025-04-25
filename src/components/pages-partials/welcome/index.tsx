@@ -18,7 +18,7 @@ import Button from '@/components/core/Button';
 
 import Image from 'next/image';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 const Welcome = () => {
   const router = useRouter();

@@ -9,7 +9,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Image from 'next/image';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 
 import * as React from 'react';
 import { useEffect } from 'react';
@@ -30,6 +30,7 @@ import {
   SidebarStyledListItem
 } from './index.styles';
 import { MenuITEMS } from './menu';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface Props {
   children: React.ReactNode;

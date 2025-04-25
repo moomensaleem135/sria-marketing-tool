@@ -2,12 +2,10 @@ import { COLORS } from '@/constants/colors';
 import { Logout, LogoutSharp } from '@mui/icons-material';
 import { Box, IconButton, Menu, Typography } from '@mui/material';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-// import { useRouter } from 'nextjs-toploader/app';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'nextjs-toploader/app';
 
-import logo from '../../../../public/svgs/lpcLogo.svg';
-import { HIDDEN_ROUTES_LEFT_DRAWER } from '../sidebar';
 import {
   IconsDiv,
   LogoDiv,
