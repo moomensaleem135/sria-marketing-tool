@@ -25,33 +25,12 @@ import {
 import FieldInput from '@/components/core/FieldInput';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import YesNoSelector from '../../YesNoSelector';
-import { AnswerData, IQuestionSection } from '@/store/app/types';
+import { Answer, IQuestionSection } from '@/store/app/types';
 import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import NoContainer from '../SignContainer/noContainer';
 import SignContainer from '../SignContainer';
 import CustomModal from '@/components/core/Modal';
 import DeleteModal from '@/components/core/DragAndDropUploadFile/DeleteModal';
-
-interface Question {
-  id: number;
-  question: string;
-  example: string;
-  subQuestions: string[];
-  answerInstructions: string;
-  dragAndDrop?: string;
-  isUpdated?: string;
-  isUpdatedTrue: string;
-  isUpdatedFalse: string;
-  note: string;
-}
-
-interface Props {
-  questions: Question[];
-  answers: AnswerData[];
-  setAnswers: (value: any) => void;
-  fieldData: any;
-  formik1: any;
-}
 
 const QuestionSection = ({
   questions,
@@ -140,7 +119,7 @@ const QuestionSection = ({
   // });
 
   const handleInputChange = (questionId: number, field: string, value: string) => {
-    setAnswers((prev: AnswerData[]) => {
+    setAnswers((prev: Answer[]) => {
       const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
 
       if (existingAnswerIndex >= 0) {
@@ -175,7 +154,7 @@ const QuestionSection = ({
   }, [answers]);
 
   const handleSubInputChange = (questionId: number, subKey: string, value: string) => {
-    setAnswers((prev: AnswerData[]) => {
+    setAnswers((prev: Answer[]) => {
       const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
 
       if (existingAnswerIndex >= 0) {
@@ -207,7 +186,7 @@ const QuestionSection = ({
   };
 
   const handleFileUpload = (questionId: number, file: string) => {
-    setAnswers((prev: AnswerData[]) => {
+    setAnswers((prev: Answer[]) => {
       const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
 
       if (existingAnswerIndex >= 0) {

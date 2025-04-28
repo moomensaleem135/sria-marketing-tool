@@ -5,17 +5,7 @@ export interface IAppState {
   status: string;
   error: string | undefined;
 }
-export interface AnswerData {
-  // [questionId: number]: {
-  id: number;
-  mainAnswer: string;
-  subAnswers: { [key: string]: string };
-  fileUpload?: string;
-  isUpdated?: string;
-  isUpdatedTrue: string;
-  isUpdatedFalse: string;
-  // };
-}
+
 export interface AgGridI {
   rowData: any;
   colDefs: any;
@@ -41,15 +31,16 @@ export interface AgGridI {
   groupDefaultExpanded?: any;
   domLayout?: any;
 }
-interface SubAnswers {
-  [key: `sub_${number}`]: string; // Dynamic keys like sub_0, sub_1, etc.
+export interface SubAnswers {
+  [key: string]: string; // If it can have any string keys
 }
 
 export interface Answer {
   id: number;
-  mainAnswer: string;
+  mainAnswer?: string;
   subAnswers?: SubAnswers; // Optional since some answers don't have sub-questions
   isUpdated?: string; // Optional since not all answers have this field
+  fileUpload?: string;
 }
 interface SubQuestion {
   text: string;
@@ -89,6 +80,6 @@ export interface IQuestionReportContainer {
   formik: any;
 }
 export interface IQuestionSection extends IQuestionReportContainer {
-  setAnswers: (value: any) => void;
+  setAnswers: (value: Answer[] | ((prev: Answer[]) => Answer[])) => void;
   // formik1:any
 }

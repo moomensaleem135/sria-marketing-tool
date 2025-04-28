@@ -26,44 +26,13 @@ import {
 import FieldInput from '@/components/core/FieldInput';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import YesNoSelector from '../../YesNoSelector';
-import { AnswerData, IQuestionSection } from '@/store/app/types';
+import { Answer, IQuestionSection, SubAnswers } from '@/store/app/types';
 import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import NoContainer from '../../websites/SignContainer/noContainer';
 import SignContainer from '../../websites/SignContainer';
 import CustomModal from '@/components/core/Modal';
 import DeleteModal from '@/components/core/DragAndDropUploadFile/DeleteModal';
 
-interface SubQuestion {
-  text: string;
-  isCheckbox?: boolean;
-  isRadio?: boolean;
-}
-
-interface IQuestion {
-  id: number;
-  question: string | React.ReactNode;
-  answerInstructions?: string;
-  notes?: string | React.ReactNode | undefined;
-  details?: string | React.ReactNode | undefined;
-  notes2?: string | React.ReactNode | undefined;
-  example?: string | React.ReactNode | undefined;
-  subQuestions?: SubQuestion[];
-  dragAndDrop?: string;
-  note: string;
-  isUpdatedTrue: string;
-  isUpdated?: boolean;
-  isUpdatedFalse: string;
-  isMultipleNotes?: boolean;
-  isQuestionWithNA?: boolean;
-}
-
-interface Props {
-  questions: IQuestion[];
-  answers: AnswerData[];
-  setAnswers: (value: any) => void;
-}
-type FormFieldValue = string | boolean | File | null;
-type InitialValues = Record<string, FormFieldValue>;
 const QuestionSection = ({
   questions,
   answers,
@@ -93,7 +62,7 @@ const QuestionSection = ({
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
   const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
   const [visibleQuestions, setVisibleQuestions] = useState<number[]>([questions[0].id]);
-
+  console.log('answer', answers);
   // Function to check if we should show the next question
   const shouldShowNextQuestion = (currentQuestionId: number) => {
     const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
@@ -124,10 +93,38 @@ const QuestionSection = ({
   };
 
   const handleSelectedYesNo = (questionID: number, option: string) => {
-    setSelectedOption((prev) => ({
-      ...prev,
-      [questionID]: option
-    }));
+    const currentAnswer = getAnswer(questionID);
+
+    // If clicking the already selected option, unselect it
+    if (currentAnswer?.mainAnswer === option) {
+      setSelectedOption((prev) => {
+        const newState = { ...prev };
+        delete newState[questionID];
+
+        return newState;
+      });
+
+      // Remove the answer
+      const updatedAnswers = answers.filter((a: Answer) => a.id !== questionID);
+      setAnswers(updatedAnswers);
+
+      // Hide subsequent questions
+      setVisibleQuestions((prev) => {
+        const currentIndex = questions.findIndex((q) => q.id === questionID);
+
+        return prev.filter((id) => {
+          const questionIndex = questions.findIndex((q) => q.id === id);
+
+          return questionIndex <= currentIndex;
+        });
+      });
+    } else {
+      // Otherwise, select the new option
+      setSelectedOption((prev) => ({
+        ...prev,
+        [questionID]: option
+      }));
+    }
   };
 
   const shouldRenderSubQuestions = (question: any) => {
@@ -144,7 +141,38 @@ const QuestionSection = ({
   };
 
   const handleInputChange = (questionId: number, field: string, value: string) => {
-    setAnswers((prev: AnswerData[]) => {
+    const currentAnswer = getAnswer(questionId);
+
+    // If the value is the same as current answer, remove the answer
+    if (currentAnswer?.[field as keyof Answer] === value) {
+      setAnswers((prev) => {
+        const newAnswers = prev.filter((a) => a.id !== questionId);
+        // If we're removing isUpdated but mainAnswer exists, keep the answer with just mainAnswer
+        if (field === 'isUpdated' && currentAnswer?.mainAnswer) {
+          return [...newAnswers, { id: questionId, mainAnswer: currentAnswer.mainAnswer }];
+        }
+
+        return newAnswers;
+      });
+
+      // Hide subsequent questions only if it's the main answer being removed
+      if (field === 'mainAnswer') {
+        setVisibleQuestions((prev) => {
+          const currentIndex = questions.findIndex((q) => q.id === questionId);
+
+          return prev.filter((id) => {
+            const questionIndex = questions.findIndex((q) => q.id === id);
+
+            return questionIndex <= currentIndex;
+          });
+        });
+      }
+
+      return;
+    }
+
+    // Otherwise, update the answer
+    setAnswers((prev: Answer[]) => {
       const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
 
       if (existingAnswerIndex >= 0) {
@@ -165,38 +193,83 @@ const QuestionSection = ({
         ];
       }
     });
+
+    // If updating isUpdated to "Yes", show next question
+    if (field === 'isUpdated' && value === 'Yes') {
+      handleShowNextQuestion(questionId);
+    }
+
     setIsSignInOpen(false);
   };
 
-  const handleSubInputChange = (questionId: number, subKey: string, value: string) => {
-    setAnswers((prev: AnswerData[]) => {
-      const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
+  const handleSubInputChange = (questionId: number, subKey: keyof SubAnswers, value: string) => {
+    const currentSubAnswer = getAnswer(questionId)?.subAnswers?.[subKey];
 
-      if (existingAnswerIndex >= 0) {
-        const updatedAnswers = [...prev];
-        const existingSubAnswers = updatedAnswers[existingAnswerIndex].subAnswers || {};
+    // If clicking the same option, unset it
+    if (currentSubAnswer === value) {
+      setAnswers((prev: Answer[]) => {
+        const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
 
-        updatedAnswers[existingAnswerIndex] = {
-          ...updatedAnswers[existingAnswerIndex],
-          subAnswers: {
-            ...existingSubAnswers,
-            [subKey]: value
+        if (existingAnswerIndex >= 0) {
+          const updatedAnswers = [...prev];
+          const existingSubAnswers = updatedAnswers[existingAnswerIndex].subAnswers || {};
+
+          // Remove the specific subAnswer
+          const newSubAnswers = { ...existingSubAnswers };
+          delete newSubAnswers[subKey];
+
+          updatedAnswers[existingAnswerIndex] = {
+            ...updatedAnswers[existingAnswerIndex],
+            subAnswers: Object.keys(newSubAnswers).length > 0 ? newSubAnswers : undefined
+          };
+
+          // If no subAnswers left and no other fields, remove the entire answer
+          if (
+            Object.keys(newSubAnswers).length === 0 &&
+            !updatedAnswers[existingAnswerIndex].mainAnswer &&
+            !updatedAnswers[existingAnswerIndex].isUpdated &&
+            !updatedAnswers[existingAnswerIndex].fileUpload
+          ) {
+            return prev.filter((a) => a.id !== questionId);
           }
-        };
 
-        return updatedAnswers;
-      } else {
-        return [
-          ...prev,
-          {
-            id: questionId,
+          return updatedAnswers;
+        }
+
+        return prev;
+      });
+    } else {
+      // Otherwise, update the subAnswer normally
+      setAnswers((prev: Answer[]) => {
+        const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
+
+        if (existingAnswerIndex >= 0) {
+          const updatedAnswers = [...prev];
+          const existingSubAnswers = updatedAnswers[existingAnswerIndex].subAnswers || {};
+
+          updatedAnswers[existingAnswerIndex] = {
+            ...updatedAnswers[existingAnswerIndex],
             subAnswers: {
+              ...existingSubAnswers,
               [subKey]: value
             }
-          }
-        ];
-      }
-    });
+          };
+
+          return updatedAnswers;
+        } else {
+          return [
+            ...prev,
+            {
+              id: questionId,
+              subAnswers: {
+                [subKey]: value
+              }
+            }
+          ];
+        }
+      });
+    }
+
     if (subKey === 'isUpdated' && value) {
       handleShowNextQuestion(questionId);
     }
@@ -204,7 +277,7 @@ const QuestionSection = ({
   };
 
   const handleFileUpload = (questionId: number, file: string) => {
-    setAnswers((prev: AnswerData[]) => {
+    setAnswers((prev: Answer[]) => {
       const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
 
       if (existingAnswerIndex >= 0) {
@@ -312,7 +385,7 @@ const QuestionSection = ({
           const answer = getAnswer(q.id);
 
           return (
-            <QuestionWrapper key={q.id}>
+            <QuestionWrapper key={q.id} style={{ marginBottom: '1.4rem' }}>
               <QuestionContainer>
                 <QuestionDiv>
                   <Question>
