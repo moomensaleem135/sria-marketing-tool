@@ -1,12 +1,10 @@
 'use client';
 import { Answer } from '@/store/app/types';
 import { Box, Typography } from '@mui/material';
-import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { TopHeading } from '../index.styles';
-import InitialForm from '../initialForm';
-import QuestionSection from '../performance-advertising/QuestionSection';
+
 import RatingDisclouser from './modals/ratingDisclouser';
+import MainComponentForm from '../main-component';
 const questions = [
   {
     id: 1,
@@ -196,57 +194,25 @@ const fieldData = [
   }
 ];
 const ThirdPartyRating = () => {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<Answer[]>([]);
-  const formik = useFormik({
-    initialValues: {
-      rating_name: '',
-      advisor: '',
-      date: '',
-      original_location: '',
+  const [ratingAnswers, setRatingAnswers] = useState<Answer[]>([]);
+  const initialValues = {
+    rating_name: '',
+    advisor: '',
+    date: '',
+    original_location: '',
 
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.rating_name !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.original_location !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Third-Party Ratings</TopHeading>
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-
-      {/* </form> */}
-
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={answers}
-            setAnswers={setAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={ratingAnswers}
+      setAnswers={setRatingAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Third-Party Ratings'}
+    />
   );
 };
 

@@ -1,16 +1,10 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
-import { Box } from '@mui/material';
-
-import { useFormik } from 'formik';
-
 import { Answer } from '@/store/app/types';
-import InitialForm from '../initialForm';
-import QuestionSection from '../performance-advertising/QuestionSection';
+
+import MainComponentForm from '../main-component';
 
 export const questions = [
   {
@@ -263,57 +257,23 @@ const fieldData = [
   }
 ];
 export default function PartialWebsiteDomain() {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<Answer[]>([]);
-
-  const formik = useFormik({
-    initialValues: {
-      pageName: '',
-      advisor: '',
-      date: '',
-      URL: '',
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.pageName !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.URL !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+  const [websiteAnswers, setWebsiteAnswers] = useState<Answer[]>([]);
+  const initialValues = {
+    pageName: '',
+    advisor: '',
+    date: '',
+    URL: '',
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Websites </TopHeading>
-
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-
-      {/* </form> */}
-
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={answers}
-            setAnswers={setAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={websiteAnswers}
+      setAnswers={setWebsiteAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Websites'}
+    />
   );
 }

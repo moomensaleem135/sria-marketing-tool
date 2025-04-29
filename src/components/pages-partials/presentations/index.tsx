@@ -1,17 +1,10 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-
-import { Box } from '@mui/material';
-import InitialForm from '../initialForm';
-import { useFormik } from 'formik';
 import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
-import QuestionSection from '../performance-advertising/QuestionSection';
+import MainComponentForm from '../main-component';
 
 const fieldData = [
   {
@@ -57,55 +50,79 @@ const fieldData = [
 ];
 
 const PartialPresentation = () => {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
   const [presentationAnswers, setPresentationAnswers] = useState<Answer[]>([]);
-  const dispatch = useDispatch();
-
-  const formik = useFormik({
-    initialValues: {
-      presentation_name: '',
-      advisor: '',
-      date: '',
-      audience: '',
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.presentation_name !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.audience !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+  const initialValues = {
+    presentation_name: '',
+    advisor: '',
+    date: '',
+    audience: '',
+    upload: ''
+  };
+  // const formik = useFormik({
+  //   initialValues: {
+  //     presentation_name: '',
+  //     advisor: '',
+  //     date: '',
+  //     audience: '',
+  //     upload: ''
+  //   },
+  //   onSubmit: (values) => {
+  //     if (
+  //       values.presentation_name !== '' &&
+  //       values.advisor !== '' &&
+  //       values.date !== '' &&
+  //       values.audience !== '' &&
+  //       values.upload !== ''
+  //     ) {
+  //       setIsBeginReview(true);
+  //     } else {
+  //       setIsAllFieldModal(true);
+  //     }
+  //   }
+  // });
+  // useEffect(() => {
+  //   if (isBeginReview) {
+  //     setIsAccordianOpen(false);
+  //   }
+  // }, [isBeginReview]);
 
   return (
-    <Box>
-      <TopHeading>Presentations</TopHeading>
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={presentationAnswers}
-            setAnswers={setPresentationAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    // <Box>
+    //   <TopHeading>Presentations</TopHeading>
+    //   <Accordion expanded={isAccordinanOpen} onChange={()=>setIsAccordianOpen(!isAccordinanOpen)}>
+    //     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+    //       Presentation Details
+    //     </AccordionSummary>
+    //     <AccordionDetails>
+    //       <InitialForm
+    //         fieldsData={fieldData}
+    //         formik={formik}
+    //         isAllFieldModal={isAllFieldModal}
+    //         setIsAllFieldModal={setIsAllFieldModal}
+    //       />
+    //     </AccordionDetails>
+    //   </Accordion>
+    //   {isBeginReview && (
+    //     <Box sx={{ marginTop: '1rem' }}>
+    //       <QuestionSection
+    //         questions={questions}
+    //         answers={presentationAnswers}
+    //         setAnswers={setPresentationAnswers}
+    //         fieldData={fieldData}
+    //         formik={formik}
+    //       />
+    //     </Box>
+    //   )}
+    // </Box>
+    <MainComponentForm
+      answers={presentationAnswers}
+      setAnswers={setPresentationAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Presentations'}
+    />
   );
 };
+
 export default PartialPresentation;

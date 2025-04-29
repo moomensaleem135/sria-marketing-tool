@@ -8,6 +8,7 @@ import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import CustomModal from '@/components/core/Modal';
 import { COLORS } from '@/constants/colors';
 import Image from 'next/image';
+
 interface FormField {
   id: number;
   name: string;
@@ -21,14 +22,30 @@ interface IInitialForm {
   formik: any;
   isAllFieldModal: boolean;
   setIsAllFieldModal: (value: boolean) => void;
+  // setIsAccordianOpen: any;
+  // isAccordinanOpen: any;
+  isBeginReview: boolean;
 }
-const InitialForm = ({ fieldsData, formik, isAllFieldModal, setIsAllFieldModal }: IInitialForm) => {
+const InitialForm = ({
+  fieldsData,
+  formik,
+  isAllFieldModal,
+  setIsAllFieldModal,
+  isBeginReview
+  // setIsAccordianOpen,
+  // isAccordinanOpen
+}: IInitialForm) => {
+  // console.log('isAccordinanOpen',isAccordinanOpen)
   return (
-    <form
-      style={{ border: '1px solid #C3CAD2', padding: '1.5rem', borderRadius: '10px' }}
-      onSubmit={formik.handleSubmit}
-    >
-      <Grid container display={'flex'} direction={'row'} columnSpacing={2} rowSpacing={4}>
+    <form style={{ padding: '1.5rem ', borderRadius: '10px' }} onSubmit={formik.handleSubmit}>
+      <Grid
+        container
+        display={'flex'}
+        direction={'row'}
+        columnSpacing={2}
+        rowSpacing={4}
+        sx={{ marginTop: isBeginReview ? '-4rem' : '-1rem' }}
+      >
         {fieldsData.map((data) => (
           <Grid item md={data.columnSize} key={data.id}>
             <Label> {data.fieldTitle}</Label>

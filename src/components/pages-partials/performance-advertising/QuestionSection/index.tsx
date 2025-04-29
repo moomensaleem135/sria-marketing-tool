@@ -62,6 +62,7 @@ const QuestionSection = ({
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
   const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
   const [visibleQuestions, setVisibleQuestions] = useState<number[]>([questions[0].id]);
+  const [isCompleteAllModal, setIsCompleteAllModal] = useState<boolean>(false);
   console.log('answer', answers);
   // Function to check if we should show the next question
   const shouldShowNextQuestion = (currentQuestionId: number) => {
@@ -321,6 +322,19 @@ const QuestionSection = ({
       }
     }));
   };
+
+  const checkAnswerData = () => {
+    const data = answers.filter((ans, index) => {
+      const question = questions[index];
+
+      return (
+        ans.mainAnswer === question.note && !ans.isUpdated // Checks for empty/undefined
+      );
+    });
+
+    return data;
+  };
+
   const renderExpandableSection = (
     id: number,
     type: 'example' | 'notes' | 'details' | 'notes2',
@@ -360,7 +374,12 @@ const QuestionSection = ({
   };
   const handleReviewComplete = () => {
     // localStorage.setItem('reviewAnswers', JSON.stringify(values));
-    openSignContainer();
+    const isAllAnswered = checkAnswerData();
+    if (isAllAnswered.length > 0) {
+      setIsCompleteAllModal(true);
+    } else if (isAllAnswered.length === 0 && answers.length === questions.length) {
+      openSignContainer();
+    }
   };
 
   return (
@@ -507,6 +526,7 @@ const QuestionSection = ({
             type="button"
             text="Complete Review"
             handleClick={handleReviewComplete}
+            disable={answers.length !== questions.length}
           />
         </ButtonRow>
       </Container>
@@ -537,6 +557,19 @@ const QuestionSection = ({
           setIsClearModal={setIsClearAllModal}
           submitBtnText="Clear"
         />
+      </CustomModal>
+      <CustomModal
+        openValue={isCompleteAllModal}
+        closeFunction={() => setIsCompleteAllModal(false)}
+        closedIcon={true}
+        modalWidth={'25rem'}
+      >
+        <Box>
+          <Typography sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+            Review not completed.
+          </Typography>
+          <Typography sx={{ fontSize: '0.9rem' }}>Please answer all required questions</Typography>
+        </Box>
       </CustomModal>
     </Box>
   );

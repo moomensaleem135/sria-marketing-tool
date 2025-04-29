@@ -18,93 +18,84 @@ export const MenuITEMS = [
     title: 'Websites',
     icon: <WebsitesIcon />,
     page: 'websites',
-    path: '/websites'
+    path: '/websites',
+    isLineAbove: 'false'
   },
   {
     title: 'Email Campaigns or Newsletters',
     icon: <EmailCampaignIcon />,
     page: 'email-campaigns',
-    path: '/email-campaigns'
+    path: '/email-campaigns',
+    isLineAbove: 'false'
   },
   {
     title: 'Blogs or Articles',
     icon: <BlogsArticleIcon />,
     page: 'blog-articles',
-    path: '/blog-articles'
+    path: '/blog-articles',
+    isLineAbove: 'false'
   },
   {
     title: 'Presentations',
     icon: <PresentationIcon />,
     page: 'presentations',
-    path: '/presentations'
+    path: '/presentations',
+    isLineAbove: 'false'
   },
   {
     title: 'Performance Advertising',
     icon: <PerformanceAdIcon />,
     page: 'performance-advertising',
-    path: '/performance-advertising'
+    path: '/performance-advertising',
+    isLineAbove: 'false'
   },
   {
     title: 'Social Media',
     icon: <SocialMediaIcon />,
     page: 'social-media',
-    path: '/social-media'
+    path: '/social-media',
+    isLineAbove: 'false'
   },
   {
     title: 'Testimonials & Endorsements',
     icon: <TestimonialIcon />,
     page: 'testimonial-endorsements',
-    path: '/testimonial-endorsements'
+    path: '/testimonial-endorsements',
+    isLineAbove: 'false'
   },
   {
     title: 'Reviews',
     icon: <RatingIcon />,
     page: 'reviews',
-    path: '/reviews'
+    path: '/reviews',
+    isLineAbove: 'false'
   },
   {
     title: 'Third-Party Ratings',
     icon: <ThirdPartyRatings />,
     page: 'thirdParty-ratings',
-    path: '/thirdParty-ratings'
+    path: '/thirdParty-ratings',
+    isLineAbove: 'false'
   },
   {
     title: 'Brochures',
     icon: <BrochureIcon />,
     page: 'brochures',
-    path: '/brochures'
+    path: '/brochures',
+    isLineAbove: 'false'
   },
   {
     title: 'Videos',
     icon: <VideoIcon />,
     page: 'videos',
-    path: '/videos'
+    path: '/videos',
+    isLineAbove: 'false'
   },
   {
     title: 'Reports',
     icon: <Reports />,
     page: 'reports',
-    path: '/reports'
+    path: '/reports',
+    isLineAbove: 'true'
   }
-
-  // {
-  //   title: 'Blog or Article',
-  //   icon: <RetrospectiveReviewIcon />,
-  //   page: 'retrospective_review',
-  //   path: '/retrospective_review',
-  //   submenu: [
-  //     {
-  //       title: 'Review',
-  //       icon: '',
-  //       page: 'calendar',
-  //       path: '/ria_fiduciary_review_tool/retrospective_review/review'
-  //     },
-  //     {
-  //       title: 'Certification',
-  //       icon: '',
-  //       page: 'Onboarding',
-  //       path: '/ria_fiduciary_review_tool/retrospective_review/certification'
-  //     }
-  //   ]
-  // }
 ];

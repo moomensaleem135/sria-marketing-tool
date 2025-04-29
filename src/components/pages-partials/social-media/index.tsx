@@ -1,15 +1,10 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
-import { Box } from '@mui/material';
-import InitialForm from '../initialForm';
-import { useFormik } from 'formik';
 import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
-import QuestionSection from '../performance-advertising/QuestionSection';
+import MainComponentForm from '../main-component';
 
 const fieldData = [
   {
@@ -62,58 +57,25 @@ const fieldData = [
   }
 ];
 export default function PartialSocialMedia() {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [socialAnswers, setSocialAnswers] = useState<Answer[]>([]);
+  const initialValues = {
+    post_title: '',
+    advisor: '',
+    date: '',
+    channel: '',
+    post_url: '',
 
-  const formik = useFormik({
-    initialValues: {
-      post_title: '',
-      advisor: '',
-      date: '',
-      channel: '',
-      post_url: '',
-
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.post_title !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.channel !== '' &&
-        values.post_url !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Social Media</TopHeading>
-
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={answers}
-            setAnswers={setAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={socialAnswers}
+      setAnswers={setSocialAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Social Media'}
+    />
   );
 }

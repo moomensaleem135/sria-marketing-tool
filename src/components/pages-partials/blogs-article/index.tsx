@@ -1,17 +1,12 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import InitialForm from '../initialForm';
-import { useFormik } from 'formik';
 import { Answer } from '@/store/app/types';
-import { Box } from '@mui/material';
 import { questions } from '../websites';
-import QuestionSection from '../performance-advertising/QuestionSection';
+import MainComponentForm from '../main-component';
 
 const fieldData = [
   {
@@ -57,8 +52,6 @@ const fieldData = [
 ];
 
 const PartialBlogArticle = () => {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
   const [blogAnswers, setBlogAnswers] = useState<Answer[]>([]);
 
   // Get toggle states from Redux store
@@ -66,51 +59,23 @@ const PartialBlogArticle = () => {
     (state: any) => state.marketingTools.blog
   );
   console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
-
-  const formik = useFormik({
-    initialValues: {
-      blog_title: '',
-      advisor: '',
-      date: '',
-      URL: '',
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.blog_title !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.URL !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+  const initialValues = {
+    blog_title: '',
+    advisor: '',
+    date: '',
+    URL: '',
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Blogs or Articles</TopHeading>
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={blogAnswers}
-            setAnswers={setBlogAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={blogAnswers}
+      setAnswers={setBlogAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Blogs or Articles'}
+    />
   );
 };
 export default PartialBlogArticle;

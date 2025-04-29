@@ -1,15 +1,10 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
-import { Box } from '@mui/material';
-import { useFormik } from 'formik';
-import InitialForm from '../initialForm';
 import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
-import QuestionSection from '../performance-advertising/QuestionSection';
+import MainComponentForm from '../main-component';
 
 const fieldData = [
   {
@@ -54,54 +49,23 @@ const fieldData = [
   }
 ];
 export default function PartialEmailsCampaings() {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
   const [emailCampaingsAnswers, setEmailCampaingsAnwers] = useState<Answer[]>([]);
-
-  const formik = useFormik({
-    initialValues: {
-      campaign_name: '',
-      advisor: '',
-      date: '',
-      URL: '',
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.campaign_name !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.URL !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+  const initialValues = {
+    campaign_name: '',
+    advisor: '',
+    date: '',
+    URL: '',
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Email Campaigns or Newsletters</TopHeading>
-
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={emailCampaingsAnswers}
-            setAnswers={setEmailCampaingsAnwers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={emailCampaingsAnswers}
+      setAnswers={setEmailCampaingsAnwers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Email Campaigns or Newsletters'}
+    />
   );
 }

@@ -48,7 +48,7 @@ interface SubQuestion {
   isRadio?: boolean;
 }
 
-interface Question {
+export interface Question {
   id: number;
   question: string | ReactNode;
   answerInstructions?: string;
@@ -65,7 +65,7 @@ interface Question {
   isUpdatedFalse: string;
   isQuestionWithNA?: boolean;
 }
-interface FieldData {
+export interface FieldData {
   id: number;
   name: string;
   fieldTitle: string;

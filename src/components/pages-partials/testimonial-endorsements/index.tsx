@@ -1,14 +1,10 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
 import { Box, Typography } from '@mui/material';
-import InitialForm from '../initialForm';
 import { Answer } from '@/store/app/types';
-import { useFormik } from 'formik';
-import QuestionSection from '../performance-advertising/QuestionSection';
+
 import TestimonialEndorsementModal from './testimonalExemptionModal';
 import DisclouserExampleModal from './DisclouserExampleModal';
 import ClientEndorsementModal from './Client-Endorsement-Modal';
@@ -17,6 +13,7 @@ import DisclouserConflicts from './Disclouser-Conflicts';
 import PaidTestimonial from './Paid-Testimonial';
 import WrittenAgreement from './Wriiten-Agreement';
 import TestimonialProhibitation from './Testimonial-Prohibitation';
+import MainComponentForm from '../main-component';
 
 const questions = [
   {
@@ -346,57 +343,25 @@ const fieldData = [
 ];
 
 export default function PartialTestimonial() {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [testimonialAnswers, setTestimonialAnswers] = useState<Answer[]>([]);
+  const initialValues = {
+    full_name: '',
+    advisor: '',
+    date: '',
+    testimonail: '',
+    ad_url: '',
 
-  const formik = useFormik({
-    initialValues: {
-      full_name: '',
-      advisor: '',
-      date: '',
-      testimonail: '',
-      ad_url: '',
-
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.full_name !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.testimonail !== '' &&
-        values.ad_url !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Testimonials & Endorsements</TopHeading>
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={answers}
-            setAnswers={setAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={testimonialAnswers}
+      setAnswers={setTestimonialAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Testimonials & Endorsements'}
+    />
   );
 }

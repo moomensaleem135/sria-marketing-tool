@@ -1,19 +1,16 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
 import { Box, Typography } from '@mui/material';
-import InitialForm from '../initialForm';
-import { useFormik } from 'formik';
+
 import { Answer } from '@/store/app/types';
-import QuestionSection from '../performance-advertising/QuestionSection';
 import ReviewDisclouser from './modals/reviewDisclouser';
 import TestimonialDisclouserExample from './modals/testimonialDisclouserExample';
 import PaidReviews from './modals/paidReviews';
 import ReviewAgreement from './modals/reviewAgreement';
 import AdvertisingProhibitation from './modals/advertisingProhibitation';
+import MainComponentForm from '../main-component';
 
 const questions = [
   {
@@ -338,60 +335,26 @@ const fieldData = [
   }
 ];
 const PartialReviews = () => {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [reviewAnswers, setReviewAnswers] = useState<Answer[]>([]);
+  const initialValues = {
+    review_name: '',
+    advisor: '',
+    date: '',
+    original_location: '',
+    current_location: '',
 
-  const formik = useFormik({
-    initialValues: {
-      review_name: '',
-      advisor: '',
-      date: '',
-      original_location: '',
-      current_location: '',
-
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.review_name !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.original_location !== '' &&
-        values.current_location !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Reviews</TopHeading>
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-
-      {/* </form> */}
-
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={answers}
-            setAnswers={setAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={reviewAnswers}
+      setAnswers={setReviewAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Reviews'}
+    />
   );
 };
 export default PartialReviews;

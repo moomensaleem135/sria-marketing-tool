@@ -197,6 +197,9 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           >
             {MenuITEMS.map((item) => (
               <>
+                {item.isLineAbove === 'true' && (
+                  <hr style={{ height: '2px', background: `${COLORS.GREY_400} !important` }} />
+                )}
                 <SidebarStyledListItem key={item.title}>
                   <ListItemButton
                     sx={{

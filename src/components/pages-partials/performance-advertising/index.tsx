@@ -1,18 +1,12 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-
-import InitialForm from '../initialForm';
 import { Box, Typography } from '@mui/material';
-import { useFormik } from 'formik';
 import { Answer } from '@/store/app/types';
-import QuestionSection from './QuestionSection';
 import AdProhibitation from './adProhibitation';
 import { Question } from '../index.styles';
+import MainComponentForm from '../main-component';
 
 const questions = [
   {
@@ -594,59 +588,26 @@ const fieldData = [
 ];
 
 const PartialPerformanceAd = () => {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
   const [presentationAnswers, setPresentationAnswers] = useState<Answer[]>([]);
-  const dispatch = useDispatch();
+  const initialValues = {
+    ad_name: '',
+    ad_location: '',
 
-  const formik = useFormik({
-    initialValues: {
-      ad_name: '',
-      ad_location: '',
-
-      advisor: '',
-      date: '',
-      audience: '',
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.ad_name !== '' &&
-        values.advisor !== '' &&
-        values.ad_location !== '' &&
-        values.date !== '' &&
-        values.audience !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+    advisor: '',
+    date: '',
+    audience: '',
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Performance Advertising</TopHeading>
-
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={presentationAnswers}
-            setAnswers={setPresentationAnswers}
-            formik={formik}
-            fieldData={fieldData}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={presentationAnswers}
+      setAnswers={setPresentationAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Performance Advertising'}
+    />
   );
 };
 export default PartialPerformanceAd;

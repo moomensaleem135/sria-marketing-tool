@@ -1,15 +1,10 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
-import { Box } from '@mui/material';
-import { useFormik } from 'formik';
-import InitialForm from '../initialForm';
 import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
-import QuestionSection from '../performance-advertising/QuestionSection';
+import MainComponentForm from '../main-component';
 
 const fieldData = [
   {
@@ -62,59 +57,25 @@ const fieldData = [
   }
 ];
 export default function PartialBrochure() {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [broucherAnswers, setBroucherAnswers] = useState<Answer[]>([]);
+  const initialValues = {
+    broucher_title: '',
+    advisor: '',
+    date: '',
+    audience: '',
+    broucher_location: '',
 
-  const formik = useFormik({
-    initialValues: {
-      broucher_title: '',
-      advisor: '',
-      date: '',
-      audience: '',
-      broucher_location: '',
-
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.broucher_title !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.audience !== '' &&
-        values.broucher_location !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Brochures</TopHeading>
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-
-      {/* </form> */}
-
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={answers}
-            setAnswers={setAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={broucherAnswers}
+      setAnswers={setBroucherAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Brochures'}
+    />
   );
 }

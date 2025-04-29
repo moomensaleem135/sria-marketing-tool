@@ -1,16 +1,11 @@
 'use client';
 
-import { TopHeading } from './index.styles';
-
 import React, { useState } from 'react';
 
-import { Box } from '@mui/material';
-import InitialForm from '../initialForm';
 import { Answer } from '@/store/app/types';
-import { useFormik } from 'formik';
 
 import { questions } from '../websites';
-import QuestionSection from '../performance-advertising/QuestionSection';
+import MainComponentForm from '../main-component';
 
 const fieldData = [
   {
@@ -64,57 +59,25 @@ const fieldData = [
 ];
 
 export default function PartialVideo() {
-  const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
-  const [isBeginReview, setIsBeginReview] = useState<boolean>(false);
-  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [videoAnswers, setVideoAnswers] = useState<Answer[]>([]);
+  const initialValues = {
+    video_title: '',
+    advisor: '',
+    date: '',
+    audience: '',
+    video_url: '',
 
-  const formik = useFormik({
-    initialValues: {
-      video_title: '',
-      advisor: '',
-      date: '',
-      audience: '',
-      video_url: '',
-
-      upload: ''
-    },
-    onSubmit: (values) => {
-      if (
-        values.video_title !== '' &&
-        values.advisor !== '' &&
-        values.date !== '' &&
-        values.audience !== '' &&
-        values.video_url !== '' &&
-        values.upload !== ''
-      ) {
-        setIsBeginReview(true);
-      } else {
-        setIsAllFieldModal(true);
-      }
-    }
-  });
+    upload: ''
+  };
 
   return (
-    <Box>
-      <TopHeading>Videos</TopHeading>
-      <InitialForm
-        fieldsData={fieldData}
-        formik={formik}
-        isAllFieldModal={isAllFieldModal}
-        setIsAllFieldModal={setIsAllFieldModal}
-      />
-
-      {isBeginReview && (
-        <Box sx={{ marginTop: '1rem' }}>
-          <QuestionSection
-            questions={questions}
-            answers={answers}
-            setAnswers={setAnswers}
-            fieldData={fieldData}
-            formik={formik}
-          />
-        </Box>
-      )}
-    </Box>
+    <MainComponentForm
+      answers={videoAnswers}
+      setAnswers={setVideoAnswers}
+      formInitialValues={initialValues}
+      fieldData={fieldData}
+      questions={questions}
+      topHeading={'Videos'}
+    />
   );
 }
