@@ -87,7 +87,7 @@ const MainComponentForm = ({
         </Accordion>
       )}
 
-      {!isBeginReview && (
+      {isBeginReview && (
         <Box sx={{ marginTop: '1rem' }}>
           <QuestionSection
             questions={questions}
