@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { useParams, usePathname } from 'next/navigation';
 
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import logo from '../../../../public/svgs/lpcLogo.svg';
 import MiniLogo from '../../../../public/svgs/lpcMiniLogo.svg';
@@ -31,6 +31,8 @@ import {
 } from './index.styles';
 import { MenuITEMS } from './menu';
 import { useRouter } from 'nextjs-toploader/app';
+import CustomModal from '@/components/core/Modal';
+import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 
 interface Props {
   children: React.ReactNode;
@@ -42,13 +44,13 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
   const router = useRouter();
 
   const isTablet = useMediaQuery('(max-width: 960px)');
-  const [openD, setOpenD] = React.useState(false);
-  const [collapse, setCollapse] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [pushedRoute, setPushedRoute] = React.useState<string>('');
+  const [openD, setOpenD] = useState(false);
+  const [collapse, setCollapse] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [pushedRoute, setPushedRoute] = useState<string>('');
 
-  const [openMenu, setOpenMenu] = React.useState<string | null>('');
-  const [saveAlert, setSaveAlert] = React.useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>('');
+  const [saveAlert, setSaveAlert] = useState<boolean>(false);
   const handleDrawerOpen = () => {
     setOpenD(true);
     setCollapse(true);
@@ -84,7 +86,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
   };
   const { taskId } = useParams();
   const handleRoutePush = (route: string) => {
-    if (path === '/activities/tasks' || path === `/activities/tasks/${taskId}`) {
+    if (path !== '/reports') {
       const isSaved = localStorage.getItem('isSaved');
 
       setSaveAlert(true);
@@ -259,8 +261,15 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
       >
         {children}
       </MainStyle>
-      {/* <CustomModal value={saveAlert} setValue={setSaveAlert} maxWidth="25rem">
-        <Box sx={{ padding: '1rem' }}>
+      <CustomModal
+        openValue={saveAlert}
+        closeFunction={() => setSaveAlert(false)}
+        // mainHeading="Delete File?"
+        closedIcon={true}
+        modalWidth={'25rem'}
+        
+      >
+        <Box >
           <Typography sx={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             Leaving Page?
           </Typography>
@@ -270,7 +279,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           <Box
             sx={{ display: 'flex', justifyContent: 'end', columnGap: '1rem', marginTop: '1rem' }}
           >
-            <CloseButtonAddTask onClick={handleCloseConfirmRoute}>close</CloseButtonAddTask>
+            {/* <CloseButtonAddTask onClick={handleCloseConfirmRoute}>close</CloseButtonAddTask>
             <DoneButtonAddTask
               onClick={() => {
                 setSaveAlert(false);
@@ -278,10 +287,23 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
               }}
             >
               Confirm
-            </DoneButtonAddTask>
+            </DoneButtonAddTask> */}
+            <ButtonWitnLoading
+              text="Close"
+              bg="black"
+              textColor="white"
+              handleClick={handleCloseConfirmRoute}
+            />
+            <ButtonWitnLoading
+              text="Confirm"
+              handleClick={() => {
+                setSaveAlert(false);
+                router.push(pushedRoute);
+              }}
+            />
           </Box>
         </Box>
-      </CustomModal> */}
+      </CustomModal>
     </Box>
   );
 }

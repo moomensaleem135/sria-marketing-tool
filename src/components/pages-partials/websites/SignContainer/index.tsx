@@ -9,18 +9,134 @@ import ReviewReport from './ReviewReport';
 import RecordKeepingModal from './RecordKeepingModal';
 import { Container } from '../../blogs-article/index.styles';
 import { IQuestionReportContainer } from '@/store/app/types';
-
+import { UploadReportService } from '@/services/app';
+import ReviewReportPDF from './ReviewReport/reviewReport';
+import { pdf } from '@react-pdf/renderer';
+import moment from 'moment';
+import { Box } from '@mui/material';
 const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionReportContainer) => {
   const [openSignModal, setOpenSignModal] = useState(false);
   const [openReportReview, setOpenReportReview] = useState(false);
   const [isRecordKeepModal, setIsRecordKeepModal] = useState<boolean>(false);
   const [signatureText, setSignatureText] = useState<string>('');
+  const uploadReport = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('marketing_reviewname', formik.values.pageName);
+      formData.append('advisor_name ', formik.values.advisor);
+      formData.append('review_date  ', formik.values.date);
+      const file = await generateAndDownloadPDF({
+        answers: answers,
+        questions: questions,
+        fieldData: fieldData,
+        formikValues: formik.values,
+        signatureText: signatureText,
+        ccoName: 'Brayan'
+      });
+      if (file) {
+        formData.append('report_file_pdf  ', file);
+        if (file) {
+          // Create a Blob from the binary data with PDF MIME type
+          const blob = new Blob([file], {
+            type: 'application/pdf'
+          });
 
-  const handleApproveSignature = () => {
-    setOpenSignModal(false);
-    setOpenReportReview(true);
+          // Create a URL for the Blob
+          const url = URL.createObjectURL(blob);
+
+          // Create a link and trigger the download
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'Marketing-Review-Report.pdf'; // Using PDF extension
+
+          document.body.appendChild(link);
+          link.click();
+
+          // Clean up
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }
+        // const resp = await UploadReportService(formData);
+        // if (resp) {
+        //   return resp;
+        // }
+      }
+    } catch (error) {}
   };
-  console.log('answer', answers, 'fieldData', fieldData);
+  const generateAndDownloadPDF = async ({
+    answers,
+    questions,
+    fieldData,
+    formikValues,
+    signatureText,
+    ccoName
+  }: {
+    answers: any[];
+    questions: any[];
+    fieldData: any[];
+    formikValues: any;
+    signatureText: string;
+    ccoName: string;
+  }) => {
+    try {
+      // Create the PDF document
+      const doc = (
+        <ReviewReportPDF
+          answers={answers}
+          questions={questions}
+          fieldData={fieldData}
+          formikValues={formikValues}
+          signatureText={signatureText}
+          ccoName={ccoName}
+        />
+      );
+
+      const pdfInstance = pdf(doc);
+      const blob = await pdfInstance.toBlob();
+
+      const file = new File([blob], 'annual report.pdf', { type: blob.type });
+
+      return file;
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      // You might want to show an error message to the user here
+    }
+  };
+  const handleApproveSignature = async () => {
+    try {
+      const resp = await uploadReport();
+      if (resp) {
+        console.log('resp', resp);
+        setOpenSignModal(false);
+        setOpenReportReview(true);
+      }
+    } catch (error) {}
+  };
+  // const handleDownloadPDF = async () => {
+  //   try {
+  //     // Create the PDF document
+  //     const doc = (
+  //       <ReviewReportPDF
+  //         answers={answers}
+  //         questions={questions}
+  //         fieldData={fieldData}
+  //         formikValues={formik?.values}
+  //         signatureText={signatureText}
+  //         ccoName="Brayan" // Replace with dynamic name if needed
+  //       />
+  //     );
+
+  //     // Generate the PDF blob
+  //     const blob = await pdf(doc).toBlob();
+
+  //     // Download the file
+  //     saveAs(blob, `Marketing-Review-Report-${moment().format('YYYY-MM-DD')}.pdf`);
+  //   } catch (error) {
+  //     console.error('Error generating PDF:', error);
+  //     // You might want to add error notification here
+  //   } finally {
+  //   }
+  // };
 
   return (
     <Container>
@@ -52,6 +168,7 @@ const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionRepor
           handleApprove={handleApproveSignature}
           setSignatureText={setSignatureText}
           signatureText={signatureText}
+          answers={answers}
         />
       </CustomModal>
       <CustomModal

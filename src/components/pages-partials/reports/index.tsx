@@ -5,8 +5,9 @@ import { AgGridFontSize } from '@/constants/variables';
 import { Box, Typography } from '@mui/material';
 import moment from 'moment';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReportFilter from './components/reportFilter';
+import { GetReportsService } from '@/services/app';
 const dummyReportData = [
   {
     marketing_name: 'FHTC Website',
@@ -156,7 +157,7 @@ const dummyReportData = [
 const PartialReports = () => {
   const [activeColDefs, setActiveColDefs] = useState([
     {
-      field: 'marketing_name',
+      field: 'marketing_reviewname',
       headerName: 'Marketing Review Name',
       flex: 1.5,
       minWidth: 255,
@@ -182,7 +183,7 @@ const PartialReports = () => {
       sortable: false,
       cellStyle: { 'font-size': AgGridFontSize },
       cellRenderer: (params: any) => {
-        return moment(params.data.due_date).format('MMMM DD, YYYY');
+        return moment(params.data.due_date).format('DD-MM-YYYY');
       }
     },
 
@@ -224,14 +225,34 @@ const PartialReports = () => {
   ]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [resportData,setReportData]=useState([])
+  const [isReportDataLoading,setIsReportDataLoading]=useState<boolean>(false)
+
   const getPaginatedData = () => {
     if (!dummyReportData) return [];
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
 
-    return dummyReportData.slice(startIndex, endIndex);
+    return resportData.slice(startIndex, endIndex);
   };
+const getReportsData=async()=>{
+  try {
+    setIsReportDataLoading(true)
+    const resp= await GetReportsService()
+    if(resp){
+      console.log('resp',resp)
+      setReportData(resp.data)
+      setIsReportDataLoading(false)
 
+    }
+  } catch (error) {
+    setIsReportDataLoading(false)
+    
+  }
+}
+useEffect(() => {
+  getReportsData()
+}, [])
   return (
     <Box>
       <Typography sx={{ fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center' }}>
@@ -245,7 +266,7 @@ const PartialReports = () => {
           rowData={getPaginatedData()}
           colDefs={activeColDefs}
           //   handleRowClick={(event: any) => handleEditTask(event.data?.id)}
-          loading={false}
+          loading={isReportDataLoading}
           gridOptions={{
             getRowStyle: () => ({
               cursor: 'pointer'

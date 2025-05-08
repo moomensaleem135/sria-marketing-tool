@@ -14,6 +14,7 @@ import moment from 'moment';
 import { IQuestionReportContainer } from '@/store/app/types';
 import { BoldText } from '@/components/core/Modal/SignModal/index.styles';
 import { COLORS } from '@/constants/colors';
+import ReviewReportPDF from './reviewReport';
 
 interface IReviewReport extends IQuestionReportContainer {
   signatureText: string;
@@ -94,7 +95,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
       }
     }
   }, [signatureText]);
-
+  
   return (
     <FlexCol>
       <Typography sx={{ fontSize: '1.5rem', textAlign: 'center', marginBottom: '1rem' }}>
@@ -124,9 +125,13 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
         return (
           <div key={question.id} style={{ marginBottom: '10px' }}>
             {/* Main Question */}
-            <BoldText style={{ display: 'flex', alignItems: 'start', columnGap: '0.2rem' }}>
-              {question.id}. {question.question}
-            </BoldText>
+            <Box sx={{ display: 'flex', alignItems: 'start', columnGap: '0.2rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{question.display_order}.</span>
+              <Typography
+                dangerouslySetInnerHTML={{ __html: question.html_question_text }}
+                sx={{ marginTop: '0.02rem' }}
+              />
+            </Box>
             <div style={{ display: 'flex', alignItems: 'center', gap: '15px', margin: '5px 15px' }}>
               <label>
                 <input
@@ -149,12 +154,12 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
             </div>
 
             {/* Sub Questions */}
-            {question.subQuestions && answer?.subAnswers && answer.mainAnswer === question.note && (
+            {question.subquestions && answer?.subAnswers && answer.mainAnswer === question.show_subquestions && (
               <div style={{ marginLeft: '15px' }}>
-                {question.subQuestions.map((subQ, subIndex) => (
+                {question.subquestions.map((subQ, subIndex) => (
                   <div key={subIndex} style={{ marginBottom: '5px' }}>
                     <RegularText sx={{ fontWeight: 'bold' }}>{subQ.text}</RegularText>
-                    {subQ.isCheckbox ? (
+                    {subQ.field_type==='checkbox' ? (
                       <div
                         style={{
                           display: 'flex',
@@ -186,7 +191,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
                           No
                         </label>
                       </div>
-                    ) : subQ.isRadio ? (
+                    ) : subQ.field_type==='radio' ? (
                       <input
                         type="checkbox"
                         checked={true}
@@ -206,7 +211,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
             )}
 
             {/* Is Updated Question */}
-            {question.isUpdated && answer?.mainAnswer === question.note && (
+            {/* {question.isUpdated && answer?.mainAnswer === question.note && (
               <div style={{ marginTop: '10px', marginLeft: '15px' }}>
                 <RegularText sx={{ fontWeight: 'bold' }}>{question.isUpdated}</RegularText>
                 <div
@@ -232,7 +237,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
                   </label>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* <Line /> */}
           </div>

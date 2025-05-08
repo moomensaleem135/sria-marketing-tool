@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Answer } from '@/store/app/types';
 
 import MainComponentForm from '../main-component';
+import { GetQuestionsService } from '@/services/app';
+import { toast } from 'react-toastify';
 
 export const questions = [
   {
@@ -258,6 +260,9 @@ const fieldData = [
 ];
 export default function PartialWebsiteDomain() {
   const [websiteAnswers, setWebsiteAnswers] = useState<Answer[]>([]);
+  const [websiteQuestions, setWebsiteQuestions] = useState<Answer[]>([]);
+
+
   const initialValues = {
     pageName: '',
     advisor: '',
@@ -265,6 +270,21 @@ export default function PartialWebsiteDomain() {
     URL: '',
     upload: ''
   };
+const getQuestionData=async()=>{
+try {
+  const resp=await GetQuestionsService('Websites')
+  if(resp){
+    setWebsiteQuestions(resp.data.questions)
+
+  }
+} catch (error) {
+  toast.error(`${error}`)
+}
+}
+useEffect(() => {
+  getQuestionData()
+}, [])
+console.log('websiteQuestions',websiteQuestions)
 
   return (
     <MainComponentForm
@@ -272,7 +292,7 @@ export default function PartialWebsiteDomain() {
       setAnswers={setWebsiteAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={websiteQuestions.filter((question)=>question.id===1)}
       topHeading={'Websites'}
     />
   );

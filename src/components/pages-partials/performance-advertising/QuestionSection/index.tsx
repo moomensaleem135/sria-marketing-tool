@@ -61,9 +61,10 @@ const QuestionSection = ({
   const [selectedOption, setSelectedOption] = useState<{ [key: number]: string }>({});
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
   const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
+  // const [visibleQuestions, setVisibleQuestions] = useState<number[]>([questions[0].id]);
   const [visibleQuestions, setVisibleQuestions] = useState<number[]>([questions[0].id]);
+
   const [isCompleteAllModal, setIsCompleteAllModal] = useState<boolean>(false);
-  console.log('answer', answers);
   // Function to check if we should show the next question
   const shouldShowNextQuestion = (currentQuestionId: number) => {
     const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
@@ -73,8 +74,11 @@ const QuestionSection = ({
     const currentQuestion = questions.find((q) => q.id === currentQuestionId);
 
     // Check if mainAnswer exists and is not equal to the question's note
+
     return (
-      (currentAnswer?.mainAnswer && currentQuestion?.note !== currentAnswer?.mainAnswer) ||
+      (currentAnswer?.mainAnswer &&
+        currentQuestion?.show_subquestions.toUpperCase() !==
+          currentAnswer?.mainAnswer.toUpperCase()) ||
       currentAnswer?.isUpdated !== undefined
     );
   };
@@ -130,11 +134,10 @@ const QuestionSection = ({
 
   const shouldRenderSubQuestions = (question: any) => {
     const selected = selectedOption[question.id];
-
-    if (question.note === 'Yes' && selected === 'Yes') {
+    if (question.show_subquestions === 'yes' && selected === 'Yes') {
       return true;
     }
-    if (question.note === 'No' && selected === 'No') {
+    if (question.show_subquestions === 'no' && selected === 'No') {
       return true;
     }
 
@@ -364,7 +367,9 @@ const QuestionSection = ({
             <TextBlue>{label}</TextBlue>
           </Box>
         </FlexRow>
-        {expandedSections[id][type] && <Example>{content}</Example>}
+        {expandedSections[id][type] && (
+          <Typography dangerouslySetInnerHTML={{ __html: content }} sx={{ marginTop: '0.1rem' }} />
+        )}
       </>
     );
   };
@@ -381,7 +386,6 @@ const QuestionSection = ({
       openSignContainer();
     }
   };
-
   return (
     <Box>
       <Container>
@@ -407,9 +411,18 @@ const QuestionSection = ({
             <QuestionWrapper key={q.id} style={{ marginBottom: '1.4rem' }}>
               <QuestionContainer>
                 <QuestionDiv>
-                  <Question>
+                  {/* <Question>
                     {index + 1}. {q.question}
-                  </Question>
+                  </Question> */}
+                  <Box sx={{ display: 'flex', alignItems: 'start', columnGap: '0.2rem' }}>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>
+                      {q.display_order}.
+                    </span>
+                    <Typography
+                      dangerouslySetInnerHTML={{ __html: q.html_question_text }}
+                      sx={{ marginTop: '0.02rem' }}
+                    />
+                  </Box>
                   {q.isQuestionWithNA === true ? (
                     <YesNoSelector
                       options={['Yes', 'No', 'N/A']}
@@ -430,71 +443,120 @@ const QuestionSection = ({
                   )}
                 </QuestionDiv>
 
-                {q?.answerInstructions && (
-                  <Typography sx={{ fontSize: '0.8rem' }}>{q?.answerInstructions}</Typography>
+                {q?.html_instructions_text && (
+                  <Typography
+                    dangerouslySetInnerHTML={{ __html: q.html_instructions_text }}
+                    sx={{ marginTop: '0.1rem' }}
+                  />
                 )}
               </QuestionContainer>
               <Box>
-                {renderExpandableSection(q.id, 'example', q.example, 'Example')}
+                {renderExpandableSection(q.id, 'html_example_text', q.html_example_text, 'Example')}
                 {renderExpandableSection(
                   q.id,
-                  'notes',
-                  q.notes,
+                  'note_text',
+                  q.note_text,
                   `${q.isMultipleNotes === true ? 'Note 1 of 2' : 'Notes'}`
                 )}
                 {renderExpandableSection(q.id, 'notes2', q.notes2, 'Note 2 of 2')}
-                {renderExpandableSection(q.id, 'details', q.details, 'Details')}
+                {renderExpandableSection(q.id, 'details_text', q.details_text, 'Details')}
               </Box>
               {shouldRenderSubQuestions(q) && (
                 <QuestionDetails>
-                  {q?.subQuestions?.map((subQuestion, subIndex) => (
-                    <SubQuestionDiv
-                      key={subIndex}
-                      style={{
-                        display: subQuestion.isCheckbox || subQuestion.isRadio ? 'flex' : 'block',
-                        justifyContent: 'space-between'
-                      }}
-                    >
-                      <SubQuestion>{subQuestion.text}</SubQuestion>
-                      {subQuestion.isCheckbox ? (
-                        <YesNoSelector
-                          onSelect={(option: string) =>
-                            handleSubInputChange(q.id, `sub_${subIndex}`, option)
-                          }
-                          selectedOption={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
+                  {q?.subquestions
+                    ?.filter((question) => question.question_type === 'simple')
+                    .map((subQuestion, subIndex) => (
+                      <SubQuestionDiv
+                        key={subIndex}
+                        style={{
+                          display: subQuestion.isCheckbox || subQuestion.isRadio ? 'flex' : 'block',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        {/* <SubQuestion>{subQuestion.text}</SubQuestion> */}
+                        <Typography
+                          dangerouslySetInnerHTML={{ __html: subQuestion.html_sub_question_text }}
+                          // sx={{ marginTop: '0.1rem' }}
                         />
-                      ) : subQuestion.isRadio ? (
-                        <Radio
-                          onChange={(e) =>
-                            handleSubInputChange(q.id, `sub_${subIndex}`, e.target.value)
-                          }
-                          name="sub"
-                          sx={{
-                            accentColor: COLORS.BLUE_600,
-                            '&.Mui-checked': {
-                              color: COLORS.BLUE_600 // Checked color
+                        {subQuestion.field_type === 'checkbox' &&
+                        subQuestion.question_type === 'simple' ? (
+                          <YesNoSelector
+                            onSelect={(option: string) =>
+                              handleSubInputChange(q.id, `sub_${subIndex}`, option)
                             }
-                          }}
-                        />
-                      ) : (
-                        <FieldInput
-                          name="sub"
-                          value={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            handleSubInputChange(q.id, `sub_${subIndex}`, e.target.value)
-                          }
-                          placeholder=""
-                        />
-                      )}
-                    </SubQuestionDiv>
-                  ))}
+                            selectedOption={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
+                          />
+                        ) : subQuestion.field_type === 'radio' &&
+                          subQuestion.question_type === 'simple' ? (
+                          <Radio
+                            onChange={(e) =>
+                              handleSubInputChange(q.id, `sub_${subIndex}`, e.target.value)
+                            }
+                            name="sub"
+                            sx={{
+                              accentColor: COLORS.BLUE_600,
+                              '&.Mui-checked': {
+                                color: COLORS.BLUE_600 // Checked color
+                              }
+                            }}
+                          />
+                        ) : subQuestion.field_type === 'file' &&
+                          subQuestion.question_type === 'simple' ? (
+                          <SubQuestionDiv>
+                            {/* <SubQuestion>{q.dragAndDrop}</SubQuestion> */}
+                            <FileUpload formik={formik} isDelete name={`upload_${q.id}`} />
+                          </SubQuestionDiv>
+                        ) : (
+                          <FieldInput
+                            name="sub"
+                            value={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                              handleSubInputChange(q.id, `sub_${subIndex}`, e.target.value)
+                            }
+                            placeholder=""
+                          />
+                        )}
+                      </SubQuestionDiv>
+                    ))}
+                  {q?.subquestions
+                    ?.filter((question) => question.question_type === 'spacial')
+                    .map((subQuestion, subIndex) => (
+                      <>
+                        <IsUpdatedDiv>
+                          <Typography
+                            dangerouslySetInnerHTML={{ __html: subQuestion.html_sub_question_text }}
+                            // sx={{ marginTop: '0.1rem' }}
+                          />
+                          <YesNoSelector
+                            onSelect={(option: string) =>
+                              handleInputChange(q.id, 'isUpdated', option)
+                            }
+                            selectedOption={answer?.isUpdated}
+                          />
+                        </IsUpdatedDiv>
+                        {answer?.isUpdated && (
+                          <Typography
+                            sx={{
+                              fontSize: '0.9rem',
+                              marginBottom: '1rem',
+                              fontWeight: 'bold',
+                              color: answer.isUpdated === 'Yes' ? 'green' : 'red'
+                            }}
+                          >
+                            {answer.isUpdated === 'Yes'
+                              ? subQuestion.yes_text
+                              : subQuestion.no_text}
+                          </Typography>
+                        )}
+                      </>
+                    ))}
                   {q.dragAndDrop && (
                     <SubQuestionDiv>
                       <SubQuestion>{q.dragAndDrop}</SubQuestion>
                       <FileUpload formik={formik} isDelete name={`upload_${q.id}`} />
                     </SubQuestionDiv>
                   )}
-                  {q.isUpdated && (
+                  {/* {subQuestion.field_type === 'spacial' && (
                     <IsUpdatedDiv>
                       <Question style={{ fontWeight: 'bold' }}>{q.isUpdated}</Question>
                       <YesNoSelector
@@ -502,8 +564,8 @@ const QuestionSection = ({
                         selectedOption={answer?.isUpdated}
                       />
                     </IsUpdatedDiv>
-                  )}
-                  {answer?.isUpdated && (
+                  )} */}
+                  {/* {answer?.isUpdated && (
                     <Typography
                       sx={{
                         fontSize: '0.9rem',
@@ -514,7 +576,7 @@ const QuestionSection = ({
                     >
                       {answer.isUpdated === 'Yes' ? q.isUpdatedTrue : q.isUpdatedFalse}
                     </Typography>
-                  )}
+                  )} */}
                 </QuestionDetails>
               )}
             </QuestionWrapper>

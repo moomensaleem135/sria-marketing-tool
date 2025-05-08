@@ -7,22 +7,26 @@ import { COLORS } from '@/constants/colors';
 import { Line } from '@/components/pages-partials/index.styles';
 import ButtonWitnLoading from '../../ButtonWithLoading';
 import moment from 'moment';
+import { Answer } from '@/store/app/types';
 
 interface SignModalProps {
   closeFunction: () => void;
   handleApprove: () => void;
   signatureText: string;
   setSignatureText: (value: string) => void;
+  answers:Answer[];
 }
 
 const SignModal = ({
   closeFunction,
   handleApprove,
   signatureText,
-  setSignatureText
+  setSignatureText,
+  answers
 }: SignModalProps) => {
   const sigCanvas = useRef<SignatureCanvas>(null);
   const [isApproved, setIsApproved] = useState(false);
+  console.log('answer', answers, 'SIGN MODAL');
 
   // Draw the text signature on canvas when it changes
   useEffect(() => {

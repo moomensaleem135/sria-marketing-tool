@@ -9,7 +9,7 @@ const getTokenHeader = () => {
   let token = localStorage.getItem('token');
   if (token) {
     token = JSON.parse(token);
-    extraHeaders['authorization'] = `Bearer ${token}`;
+    extraHeaders['authorization'] = `token ${token}`;
   }
 
   return extraHeaders;
