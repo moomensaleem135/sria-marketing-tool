@@ -15,6 +15,8 @@ import {
 } from './index.styles';
 import { COLORS } from '@/constants/colors';
 import Button from '../Button';
+import { useDispatch } from 'react-redux';
+import { removeFile, setFiles } from '@/store/app/appSlice';
 
 interface IUploadFile {
   formik: {
@@ -27,6 +29,9 @@ interface IUploadFile {
   isDelete?: boolean;
   filteredRowId?: number;
   getPoliciesAndProcedureData?: any;
+  questionId?: number; // Add questionId prop to identify which question this file belongs to
+  onUpload?: (file: File) => void; // Callback for when file is uploaded
+  onDelete?: () => void; // Callback for when file is deleted
 }
 
 const FileUpload = ({
@@ -34,11 +39,15 @@ const FileUpload = ({
   name,
   isDelete,
   filteredRowId,
-  getPoliciesAndProcedureData
+  getPoliciesAndProcedureData,
+  questionId,
+  onUpload,
+  onDelete
 }: IUploadFile) => {
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isRemoveModal, setIsRemoveModal] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const browseDivRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -50,26 +59,52 @@ const FileUpload = ({
   };
 
   const displayFileName = (event: ChangeEvent<HTMLInputElement>) => {
-    const fileName = event.target.files?.[0]?.name;
-    if (event) {
-      formik.setFieldValue(name, event?.target?.files?.[0]);
-    }
-    if (fileName) {
-      setSelectedFileName(fileName);
-    }
     const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
+    if (!file) return;
+
+    const fileName = file.name;
+    setSelectedFileName(fileName);
+    setSelectedFile(file);
+    formik.setFieldValue(name, file);
+
+    // Dispatch to Redux store
+    if (questionId) {
+      dispatch(
+        setFiles({
+          questionId,
+          file
+        })
+      );
+    }
+
+    // Call upload callback if provided
+    if (onUpload) {
+      onUpload(file);
     }
   };
 
   const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      setSelectedFileName(file.name);
-      formik.setFieldValue(name, file);
+    if (!file) return;
+
+    setSelectedFile(file);
+    setSelectedFileName(file.name);
+    formik.setFieldValue(name, file);
+
+    // Dispatch to Redux store
+    if (questionId) {
+      dispatch(
+        setFiles({
+          questionId,
+          file
+        })
+      );
+    }
+
+    // Call upload callback if provided
+    if (onUpload) {
+      onUpload(file);
     }
   };
 
@@ -77,9 +112,21 @@ const FileUpload = ({
     setSelectedFileName(null);
     setSelectedFile(null);
     formik.setFieldValue(name, null);
+
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+
+    // Dispatch to Redux store
+    if (questionId) {
+      dispatch(removeFile({ questionId }));
+    }
+
+    // Call delete callback if provided
+    if (onDelete) {
+      onDelete();
+    }
+
     setIsRemoveModal(false);
   };
 
@@ -94,7 +141,7 @@ const FileUpload = ({
     <>
       <BrowseDiv
         onClick={browseFiles}
-        onDragOver={(e) => e.preventDefault()} // Prevent default behavior
+        onDragOver={(e) => e.preventDefault()}
         onDrop={handleFileDrop}
         ref={browseDivRef}
       >

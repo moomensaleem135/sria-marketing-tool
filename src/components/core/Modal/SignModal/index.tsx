@@ -14,7 +14,8 @@ interface SignModalProps {
   handleApprove: () => void;
   signatureText: string;
   setSignatureText: (value: string) => void;
-  answers:Answer[];
+  answers: Answer[];
+  isReportUploading: boolean;
 }
 
 const SignModal = ({
@@ -22,7 +23,8 @@ const SignModal = ({
   handleApprove,
   signatureText,
   setSignatureText,
-  answers
+  answers,
+  isReportUploading
 }: SignModalProps) => {
   const sigCanvas = useRef<SignatureCanvas>(null);
   const [isApproved, setIsApproved] = useState(false);
@@ -178,6 +180,7 @@ const SignModal = ({
           handleClick={handleApprove}
           disable={signatureText === ''}
           textColor="white"
+          isLoading={isReportUploading}
         />
 
         {/* <Button

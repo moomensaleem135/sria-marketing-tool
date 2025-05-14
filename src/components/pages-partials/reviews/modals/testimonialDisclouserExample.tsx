@@ -22,7 +22,7 @@ const TestimonialDisclouserExample = () => {
 
   return (
     <Box>
-      <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
+      {/* <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
         Is a disclosure displayed clearly and prominently besides the review?
         <span
           style={{ textDecoration: 'underline', cursor: 'pointer', fontWeight: 'bold' }}
@@ -38,51 +38,49 @@ const TestimonialDisclouserExample = () => {
         closeFunction={() => setIsTestEndModal(false)}
         modalWidth={'45rem'}
         closedIcon={true}
-      >
-        <Box sx={{ paddingBottom: '0.1rem' }}>
-          <Box>
-            <RecordKeepHeader>Testimonial / Endorsement Definitions</RecordKeepHeader>
-            <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.5rem' }}>
-              <Typography sx={{ fontSize: '1rem', margin: '0.8rem 0' }}>
-                A <span style={{ fontWeight: 'bold' }}>testimonial</span> is any statement by a
-                current client or investor in a private fund advised by the investment adviser:
+      > */}
+      <Box sx={{ paddingBottom: '0.1rem' }}>
+        <Box>
+          <RecordKeepHeader>Testimonial / Endorsement Definitions</RecordKeepHeader>
+          <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.5rem' }}>
+            <Typography sx={{ fontSize: '1rem', margin: '0.8rem 0' }}>
+              A <span style={{ fontWeight: 'bold' }}>testimonial</span> is any statement by a
+              current client or investor in a private fund advised by the investment adviser:
+            </Typography>
+            {testimonialData.map((data, index) => (
+              <Typography sx={{ fontSize: '0.9rem' }} key={index}>
+                {index + 1}. {data}
               </Typography>
-              {testimonialData.map((data, index) => (
-                <Typography sx={{ fontSize: '0.9rem' }} key={index}>
-                  {index + 1}. {data}
-                </Typography>
-              ))}
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.5rem' }}>
-              <Typography sx={{ fontSize: '1rem', margin: '1rem 0' }}>
-                An <span style={{ fontWeight: 'bold' }}>endorsement</span> is any statement by a
-                person other than a current client or investor in a private fund advised by the
-                investment adviser that:
-              </Typography>
-              {endorsementData.map((data, index) => (
-                <Typography sx={{ fontSize: '0.9rem' }} key={index}>
-                  {index + 1}. {data}
-                </Typography>
-              ))}
-            </Box>
+            ))}
           </Box>
-          <Typography sx={{ fontSize: '0.9rem', opacity: 0.8, marginTop: '1rem' }}>
-            <i>(1) Advisers Act Rule 206(4)-1(a).</i>
-          </Typography>
-          <Box
-            sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.5rem', margin: '3rem 0' }}
-          >
-            <RecordKeepHeader sx={{ marginBottom: '1rem' }}>
-              Disclosure Exemptions for Testimonials and Endorsements
-            </RecordKeepHeader>
-            {disclouserExemptions.map((data, index) => (
+          <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.5rem' }}>
+            <Typography sx={{ fontSize: '1rem', margin: '1rem 0' }}>
+              An <span style={{ fontWeight: 'bold' }}>endorsement</span> is any statement by a
+              person other than a current client or investor in a private fund advised by the
+              investment adviser that:
+            </Typography>
+            {endorsementData.map((data, index) => (
               <Typography sx={{ fontSize: '0.9rem' }} key={index}>
                 {index + 1}. {data}
               </Typography>
             ))}
           </Box>
         </Box>
-      </CustomModal>
+        <Typography sx={{ fontSize: '0.9rem', opacity: 0.8, marginTop: '1rem' }}>
+          <i>(1) Advisers Act Rule 206(4)-1(a).</i>
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.5rem', margin: '3rem 0' }}>
+          <RecordKeepHeader sx={{ marginBottom: '1rem' }}>
+            Disclosure Exemptions for Testimonials and Endorsements
+          </RecordKeepHeader>
+          {disclouserExemptions.map((data, index) => (
+            <Typography sx={{ fontSize: '0.9rem' }} key={index}>
+              {index + 1}. {data}
+            </Typography>
+          ))}
+        </Box>
+      </Box>
+      {/* </CustomModal> */}
     </Box>
   );
 };

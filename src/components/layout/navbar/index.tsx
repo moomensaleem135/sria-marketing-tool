@@ -14,12 +14,16 @@ import {
   StyledProfileDropDownItem,
   UserNameText
 } from './index.styles';
+import { useAppSelector } from '@/hooks/useReduxTypedHooks';
+import { getAuthDataSelector } from '@/store/auth';
+import Cookies from 'js-cookie';
 
 const NavBar = () => {
   const [loggedUser, setLoggedUser] = useState('user');
   const router = useRouter();
   const path = usePathname();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const { user } = useAppSelector(getAuthDataSelector);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,12 +38,12 @@ const NavBar = () => {
     // window.location.href = '/login';
   };
   useEffect(() => {
-    const localUser = localStorage.getItem('user');
-    if (localUser) {
-      const user = JSON.parse(localUser);
-      setLoggedUser(user.username);
+    const user = Cookies.get('user');
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setLoggedUser(parsedUser.username);
     }
-  });
+  }, [Cookies.get('user')]);
 
   return (
     <MainContainer
@@ -51,11 +55,7 @@ const NavBar = () => {
         <LogoDiv>
           {/* {!HIDDEN_ROUTES_LEFT_DRAWER.find((route) => route === path) ? ( */}
           <Box>
-            <UserNameText>
-              {' '}
-              Hey, Lauren
-              {/* {loggedUser ? loggedUser.split(/[\s\-,]/)[0] : 'Lauren'} */}
-            </UserNameText>
+            <UserNameText> Hey, {loggedUser.split(/[\s\-,]/)[0]}</UserNameText>
             <Typography>Welcome Back!</Typography>
           </Box>
         </LogoDiv>
@@ -117,10 +117,10 @@ const NavBar = () => {
           <Image src={'/svgs/helpIcon.svg'} height={20} width={20} alt="profile" />
           Help
         </StyledProfileDropDownItem>
-        <StyledProfileDropDownItem onClick={handleLogout}>
+        {/* <StyledProfileDropDownItem onClick={handleLogout}>
           <Logout fontSize="small" />
-          Logout
-        </StyledProfileDropDownItem>
+          Back
+        </StyledProfileDropDownItem> */}
       </Menu>
     </MainContainer>
   );

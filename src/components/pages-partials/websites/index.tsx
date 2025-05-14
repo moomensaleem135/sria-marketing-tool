@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Answer } from '@/store/app/types';
+import { Answer, Question } from '@/store/app/types';
 
 import MainComponentForm from '../main-component';
 import { GetQuestionsService } from '@/services/app';
 import { toast } from 'react-toastify';
+import useQuestionData from '@/hooks/useGetQuestionData';
 
 export const questions = [
   {
@@ -219,7 +220,7 @@ export const questions = [
 const fieldData = [
   {
     id: 1,
-    name: 'pageName',
+    name: 'title',
     fieldTitle: 'Website / Page name:',
     type: 'text',
     isFileUpload: false,
@@ -258,33 +259,25 @@ const fieldData = [
     columnSize: 12
   }
 ];
+const modalList = {
+  list: [],
+  modals: {}
+};
 export default function PartialWebsiteDomain() {
   const [websiteAnswers, setWebsiteAnswers] = useState<Answer[]>([]);
-  const [websiteQuestions, setWebsiteQuestions] = useState<Answer[]>([]);
-
+  const { data: websiteQuestions, loading } = useQuestionData('Websites');
 
   const initialValues = {
-    pageName: '',
+    title: '',
     advisor: '',
     date: '',
     URL: '',
+    currentTab: 'Websites',
+
     upload: ''
   };
-const getQuestionData=async()=>{
-try {
-  const resp=await GetQuestionsService('Websites')
-  if(resp){
-    setWebsiteQuestions(resp.data.questions)
 
-  }
-} catch (error) {
-  toast.error(`${error}`)
-}
-}
-useEffect(() => {
-  getQuestionData()
-}, [])
-console.log('websiteQuestions',websiteQuestions)
+  console.log('websiteQuestions', websiteQuestions);
 
   return (
     <MainComponentForm
@@ -292,8 +285,9 @@ console.log('websiteQuestions',websiteQuestions)
       setAnswers={setWebsiteAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={websiteQuestions.filter((question)=>question.id===1)}
+      questions={websiteQuestions}
       topHeading={'Websites'}
+      modalList={modalList}
     />
   );
 }

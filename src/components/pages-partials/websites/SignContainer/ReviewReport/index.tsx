@@ -95,7 +95,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
       }
     }
   }, [signatureText]);
-  
+
   return (
     <FlexCol>
       <Typography sx={{ fontSize: '1.5rem', textAlign: 'center', marginBottom: '1rem' }}>
@@ -126,7 +126,9 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
           <div key={question.id} style={{ marginBottom: '10px' }}>
             {/* Main Question */}
             <Box sx={{ display: 'flex', alignItems: 'start', columnGap: '0.2rem' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{question.display_order}.</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>
+                {question.display_order}.
+              </span>
               <Typography
                 dangerouslySetInnerHTML={{ __html: question.html_question_text }}
                 sx={{ marginTop: '0.02rem' }}
@@ -154,61 +156,97 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
             </div>
 
             {/* Sub Questions */}
-            {question.subquestions && answer?.subAnswers && answer.mainAnswer === question.show_subquestions && (
-              <div style={{ marginLeft: '15px' }}>
-                {question.subquestions.map((subQ, subIndex) => (
-                  <div key={subIndex} style={{ marginBottom: '5px' }}>
-                    <RegularText sx={{ fontWeight: 'bold' }}>{subQ.text}</RegularText>
-                    {subQ.field_type==='checkbox' ? (
+            {question.subquestions &&
+              answer?.mainAnswer &&
+              answer?.mainAnswer.toLowerCase() === question.show_subquestions && (
+                <div style={{ marginLeft: '15px' }}>
+                  {question.subquestions
+                    .filter((subQuestion) => subQuestion.field_type !== 'file')
+                    .map((subQ, subIndex) => (
                       <div
+                        key={subIndex}
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '15px',
-                          margin: '5px 15px'
+                          marginBottom: '5px',
+                          display: subQ.field_type === 'radio' ? 'flex' : 'block',
+                          flexDirection: subQ.field_type === 'radio' ? 'row-reverse' : 'column',
+                          justifyContent: 'start',
+                          padding: '0.3rem 0'
                         }}
                       >
-                        <label>
+                        <Typography
+                          dangerouslySetInnerHTML={{ __html: subQ.html_sub_question_text }}
+                          // sx={{ marginTop: '0.1rem' }}
+                        />
+                        {subQ.field_type === 'checkbox' ? (
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '15px',
+                              margin: '5px 0px'
+                            }}
+                          >
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={
+                                  answer?.subAnswers &&
+                                  answer?.subAnswers[`sub_${subQ.id}`] === 'Yes'
+                                }
+                                readOnly
+                                style={{ marginRight: '5px' }}
+                              />
+                              Yes
+                            </label>
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={
+                                  answer?.subAnswers &&
+                                  answer?.subAnswers[`sub_${subQ.id}`] === 'No'
+                                }
+                                readOnly
+                                style={{ marginRight: '5px' }}
+                              />
+                              No
+                            </label>
+                            {subQ.is_na && subQ.question_type !== 'spacial' && (
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  checked={
+                                    answer?.subAnswers &&
+                                    answer?.subAnswers[`sub_${subQ.id}`] === 'N/A'
+                                  }
+                                  readOnly
+                                  style={{ marginRight: '5px' }}
+                                />
+                                N/A
+                              </label>
+                            )}
+                          </div>
+                        ) : subQ.field_type === 'radio' ? (
                           <input
                             type="checkbox"
                             checked={
-                              answer?.subAnswers && answer?.subAnswers[`sub_${subIndex}`] === 'Yes'
+                              answer?.subAnswers && answer?.subAnswers[`sub_${subQ.id}`] === 'on'
+                                ? true
+                                : false
                             }
                             readOnly
                             style={{ marginRight: '5px' }}
                           />
-                          Yes
-                        </label>
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={
-                              answer?.subAnswers && answer?.subAnswers[`sub_${subIndex}`] === 'No'
-                            }
-                            readOnly
-                            style={{ marginRight: '5px' }}
-                          />
-                          No
-                        </label>
+                        ) : (
+                          <div>
+                            <Typography sx={{ fontSize: '0.9rem' }}>
+                              {(answer?.subAnswers && answer?.subAnswers[`sub_${subQ.id}`]) || ''}
+                            </Typography>
+                          </div>
+                        )}
                       </div>
-                    ) : subQ.field_type==='radio' ? (
-                      <input
-                        type="checkbox"
-                        checked={true}
-                        readOnly
-                        style={{ marginRight: '5px' }}
-                      />
-                    ) : (
-                      <div>
-                        <Typography sx={{ fontSize: '0.9rem' }}>
-                          {(answer?.subAnswers && answer?.subAnswers[`sub_${subIndex}`]) || ''}
-                        </Typography>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+                    ))}
+                </div>
+              )}
 
             {/* Is Updated Question */}
             {/* {question.isUpdated && answer?.mainAnswer === question.note && (

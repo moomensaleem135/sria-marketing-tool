@@ -14,17 +14,29 @@ import ReviewReportPDF from './ReviewReport/reviewReport';
 import { pdf } from '@react-pdf/renderer';
 import moment from 'moment';
 import { Box } from '@mui/material';
+import { toast } from 'react-toastify';
+import { useAppSelector } from '@/hooks/useReduxTypedHooks';
+import { getAppDataSelector } from '@/store/app';
 const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionReportContainer) => {
   const [openSignModal, setOpenSignModal] = useState(false);
   const [openReportReview, setOpenReportReview] = useState(false);
   const [isRecordKeepModal, setIsRecordKeepModal] = useState<boolean>(false);
   const [signatureText, setSignatureText] = useState<string>('');
+  const [isReportUploading, setIsReportUploading] = useState<boolean>(false);
+  const { tabFiles } = useAppSelector(getAppDataSelector);
   const uploadReport = async () => {
     try {
       const formData = new FormData();
-      formData.append('marketing_reviewname', formik.values.pageName);
+      formData.append('marketing_reviewname', formik.values.title);
       formData.append('advisor_name ', formik.values.advisor);
       formData.append('review_date  ', formik.values.date);
+      formData.append('marketing_type_name   ', formik.values.currentTab);
+
+      tabFiles.forEach((item) => {
+        if (item.file instanceof File) {
+          formData.append('additional_files', item.file);
+        }
+      });
       const file = await generateAndDownloadPDF({
         answers: answers,
         questions: questions,
@@ -35,33 +47,43 @@ const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionRepor
       });
       if (file) {
         formData.append('report_file_pdf  ', file);
-        if (file) {
-          // Create a Blob from the binary data with PDF MIME type
-          const blob = new Blob([file], {
-            type: 'application/pdf'
-          });
+        // if (file) {
+        //   // Create a Blob from the binary data with PDF MIME type
+        //   const blob = new Blob([file], {
+        //     type: 'application/pdf'
+        //   });
 
-          // Create a URL for the Blob
-          const url = URL.createObjectURL(blob);
+        //   // Create a URL for the Blob
+        //   const url = URL.createObjectURL(blob);
 
-          // Create a link and trigger the download
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = 'Marketing-Review-Report.pdf'; // Using PDF extension
+        //   // Create a link and trigger the download
+        //   const link = document.createElement('a');
+        //   link.href = url;
+        //   link.download = 'Marketing-Review-Report.pdf'; // Using PDF extension
 
-          document.body.appendChild(link);
-          link.click();
+        //   document.body.appendChild(link);
+        //   link.click();
 
-          // Clean up
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-        }
-        // const resp = await UploadReportService(formData);
-        // if (resp) {
-        //   return resp;
+        //   // Clean up
+        //   document.body.removeChild(link);
+        //   URL.revokeObjectURL(url);
         // }
+        const resp = await UploadReportService(formData);
+        if (resp) {
+          toast.success('Report uploaded successfuly', {
+            style: {
+              background: 'green'
+            }
+          });
+          setIsReportUploading(false);
+
+          return resp;
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error(`${error}`);
+      setIsReportUploading(false);
+    }
   };
   const generateAndDownloadPDF = async ({
     answers,
@@ -94,7 +116,9 @@ const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionRepor
       const pdfInstance = pdf(doc);
       const blob = await pdfInstance.toBlob();
 
-      const file = new File([blob], 'annual report.pdf', { type: blob.type });
+      const file = new File([blob], `MRT Report (${formik.values.currentTab}).pdf`, {
+        type: blob.type
+      });
 
       return file;
     } catch (error) {
@@ -104,39 +128,17 @@ const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionRepor
   };
   const handleApproveSignature = async () => {
     try {
+      setIsReportUploading(true);
       const resp = await uploadReport();
       if (resp) {
-        console.log('resp', resp);
+        // console.log('resp', resp);
         setOpenSignModal(false);
         setOpenReportReview(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      setIsReportUploading(false);
+    }
   };
-  // const handleDownloadPDF = async () => {
-  //   try {
-  //     // Create the PDF document
-  //     const doc = (
-  //       <ReviewReportPDF
-  //         answers={answers}
-  //         questions={questions}
-  //         fieldData={fieldData}
-  //         formikValues={formik?.values}
-  //         signatureText={signatureText}
-  //         ccoName="Brayan" // Replace with dynamic name if needed
-  //       />
-  //     );
-
-  //     // Generate the PDF blob
-  //     const blob = await pdf(doc).toBlob();
-
-  //     // Download the file
-  //     saveAs(blob, `Marketing-Review-Report-${moment().format('YYYY-MM-DD')}.pdf`);
-  //   } catch (error) {
-  //     console.error('Error generating PDF:', error);
-  //     // You might want to add error notification here
-  //   } finally {
-  //   }
-  // };
 
   return (
     <Container>
@@ -169,6 +171,7 @@ const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionRepor
           setSignatureText={setSignatureText}
           signatureText={signatureText}
           answers={answers}
+          isReportUploading={isReportUploading}
         />
       </CustomModal>
       <CustomModal

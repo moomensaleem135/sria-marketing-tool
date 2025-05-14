@@ -7,7 +7,16 @@ import { Answer } from '@/store/app/types';
 import AdProhibitation from './adProhibitation';
 import { Question } from '../index.styles';
 import MainComponentForm from '../main-component';
-
+import useQuestionData from '@/hooks/useGetQuestionData';
+const modalList = {
+  list: [46],
+  modals: {
+    46: {
+      title: 'test',
+      content: <AdProhibitation />
+    }
+  }
+};
 const questions = [
   {
     id: 1,
@@ -538,7 +547,7 @@ const questions = [
 const fieldData = [
   {
     id: 1,
-    name: 'ad_name',
+    name: 'title',
     fieldTitle: 'Name of Performance Advertising:',
     type: 'text',
     isFileUpload: false,
@@ -589,13 +598,17 @@ const fieldData = [
 
 const PartialPerformanceAd = () => {
   const [presentationAnswers, setPresentationAnswers] = useState<Answer[]>([]);
+  const { data: performanceAdQuestion, loading } = useQuestionData('Performance Advertising');
+
   const initialValues = {
-    ad_name: '',
+    title: '',
     ad_location: '',
 
     advisor: '',
     date: '',
     audience: '',
+    currentTab: 'Performance Advertising',
+
     upload: ''
   };
 
@@ -605,8 +618,9 @@ const PartialPerformanceAd = () => {
       setAnswers={setPresentationAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={performanceAdQuestion}
       topHeading={'Performance Advertising'}
+      modalList={modalList}
     />
   );
 };

@@ -6,11 +6,15 @@ import { Answer } from '@/store/app/types';
 
 import { questions } from '../websites';
 import MainComponentForm from '../main-component';
-
+import useQuestionData from '@/hooks/useGetQuestionData';
+const modalList = {
+  list: [],
+  modals: {}
+};
 const fieldData = [
   {
     id: 1,
-    name: 'video_title',
+    name: 'title',
     fieldTitle: 'Title of Video:',
     type: 'text',
     isFileUpload: false,
@@ -60,12 +64,15 @@ const fieldData = [
 
 export default function PartialVideo() {
   const [videoAnswers, setVideoAnswers] = useState<Answer[]>([]);
+  const { data: videoData, loading } = useQuestionData('Videos');
+
   const initialValues = {
-    video_title: '',
+    title: '',
     advisor: '',
     date: '',
     audience: '',
     video_url: '',
+    currentTab: 'Videos',
 
     upload: ''
   };
@@ -76,8 +83,9 @@ export default function PartialVideo() {
       setAnswers={setVideoAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={videoData}
       topHeading={'Videos'}
+      modalList={modalList}
     />
   );
 }

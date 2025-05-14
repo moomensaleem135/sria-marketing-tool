@@ -3,12 +3,13 @@ import { AxiosError, AxiosRequestConfig } from 'axios';
 import { REQUEST_HEADERS } from '../constants/api';
 import axios from './apiConfig';
 import { IRequestBody } from './service.types';
+import Cookies from 'js-cookie';
 
 const getTokenHeader = () => {
   const extraHeaders: { authorization?: string } = {};
-  let token = localStorage.getItem('token');
+  const token = Cookies.get('token') as string;
   if (token) {
-    token = JSON.parse(token);
+    // token = JSON.parse(token);
     extraHeaders['authorization'] = `token ${token}`;
   }
 

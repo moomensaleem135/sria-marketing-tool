@@ -16,7 +16,7 @@ const TestimonialProhibitation = () => {
 
   return (
     <Box>
-      <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
+      {/* <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
         I have read the 7 marketing rule prohibitions and agree they are not present in my
         testimonials or endorsements
         <span
@@ -33,25 +33,25 @@ const TestimonialProhibitation = () => {
         closeFunction={() => setIsDisclouserModal(false)}
         closedIcon={true}
         modalWidth={'40rem'}
-      >
-        <Box>
-          <Typography
-            sx={{
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              color: COLORS.BLUE_600,
-              textAlign: 'center'
-            }}
-          >
-            The 7 General Advertising Prohibitions
-          </Typography>
-          <ol>
-            {prohibitationData.map((data, index) => (
-              <li key={index}>{data}</li>
-            ))}
-          </ol>
-        </Box>
-      </CustomModal>
+      > */}
+      <Box>
+        <Typography
+          sx={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            color: COLORS.BLUE_600,
+            textAlign: 'center'
+          }}
+        >
+          The 7 General Advertising Prohibitions
+        </Typography>
+        <ol>
+          {prohibitationData.map((data, index) => (
+            <li key={index}>{data}</li>
+          ))}
+        </ol>
+      </Box>
+      {/* </CustomModal> */}
     </Box>
   );
 };

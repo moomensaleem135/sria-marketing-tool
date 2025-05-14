@@ -5,6 +5,11 @@ import React, { useState } from 'react';
 
 import RatingDisclouser from './modals/ratingDisclouser';
 import MainComponentForm from '../main-component';
+import useQuestionData from '@/hooks/useGetQuestionData';
+const modalList = {
+  list: [],
+  modals: {}
+};
 const questions = [
   {
     id: 1,
@@ -153,7 +158,7 @@ const questions = [
 const fieldData = [
   {
     id: 1,
-    name: 'rating_name',
+    name: 'title',
     fieldTitle: 'Name of Third-Party Providing the Rating  ',
     type: 'text',
     isFileUpload: false,
@@ -195,12 +200,14 @@ const fieldData = [
 ];
 const ThirdPartyRating = () => {
   const [ratingAnswers, setRatingAnswers] = useState<Answer[]>([]);
+  const { data: thirdPartyData, loading } = useQuestionData('Third-Party Ratings');
+
   const initialValues = {
-    rating_name: '',
+    title: '',
     advisor: '',
     date: '',
     original_location: '',
-
+    currentTab: 'Third-Party Ratings',
     upload: ''
   };
 
@@ -210,8 +217,9 @@ const ThirdPartyRating = () => {
       setAnswers={setRatingAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={thirdPartyData}
       topHeading={'Third-Party Ratings'}
+      modalList={modalList}
     />
   );
 };

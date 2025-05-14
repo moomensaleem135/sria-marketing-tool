@@ -5,11 +5,15 @@ import React, { useState } from 'react';
 import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
 import MainComponentForm from '../main-component';
-
+import useQuestionData from '@/hooks/useGetQuestionData';
+const modalList = {
+  list: [],
+  modals: {}
+};
 const fieldData = [
   {
     id: 1,
-    name: 'post_title',
+    name: 'title',
     fieldTitle: 'Tile of Social Media Post:',
     type: 'text',
     isFileUpload: false,
@@ -58,12 +62,15 @@ const fieldData = [
 ];
 export default function PartialSocialMedia() {
   const [socialAnswers, setSocialAnswers] = useState<Answer[]>([]);
+  const { data: socialData, loading } = useQuestionData('Social Media');
+
   const initialValues = {
-    post_title: '',
+    title: '',
     advisor: '',
     date: '',
     channel: '',
     post_url: '',
+    currentTab: 'Social Media',
 
     upload: ''
   };
@@ -74,8 +81,9 @@ export default function PartialSocialMedia() {
       setAnswers={setSocialAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={socialData}
       topHeading={'Social Media'}
+      modalList={modalList}
     />
   );
 }

@@ -8,6 +8,11 @@ import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import CustomModal from '@/components/core/Modal';
 import { COLORS } from '@/constants/colors';
 import Image from 'next/image';
+import { Answer } from '@/store/app/types';
+import { removeFile, setFiles } from '@/store/app/appSlice';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '@/hooks/useReduxTypedHooks';
+import { getAppDataSelector } from '@/store/app';
 
 interface FormField {
   id: number;
@@ -25,17 +30,78 @@ interface IInitialForm {
   // setIsAccordianOpen: any;
   // isAccordinanOpen: any;
   isBeginReview: boolean;
+  setAnswers: (value: Answer[] | ((prev: Answer[]) => Answer[])) => void;
 }
 const InitialForm = ({
   fieldsData,
   formik,
   isAllFieldModal,
   setIsAllFieldModal,
-  isBeginReview
+  isBeginReview,
+  setAnswers
   // setIsAccordianOpen,
   // isAccordinanOpen
 }: IInitialForm) => {
   // console.log('isAccordinanOpen',isAccordinanOpen)
+  const { tabFiles } = useAppSelector(getAppDataSelector);
+  console.log('tabFiles', tabFiles);
+  const dispatch = useDispatch();
+  const handleFileUpload = (questionId: number, file: File) => {
+    // Update local state
+    // setAnswers((prev: Answer[]) => {
+    //   const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
+
+    //   if (existingAnswerIndex >= 0) {
+    //     const updatedAnswers = [...prev];
+    //     updatedAnswers[existingAnswerIndex] = {
+    //       ...updatedAnswers[existingAnswerIndex],
+    //       fileUpload: file
+    //     };
+
+    //     return updatedAnswers;
+    //   } else {
+    //     return [
+    //       ...prev,
+    //       {
+    //         id: questionId,
+    //         fileType:'form',
+    //         fileUpload: file
+    //       }
+    //     ];
+    //   }
+    // });
+
+    // Dispatch to Redux store
+    dispatch(
+      setFiles({
+        questionId,
+        file,
+        fileType: 'form'
+      })
+    );
+  };
+  const handleFileDelete = (questionId: number) => {
+    // Update local state
+    setAnswers((prev: Answer[]) => {
+      const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
+
+      if (existingAnswerIndex >= 0) {
+        const updatedAnswers = [...prev];
+        updatedAnswers[existingAnswerIndex] = {
+          ...updatedAnswers[existingAnswerIndex],
+          fileUpload: undefined
+        };
+
+        return updatedAnswers;
+      }
+
+      return prev;
+    });
+
+    // Dispatch to Redux store
+    dispatch(removeFile({ questionId }));
+  };
+
   return (
     <form style={{ padding: '1.5rem ', borderRadius: '10px' }} onSubmit={formik.handleSubmit}>
       <Grid
@@ -54,7 +120,13 @@ const InitialForm = ({
             )}
             {data.type === 'date' && <DatePickerWithIcon formik={formik} name={data.name} />}
             {data.type === 'upload' && data.isFileUpload === true && (
-              <FileUpload formik={formik} isDelete name={data.name} />
+              <FileUpload
+                formik={formik}
+                isDelete
+                name={data.name}
+                onUpload={(file) => handleFileUpload(0, file)}
+                onDelete={() => handleFileDelete(0)}
+              />
             )}
           </Grid>
         ))}

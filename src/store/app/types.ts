@@ -1,9 +1,14 @@
 import { ReactNode } from 'react';
-
+export interface ITabFiles {
+  questionId: number;
+  fileType: string;
+  file: File;
+}
 export interface IAppState {
   loading: boolean;
   status: string;
   error: string | undefined;
+  tabFiles: ITabFiles[];
 }
 
 export interface AgGridI {
@@ -34,7 +39,15 @@ export interface AgGridI {
 export interface SubAnswers {
   [key: string]: string; // If it can have any string keys
 }
-
+export interface IS3FileLink {
+  file_name?: string;
+  download_link: string;
+  preview_link: string;
+}
+interface IFileLink {
+  download_link: string;
+  preview_link: string;
+}
 export interface Answer {
   id: number;
   mainAnswer?: string;
@@ -43,27 +56,35 @@ export interface Answer {
   fileUpload?: string;
 }
 interface SubQuestion {
-  text: string;
+  id: string;
+  html_sub_question_text: string;
   isCheckbox?: boolean;
   isRadio?: boolean;
+  field_type: string;
+  question_type: string;
+  yes_text: string;
+  no_text: string;
+  is_na: boolean;
 }
 
 export interface Question {
   id: number;
-  question: string | ReactNode;
-  answerInstructions?: string;
-  details?: string;
-  notes?: string | ReactNode;
-  example?: string | ReactNode;
-  notes2?: string | ReactNode;
+  html_question_text: string;
+  html_instructions_text?: string;
+  details_text?: string;
+  note_text_1?: string | ReactNode;
+  html_example_text?: string | ReactNode;
+  note_text_2?: string | ReactNode;
   isMultipleNotes?: boolean;
-  subQuestions?: SubQuestion[];
+  subquestions: SubQuestion[];
   dragAndDrop?: string;
   note: string;
   isUpdated?: string;
   isUpdatedTrue: string;
   isUpdatedFalse: string;
-  isQuestionWithNA?: boolean;
+  is_na?: boolean;
+  display_order: number;
+  show_subquestions: string;
 }
 export interface FieldData {
   id: number;
@@ -81,5 +102,6 @@ export interface IQuestionReportContainer {
 }
 export interface IQuestionSection extends IQuestionReportContainer {
   setAnswers: (value: Answer[] | ((prev: Answer[]) => Answer[])) => void;
+  modalList: any;
   // formik1:any
 }

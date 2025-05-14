@@ -2,25 +2,24 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { UserState, User, ILoginRequest } from './types';
 import { loginService } from '../../services/auth/loginService';
-
+import { getCookie } from '@/components/pages-partials/home';
+import Cookies from 'js-cookie';
 export const signIn = createAsyncThunk('users/login', async (requestData: ILoginRequest) => {
   return await loginService(requestData);
 });
 
 const getInitialValues = () => {
-  let user = {} as User;
+  let user = {} as User | string | undefined;
   let token = '' as string;
   let isAuthenticated = false;
   if (typeof window !== 'undefined') {
-    let localStorageUser = localStorage.getItem('user') as any;
+    const localStorageUser = Cookies.get('user'); // => undefined;
     if (localStorageUser) {
-      localStorageUser = JSON.parse(localStorageUser);
       user = localStorageUser;
       isAuthenticated = true;
     }
-    let localStorageToken = localStorage.getItem('token') as string;
+    const localStorageToken = Cookies.get('token') as string;
     if (localStorageToken) {
-      localStorageToken = JSON.parse(localStorageToken);
       token = localStorageToken;
     }
   }

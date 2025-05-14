@@ -5,11 +5,15 @@ import React, { useState } from 'react';
 import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
 import MainComponentForm from '../main-component';
-
+import useQuestionData from '@/hooks/useGetQuestionData';
+const modalList = {
+  list: [],
+  modals: {}
+};
 const fieldData = [
   {
     id: 1,
-    name: 'presentation_name',
+    name: 'title',
     fieldTitle: 'Name of Presentation:',
     type: 'text',
     isFileUpload: false,
@@ -51,76 +55,27 @@ const fieldData = [
 
 const PartialPresentation = () => {
   const [presentationAnswers, setPresentationAnswers] = useState<Answer[]>([]);
+  const { data: presentationQuestion, loading } = useQuestionData('Presentations');
+
   const initialValues = {
-    presentation_name: '',
+    title: '',
     advisor: '',
     date: '',
     audience: '',
+    currentTab: 'Presentations',
+
     upload: ''
   };
-  // const formik = useFormik({
-  //   initialValues: {
-  //     presentation_name: '',
-  //     advisor: '',
-  //     date: '',
-  //     audience: '',
-  //     upload: ''
-  //   },
-  //   onSubmit: (values) => {
-  //     if (
-  //       values.presentation_name !== '' &&
-  //       values.advisor !== '' &&
-  //       values.date !== '' &&
-  //       values.audience !== '' &&
-  //       values.upload !== ''
-  //     ) {
-  //       setIsBeginReview(true);
-  //     } else {
-  //       setIsAllFieldModal(true);
-  //     }
-  //   }
-  // });
-  // useEffect(() => {
-  //   if (isBeginReview) {
-  //     setIsAccordianOpen(false);
-  //   }
-  // }, [isBeginReview]);
 
   return (
-    // <Box>
-    //   <TopHeading>Presentations</TopHeading>
-    //   <Accordion expanded={isAccordinanOpen} onChange={()=>setIsAccordianOpen(!isAccordinanOpen)}>
-    //     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-    //       Presentation Details
-    //     </AccordionSummary>
-    //     <AccordionDetails>
-    //       <InitialForm
-    //         fieldsData={fieldData}
-    //         formik={formik}
-    //         isAllFieldModal={isAllFieldModal}
-    //         setIsAllFieldModal={setIsAllFieldModal}
-    //       />
-    //     </AccordionDetails>
-    //   </Accordion>
-    //   {isBeginReview && (
-    //     <Box sx={{ marginTop: '1rem' }}>
-    //       <QuestionSection
-    //         questions={questions}
-    //         answers={presentationAnswers}
-    //         setAnswers={setPresentationAnswers}
-    //         fieldData={fieldData}
-    //         formik={formik}
-    //       />
-    //     </Box>
-    //   )}
-    // </Box>
     <MainComponentForm
       answers={presentationAnswers}
       setAnswers={setPresentationAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={presentationQuestion}
       topHeading={'Presentations'}
+      modalList={modalList}
     />
   );
 };

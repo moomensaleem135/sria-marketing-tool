@@ -17,7 +17,7 @@ export interface User {
 }
 
 export type UserState = {
-  user: User;
+  user: User | string | undefined;
   token: string | null;
   isAuthenticated: boolean;
   status: string;

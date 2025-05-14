@@ -5,11 +5,15 @@ import React, { useState } from 'react';
 import { Answer } from '@/store/app/types';
 import { questions } from '../websites';
 import MainComponentForm from '../main-component';
-
+import useQuestionData from '../../../hooks/useGetQuestionData';
+const modalList = {
+  list: [],
+  modals: {}
+};
 const fieldData = [
   {
     id: 1,
-    name: 'campaign_name',
+    name: 'title',
     fieldTitle: 'Email Campaign / Newsletter Name:',
     type: 'text',
     isFileUpload: false,
@@ -50,11 +54,15 @@ const fieldData = [
 ];
 export default function PartialEmailsCampaings() {
   const [emailCampaingsAnswers, setEmailCampaingsAnwers] = useState<Answer[]>([]);
+  const { data: emailCampaingData, loading } = useQuestionData('Email Campaigns or Newsletters');
+
   const initialValues = {
-    campaign_name: '',
+    title: '',
     advisor: '',
     date: '',
     URL: '',
+    currentTab: 'Email Campaigns or Newsletters',
+
     upload: ''
   };
 
@@ -64,8 +72,9 @@ export default function PartialEmailsCampaings() {
       setAnswers={setEmailCampaingsAnwers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={emailCampaingData}
       topHeading={'Email Campaigns or Newsletters'}
+      modalList={modalList}
     />
   );
 }

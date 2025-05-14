@@ -11,7 +11,16 @@ import PaidReviews from './modals/paidReviews';
 import ReviewAgreement from './modals/reviewAgreement';
 import AdvertisingProhibitation from './modals/advertisingProhibitation';
 import MainComponentForm from '../main-component';
-
+import useQuestionData from '@/hooks/useGetQuestionData';
+const modalList = {
+  list: [64],
+  modals: {
+    64: {
+      title: 'test',
+      content: <TestimonialDisclouserExample />
+    }
+  }
+};
 const questions = [
   {
     id: 1,
@@ -287,7 +296,7 @@ const questions = [
 const fieldData = [
   {
     id: 1,
-    name: 'review_name',
+    name: 'title',
     fieldTitle: 'Full Name of Person Giving Review:',
     type: 'text',
     isFileUpload: false,
@@ -336,12 +345,15 @@ const fieldData = [
 ];
 const PartialReviews = () => {
   const [reviewAnswers, setReviewAnswers] = useState<Answer[]>([]);
+  const { data: reviewsData, loading } = useQuestionData('Reviews');
+
   const initialValues = {
-    review_name: '',
+    title: '',
     advisor: '',
     date: '',
     original_location: '',
     current_location: '',
+    currentTab: 'Reviews',
 
     upload: ''
   };
@@ -352,8 +364,9 @@ const PartialReviews = () => {
       setAnswers={setReviewAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={reviewsData}
       topHeading={'Reviews'}
+      modalList={modalList}
     />
   );
 };

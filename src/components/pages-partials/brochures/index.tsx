@@ -1,15 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Answer } from '@/store/app/types';
+import { Answer, Question } from '@/store/app/types';
 import { questions } from '../websites';
 import MainComponentForm from '../main-component';
-
+import { GetQuestionsService } from '@/services/app';
+import { toast } from 'react-toastify';
+import useQuestionData from '../../../hooks/useGetQuestionData';
+const modalList = {
+  list: [],
+  modals: {}
+};
 const fieldData = [
   {
     id: 1,
-    name: 'broucher_title',
+    name: 'title',
     fieldTitle: 'Title of Brochures:',
     type: 'text',
     isFileUpload: false,
@@ -58,12 +64,15 @@ const fieldData = [
 ];
 export default function PartialBrochure() {
   const [broucherAnswers, setBroucherAnswers] = useState<Answer[]>([]);
+  const { data: broucherQuestions, loading } = useQuestionData('Brochures');
+
   const initialValues = {
-    broucher_title: '',
+    title: '',
     advisor: '',
     date: '',
     audience: '',
     broucher_location: '',
+    currentTab: 'Brochures',
 
     upload: ''
   };
@@ -74,8 +83,9 @@ export default function PartialBrochure() {
       setAnswers={setBroucherAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={broucherQuestions}
       topHeading={'Brochures'}
+      modalList={modalList}
     />
   );
 }

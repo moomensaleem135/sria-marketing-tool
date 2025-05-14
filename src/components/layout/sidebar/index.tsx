@@ -33,6 +33,7 @@ import { MenuITEMS } from './menu';
 import { useRouter } from 'nextjs-toploader/app';
 import CustomModal from '@/components/core/Modal';
 import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
+import { setFiles } from '@/store/app/appSlice';
 
 interface Props {
   children: React.ReactNode;
@@ -86,12 +87,12 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
   };
   const { taskId } = useParams();
   const handleRoutePush = (route: string) => {
-    if (path !== '/reports') {
-      const isSaved = localStorage.getItem('isSaved');
-
-      setSaveAlert(true);
-    } else {
+    if (path === '/reports' || path === '/') {
       router.push(route);
+      setFiles([]);
+    } else {
+      const isSaved = localStorage.getItem('isSaved');
+      setSaveAlert(true);
     }
   };
   const StyledMenu = styled((props: MenuProps) => (
@@ -133,6 +134,11 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
   };
   // const isHiddenRoute = HIDDEN_ROUTES_LEFT_DRAWER.find((route) => route === path);
   const isHiddenRoute = false;
+  const handleLeaveConfirmClick = () => {
+    setFiles([]);
+    setSaveAlert(false);
+    router.push(pushedRoute);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -267,9 +273,8 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
         // mainHeading="Delete File?"
         closedIcon={true}
         modalWidth={'25rem'}
-        
       >
-        <Box >
+        <Box>
           <Typography sx={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>
             Leaving Page?
           </Typography>
@@ -279,28 +284,13 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
           <Box
             sx={{ display: 'flex', justifyContent: 'end', columnGap: '1rem', marginTop: '1rem' }}
           >
-            {/* <CloseButtonAddTask onClick={handleCloseConfirmRoute}>close</CloseButtonAddTask>
-            <DoneButtonAddTask
-              onClick={() => {
-                setSaveAlert(false);
-                router.push(pushedRoute);
-              }}
-            >
-              Confirm
-            </DoneButtonAddTask> */}
             <ButtonWitnLoading
               text="Close"
               bg="black"
               textColor="white"
               handleClick={handleCloseConfirmRoute}
             />
-            <ButtonWitnLoading
-              text="Confirm"
-              handleClick={() => {
-                setSaveAlert(false);
-                router.push(pushedRoute);
-              }}
-            />
+            <ButtonWitnLoading text="Confirm" handleClick={handleLeaveConfirmClick} />
           </Box>
         </Box>
       </CustomModal>

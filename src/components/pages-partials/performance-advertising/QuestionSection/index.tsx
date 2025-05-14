@@ -16,36 +16,88 @@ import {
   SubQuestion,
   QuestionsHeading,
   TextBlue,
-  Question,
-  IsUpdatedDiv,
   ButtonRow,
-  Example,
   QuestionContainer
 } from '../../index.styles';
 
 import FieldInput from '@/components/core/FieldInput';
 import FileUpload from '@/components/core/DragAndDropUploadFile';
 import YesNoSelector from '../../YesNoSelector';
-import { Answer, IQuestionSection, SubAnswers } from '@/store/app/types';
+import { Answer, IQuestionSection, Question, SubAnswers } from '@/store/app/types';
 import ButtonWitnLoading from '@/components/core/ButtonWithLoading';
 import NoContainer from '../../websites/SignContainer/noContainer';
 import SignContainer from '../../websites/SignContainer';
 import CustomModal from '@/components/core/Modal';
 import DeleteModal from '@/components/core/DragAndDropUploadFile/DeleteModal';
+import { useDispatch } from 'react-redux';
+import { removeFile, setFiles } from '@/store/app/appSlice';
+import { useAppSelector } from '@/hooks/useReduxTypedHooks';
+import { getAppDataSelector } from '@/store/app';
+type exampleOptions = 'html_example_text' | 'note_text_1' | 'details_text' | 'note_text_2';
+// Add this interface at the top of your file
+interface DisclosureModalData {
+  title: string;
+  content: string;
+}
+
+interface ProcessedQuestion extends Question {
+  // id: number;
+  // content: string;
+  modal?: DisclosureModalData;
+}
+
+// Add this utility function outside your component
+const processQuestionsWithDisclosures = (
+  questions: ProcessedQuestion[],
+  disclosureQuestionIds: number[],
+  modalData: Record<number, DisclosureModalData>
+): Question[] => {
+  return questions.map((question) => {
+    // If this question doesn't need disclosure processing, return it as-is
+    if (!disclosureQuestionIds.includes(question.id)) {
+      return question;
+    }
+
+    // Create a deep clone of the question to avoid modifying the original
+    const processedQuestion = { ...question };
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = question.html_question_text || ''; // Use the correct field that contains HTML
+    const uTags = tempDiv.getElementsByTagName('u');
+
+    if (uTags.length > 0) {
+      Array.from(uTags).forEach((uTag) => {
+        const clickableSpan = document.createElement('span');
+        clickableSpan.className = 'clickable-disclosure';
+        clickableSpan.style.cssText = 'cursor: pointer; text-decoration: underline;';
+        clickableSpan.textContent = uTag.textContent;
+        clickableSpan.dataset.questionId = question.id.toString();
+        uTag.replaceWith(clickableSpan);
+      });
+
+      // Update the HTML content with the processed version
+      processedQuestion.html_question_text = tempDiv.innerHTML;
+      processedQuestion.modal = modalData[question.id];
+    }
+
+    return processedQuestion;
+  });
+};
 
 const QuestionSection = ({
   questions,
   answers,
   setAnswers,
   fieldData,
-  formik
+  formik,
+  modalList
 }: IQuestionSection) => {
   const [expandedSections, setExpandedSections] = useState<{
     [key: number]: {
-      example?: boolean;
-      notes?: boolean;
-      details?: boolean;
-      notes2?: boolean;
+      html_example_text?: boolean;
+      note_text_1?: boolean;
+      details_text?: boolean;
+      note_text_2?: boolean;
     };
   }>(
     questions.reduce(
@@ -57,7 +109,51 @@ const QuestionSection = ({
       {} as { [key: number]: any }
     )
   );
+  const [disclosureModalOpen, setDisclosureModalOpen] = useState(false);
+  const [currentDisclosureModal, setCurrentDisclosureModal] = useState<
+    DisclosureModalData | null | undefined
+  >(null);
+  const [processedQuestions, setProcessedQuestions] = useState<ProcessedQuestion[]>([]);
 
+  // Add this click handler function
+  const handleDisclosureClick = (questionId: number) => {
+    const question = processedQuestions.find((q) => q.id === questionId);
+    if (question) {
+      console.log('question', question);
+      setCurrentDisclosureModal(question.modal);
+      setDisclosureModalOpen(true);
+    }
+  };
+
+  // Add this useEffect to handle click events on disclosures
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('clickable-disclosure')) {
+        const questionId = target.dataset.questionId;
+        if (questionId) {
+          handleDisclosureClick(parseInt(questionId));
+        }
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    return () => document.removeEventListener('click', handleClick);
+  }, [questions, processedQuestions]);
+
+  // Process your questions before rendering (add this near the top of your component)
+
+  useEffect(() => {
+    // Process questions when they change
+    const withDisclosures = processQuestionsWithDisclosures(
+      questions,
+      modalList.list, // Your question IDs that need disclosures
+      modalList.modals
+    );
+    setProcessedQuestions(withDisclosures);
+    console.log('withDisclosures', withDisclosures);
+  }, [questions]);
   const [selectedOption, setSelectedOption] = useState<{ [key: number]: string }>({});
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
   const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
@@ -65,6 +161,11 @@ const QuestionSection = ({
   const [visibleQuestions, setVisibleQuestions] = useState<number[]>([questions[0].id]);
 
   const [isCompleteAllModal, setIsCompleteAllModal] = useState<boolean>(false);
+  const { tabFiles } = useAppSelector(getAppDataSelector);
+  console.log('processedQuestions', processedQuestions);
+
+  const dispatch = useDispatch();
+
   // Function to check if we should show the next question
   const shouldShowNextQuestion = (currentQuestionId: number) => {
     const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
@@ -134,10 +235,10 @@ const QuestionSection = ({
 
   const shouldRenderSubQuestions = (question: any) => {
     const selected = selectedOption[question.id];
-    if (question.show_subquestions === 'yes' && selected === 'Yes') {
+    if (question.show_subquestions === 'YES' && selected === 'Yes') {
       return true;
     }
-    if (question.show_subquestions === 'no' && selected === 'No') {
+    if (question.show_subquestions === 'NO' && selected === 'No') {
       return true;
     }
 
@@ -280,31 +381,9 @@ const QuestionSection = ({
     setIsSignInOpen(false);
   };
 
-  const handleFileUpload = (questionId: number, file: string) => {
-    setAnswers((prev: Answer[]) => {
-      const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
+  // Add this import at the top of your file
 
-      if (existingAnswerIndex >= 0) {
-        const updatedAnswers = [...prev];
-        updatedAnswers[existingAnswerIndex] = {
-          ...updatedAnswers[existingAnswerIndex],
-          fileUpload: file
-        };
-
-        return updatedAnswers;
-      } else {
-        return [
-          ...prev,
-          {
-            id: questionId,
-            fileUpload: file
-          }
-        ];
-      }
-    });
-
-    setIsSignInOpen(false);
-  };
+  // Inside your component, get the dispatch function
 
   const getAnswer = (questionId: number) => {
     return answers.find((a) => a.id === questionId);
@@ -316,7 +395,7 @@ const QuestionSection = ({
       }
     });
   }, [answers]);
-  const toggleSection = (id: number, section: 'example' | 'notes' | 'details' | 'notes2') => {
+  const toggleSection = (id: number, section: exampleOptions) => {
     setExpandedSections((prev) => ({
       ...prev,
       [id]: {
@@ -340,7 +419,7 @@ const QuestionSection = ({
 
   const renderExpandableSection = (
     id: number,
-    type: 'example' | 'notes' | 'details' | 'notes2',
+    type: 'html_example_text' | 'note_text_1' | 'details_text' | 'note_text_2',
     content?: string | React.ReactNode | undefined,
     label?: string
   ) => {
@@ -386,6 +465,65 @@ const QuestionSection = ({
       openSignContainer();
     }
   };
+  // Update your handleFileUpload function
+  const handleFileUpload = (questionId: number, file: string | File) => {
+    // Update local state
+    // setAnswers((prev: Answer[]) => {
+    //   const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
+
+    //   if (existingAnswerIndex >= 0) {
+    //     const updatedAnswers = [...prev];
+    //     updatedAnswers[existingAnswerIndex] = {
+    //       ...updatedAnswers[existingAnswerIndex],
+    //       fileUpload: file
+    //     };
+
+    //     return updatedAnswers;
+    //   } else {
+    //     return [
+    //       ...prev,
+    //       {
+    //         id: questionId,
+    //         fileUpload: file,
+    //         fileType:'SubQuestion',
+    //       }
+    //     ];
+    //   }
+    // });
+
+    // Dispatch to Redux store
+    dispatch(
+      setFiles({
+        questionId,
+        file,
+        fileType: 'SubQuestion'
+      })
+    );
+
+    setIsSignInOpen(false);
+  };
+  const handleFileDelete = (questionId: number) => {
+    // Update local state
+    setAnswers((prev: Answer[]) => {
+      const existingAnswerIndex = prev.findIndex((a) => a.id === questionId);
+
+      if (existingAnswerIndex >= 0) {
+        const updatedAnswers = [...prev];
+        updatedAnswers[existingAnswerIndex] = {
+          ...updatedAnswers[existingAnswerIndex],
+          fileUpload: undefined
+        };
+
+        return updatedAnswers;
+      }
+
+      return prev;
+    });
+
+    // Dispatch to Redux store
+    dispatch(removeFile({ questionId }));
+  };
+
   return (
     <Box>
       <Container>
@@ -403,7 +541,7 @@ const QuestionSection = ({
           </span>
         </Box>
         <Line />
-        {questions.map((q, index) => {
+        {processedQuestions.map((q, index) => {
           if (!visibleQuestions.includes(q.id)) return null;
           const answer = getAnswer(q.id);
 
@@ -423,7 +561,7 @@ const QuestionSection = ({
                       sx={{ marginTop: '0.02rem' }}
                     />
                   </Box>
-                  {q.isQuestionWithNA === true ? (
+                  {q.is_na === true ? (
                     <YesNoSelector
                       options={['Yes', 'No', 'N/A']}
                       onSelect={(option: string) => {
@@ -454,129 +592,117 @@ const QuestionSection = ({
                 {renderExpandableSection(q.id, 'html_example_text', q.html_example_text, 'Example')}
                 {renderExpandableSection(
                   q.id,
-                  'note_text',
-                  q.note_text,
-                  `${q.isMultipleNotes === true ? 'Note 1 of 2' : 'Notes'}`
+                  'note_text_1',
+                  q.note_text_1,
+                  `${q.note_text_1 && q.note_text_2 ? 'Note 1 of 2' : 'Notes'}`
                 )}
-                {renderExpandableSection(q.id, 'notes2', q.notes2, 'Note 2 of 2')}
+                {renderExpandableSection(q.id, 'note_text_2', q.note_text_2, 'Note 2 of 2')}
                 {renderExpandableSection(q.id, 'details_text', q.details_text, 'Details')}
               </Box>
               {shouldRenderSubQuestions(q) && (
                 <QuestionDetails>
                   {q?.subquestions
-                    ?.filter((question) => question.question_type === 'simple')
-                    .map((subQuestion, subIndex) => (
-                      <SubQuestionDiv
-                        key={subIndex}
-                        style={{
-                          display: subQuestion.isCheckbox || subQuestion.isRadio ? 'flex' : 'block',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        {/* <SubQuestion>{subQuestion.text}</SubQuestion> */}
-                        <Typography
-                          dangerouslySetInnerHTML={{ __html: subQuestion.html_sub_question_text }}
-                          // sx={{ marginTop: '0.1rem' }}
-                        />
-                        {subQuestion.field_type === 'checkbox' &&
-                        subQuestion.question_type === 'simple' ? (
-                          <YesNoSelector
-                            onSelect={(option: string) =>
-                              handleSubInputChange(q.id, `sub_${subIndex}`, option)
-                            }
-                            selectedOption={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
-                          />
-                        ) : subQuestion.field_type === 'radio' &&
-                          subQuestion.question_type === 'simple' ? (
-                          <Radio
-                            onChange={(e) =>
-                              handleSubInputChange(q.id, `sub_${subIndex}`, e.target.value)
-                            }
-                            name="sub"
-                            sx={{
-                              accentColor: COLORS.BLUE_600,
-                              '&.Mui-checked': {
-                                color: COLORS.BLUE_600 // Checked color
-                              }
-                            }}
-                          />
-                        ) : subQuestion.field_type === 'file' &&
-                          subQuestion.question_type === 'simple' ? (
-                          <SubQuestionDiv>
-                            {/* <SubQuestion>{q.dragAndDrop}</SubQuestion> */}
-                            <FileUpload formik={formik} isDelete name={`upload_${q.id}`} />
-                          </SubQuestionDiv>
-                        ) : (
-                          <FieldInput
-                            name="sub"
-                            value={answer?.subAnswers?.[`sub_${subIndex}`] || ''}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                              handleSubInputChange(q.id, `sub_${subIndex}`, e.target.value)
-                            }
-                            placeholder=""
-                          />
-                        )}
-                      </SubQuestionDiv>
-                    ))}
-                  {q?.subquestions
-                    ?.filter((question) => question.question_type === 'spacial')
+                    // ?.filter((question) => question.question_type === 'SIMPLE')
                     .map((subQuestion, subIndex) => (
                       <>
-                        <IsUpdatedDiv>
+                        <SubQuestionDiv
+                          key={subIndex}
+                          style={{
+                            display:
+                              subQuestion.field_type === 'CHECKBOX' ||
+                              subQuestion.field_type === 'Radio'
+                                ? 'flex'
+                                : 'block',
+                            justifyContent: 'space-between'
+                          }}
+                        >
+                          {/* <SubQuestion>{subQuestion.text}</SubQuestion> */}
                           <Typography
                             dangerouslySetInnerHTML={{ __html: subQuestion.html_sub_question_text }}
                             // sx={{ marginTop: '0.1rem' }}
                           />
-                          <YesNoSelector
-                            onSelect={(option: string) =>
-                              handleInputChange(q.id, 'isUpdated', option)
-                            }
-                            selectedOption={answer?.isUpdated}
-                          />
-                        </IsUpdatedDiv>
-                        {answer?.isUpdated && (
-                          <Typography
-                            sx={{
-                              fontSize: '0.9rem',
-                              marginBottom: '1rem',
-                              fontWeight: 'bold',
-                              color: answer.isUpdated === 'Yes' ? 'green' : 'red'
-                            }}
-                          >
-                            {answer.isUpdated === 'Yes'
-                              ? subQuestion.yes_text
-                              : subQuestion.no_text}
-                          </Typography>
-                        )}
+                          {subQuestion.field_type === 'CHECKBOX' &&
+                          subQuestion.question_type === 'SIMPLE' ? (
+                            <YesNoSelector
+                              onSelect={(option: string) => {
+                                handleSubInputChange(q.id, `sub_${subQuestion.id}`, option);
+                              }}
+                              selectedOption={answer?.subAnswers?.[`sub_${subQuestion.id}`] || ''}
+                            />
+                          ) : subQuestion.field_type === 'CHECKBOX' &&
+                            subQuestion.question_type === 'SPECIAL' ? (
+                            <YesNoSelector
+                              onSelect={(option: string) => {
+                                handleSubInputChange(q.id, `sub_${subQuestion.id}`, option);
+                                handleInputChange(q.id, 'isUpdated', option);
+                                console.log('clicked SPECIAL');
+                              }}
+                              selectedOption={answer?.subAnswers?.[`sub_${subQuestion.id}`] || ''}
+                            />
+                          ) : subQuestion.field_type === 'Radio' &&
+                            subQuestion.question_type === 'SIMPLE' ? (
+                            <Radio
+                              onChange={(e) =>
+                                handleSubInputChange(q.id, `sub_${subQuestion.id}`, e.target.value)
+                              }
+                              name="sub"
+                              sx={{
+                                accentColor: COLORS.BLUE_600,
+                                '&.Mui-checked': {
+                                  color: COLORS.BLUE_600 // Checked color
+                                }
+                              }}
+                            />
+                          ) : subQuestion.field_type === 'FILE' &&
+                            subQuestion.question_type === 'SIMPLE' ? (
+                            <SubQuestionDiv>
+                              {/* <SubQuestion>{q.dragAndDrop}</SubQuestion> */}
+                              <FileUpload
+                                formik={formik}
+                                isDelete
+                                name={`upload_${q.id}`}
+                                onUpload={(file) => handleFileUpload(q.id, file)}
+                                onDelete={() => handleFileDelete(q.id)}
+                              />
+                            </SubQuestionDiv>
+                          ) : (
+                            <FieldInput
+                              name="sub"
+                              value={answer?.subAnswers?.[`sub_${subQuestion.id}`] || ''}
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                handleSubInputChange(q.id, `sub_${subQuestion.id}`, e.target.value)
+                              }
+                              placeholder=""
+                            />
+                          )}
+                        </SubQuestionDiv>
+                        {subQuestion.question_type === 'SPECIAL' &&
+                          answer?.subAnswers?.[`sub_${subQuestion.id}`] && (
+                            <Typography
+                              sx={{
+                                fontSize: '0.9rem',
+                                marginBottom: '1rem',
+                                fontWeight: 'bold',
+                                color:
+                                  answer?.subAnswers?.[`sub_${subQuestion.id}`] === 'Yes'
+                                    ? 'green'
+                                    : 'red'
+                              }}
+                            >
+                              {answer?.subAnswers?.[`sub_${subQuestion.id}`] === 'Yes'
+                                ? subQuestion.yes_text
+                                : subQuestion.no_text}
+                            </Typography>
+                          )}
                       </>
                     ))}
+
                   {q.dragAndDrop && (
                     <SubQuestionDiv>
                       <SubQuestion>{q.dragAndDrop}</SubQuestion>
                       <FileUpload formik={formik} isDelete name={`upload_${q.id}`} />
                     </SubQuestionDiv>
                   )}
-                  {/* {subQuestion.field_type === 'spacial' && (
-                    <IsUpdatedDiv>
-                      <Question style={{ fontWeight: 'bold' }}>{q.isUpdated}</Question>
-                      <YesNoSelector
-                        onSelect={(option: string) => handleInputChange(q.id, 'isUpdated', option)}
-                        selectedOption={answer?.isUpdated}
-                      />
-                    </IsUpdatedDiv>
-                  )} */}
-                  {/* {answer?.isUpdated && (
-                    <Typography
-                      sx={{
-                        fontSize: '0.9rem',
-                        marginBottom: '1rem',
-                        fontWeight: 'bold',
-                        color: answer.isUpdated === 'Yes' ? 'green' : 'red'
-                      }}
-                    >
-                      {answer.isUpdated === 'Yes' ? q.isUpdatedTrue : q.isUpdatedFalse}
-                    </Typography>
-                  )} */}
                 </QuestionDetails>
               )}
             </QuestionWrapper>
@@ -632,6 +758,18 @@ const QuestionSection = ({
           </Typography>
           <Typography sx={{ fontSize: '0.9rem' }}>Please answer all required questions</Typography>
         </Box>
+      </CustomModal>
+      <CustomModal
+        openValue={disclosureModalOpen}
+        closeFunction={() => setDisclosureModalOpen(false)}
+        closedIcon={true}
+        modalWidth={'25rem'}
+      >
+        {currentDisclosureModal && (
+          <Box>
+            <Typography sx={{ fontSize: '0.9rem' }}>{currentDisclosureModal.content}</Typography>
+          </Box>
+        )}
       </CustomModal>
     </Box>
   );

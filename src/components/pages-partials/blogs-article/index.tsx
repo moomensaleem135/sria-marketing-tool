@@ -1,17 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { Answer } from '@/store/app/types';
+import { Answer, Question } from '@/store/app/types';
 import { questions } from '../websites';
 import MainComponentForm from '../main-component';
-
+import { GetQuestionsService } from '@/services/app';
+import { toast } from 'react-toastify';
+import useQuestionData from '../../../hooks/useGetQuestionData';
+const modalList = {
+  list: [],
+  modals: {}
+};
 const fieldData = [
   {
     id: 1,
-    name: 'blog_title',
+    name: 'title',
     fieldTitle: 'Blog or Article Title:',
     type: 'text',
     isFileUpload: false,
@@ -53,6 +59,7 @@ const fieldData = [
 
 const PartialBlogArticle = () => {
   const [blogAnswers, setBlogAnswers] = useState<Answer[]>([]);
+  const { data: blogQuestions, loading } = useQuestionData('Blogs or Articles');
 
   // Get toggle states from Redux store
   const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
@@ -60,10 +67,11 @@ const PartialBlogArticle = () => {
   );
   console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
   const initialValues = {
-    blog_title: '',
+    title: '',
     advisor: '',
     date: '',
     URL: '',
+    currentTab: 'Blogs or Articles',
     upload: ''
   };
 
@@ -73,8 +81,9 @@ const PartialBlogArticle = () => {
       setAnswers={setBlogAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={blogQuestions}
       topHeading={'Blogs or Articles'}
+      modalList={modalList}
     />
   );
 };

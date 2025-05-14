@@ -14,6 +14,7 @@ interface IMainComponent {
   answers: Answer[];
   setAnswers: (value: Answer[] | ((prev: Answer[]) => Answer[])) => void;
   topHeading: string;
+  modalList: any;
 }
 const MainComponentForm = ({
   fieldData,
@@ -21,7 +22,8 @@ const MainComponentForm = ({
   questions,
   answers,
   setAnswers,
-  topHeading
+  topHeading,
+  modalList
 }: IMainComponent) => {
   const [isAllFieldModal, setIsAllFieldModal] = useState<boolean>(false);
   const [isAccordinanOpen, setIsAccordianOpen] = useState<boolean>(true);
@@ -56,6 +58,7 @@ const MainComponentForm = ({
             isAllFieldModal={isAllFieldModal}
             setIsAllFieldModal={setIsAllFieldModal}
             isBeginReview={isBeginReview}
+            setAnswers={setAnswers}
             //   setIsAccordianOpen={setIsAccordianOpen}
             //   isAccordinanOpen={isAccordinanOpen}
           />
@@ -80,6 +83,7 @@ const MainComponentForm = ({
               isAllFieldModal={isAllFieldModal}
               setIsAllFieldModal={setIsAllFieldModal}
               isBeginReview={isBeginReview}
+              setAnswers={setAnswers}
               //   setIsAccordianOpen={setIsAccordianOpen}
               //   isAccordinanOpen={isAccordinanOpen}
             />
@@ -95,6 +99,7 @@ const MainComponentForm = ({
             setAnswers={setAnswers}
             fieldData={fieldData}
             formik={formik}
+            modalList={modalList}
           />
         </Box>
       )}

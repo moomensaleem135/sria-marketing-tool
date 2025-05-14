@@ -14,7 +14,14 @@ import PaidTestimonial from './Paid-Testimonial';
 import WrittenAgreement from './Wriiten-Agreement';
 import TestimonialProhibitation from './Testimonial-Prohibitation';
 import MainComponentForm from '../main-component';
-
+import useQuestionData from '@/hooks/useGetQuestionData';
+const modalList = {
+  list: [55, 63],
+  modals: {
+    55: { title: 'test', content: <TestimonialEndorsementModal /> },
+    63: { title: 'test', content: <TestimonialProhibitation /> }
+  }
+};
 const questions = [
   {
     id: 1,
@@ -293,7 +300,7 @@ const questions = [
 const fieldData = [
   {
     id: 1,
-    name: 'full_name',
+    name: 'title',
     fieldTitle: 'Full Name:',
     type: 'text',
     isFileUpload: false,
@@ -344,12 +351,15 @@ const fieldData = [
 
 export default function PartialTestimonial() {
   const [testimonialAnswers, setTestimonialAnswers] = useState<Answer[]>([]);
+  const { data: testimonialData, loading } = useQuestionData('Testimonials %26 Endorsements');
+
   const initialValues = {
-    full_name: '',
+    title: '',
     advisor: '',
     date: '',
     testimonail: '',
     ad_url: '',
+    currentTab: 'Testimonials & Endorsements',
 
     upload: ''
   };
@@ -360,8 +370,9 @@ export default function PartialTestimonial() {
       setAnswers={setTestimonialAnswers}
       formInitialValues={initialValues}
       fieldData={fieldData}
-      questions={questions}
+      questions={testimonialData}
       topHeading={'Testimonials & Endorsements'}
+      modalList={modalList}
     />
   );
 }
