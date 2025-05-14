@@ -28,7 +28,6 @@ const SignModal = ({
 }: SignModalProps) => {
   const sigCanvas = useRef<SignatureCanvas>(null);
   const [isApproved, setIsApproved] = useState(false);
-  console.log('answer', answers, 'SIGN MODAL');
 
   // Draw the text signature on canvas when it changes
   useEffect(() => {
