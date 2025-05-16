@@ -24,7 +24,7 @@ const DisclouserExampleModal = () => {
 
   return (
     <Box>
-      <Typography sx={{ fontSize: '0.8rem' }}>
+      {/* <Typography sx={{ fontSize: '0.8rem' }}>
         A disclosure displayed clearly and prominently is required by the SEC for all testimonials
         and endorsements posted.{' '}
         <span
@@ -42,40 +42,40 @@ const DisclouserExampleModal = () => {
         closeFunction={() => setIsDisclouserModal(false)}
         closedIcon={true}
         modalWidth={'37rem'}
-      >
-        <Box sx={{ paddingBottom: '1rem' }}>
-          {userData.map((data) => (
-            <Box
-              key={data.name}
-              sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.7rem', margin: '1rem 0' }}
-            >
-              <Typography sx={{ fontSize: '1.15rem', color: COLORS.BLUE_600 }}>
-                {data.name}
-              </Typography>
-              <Typography sx={{ fontSize: '0.9rem' }}>{data.description}</Typography>
-            </Box>
-          ))}
-          <hr style={{ height: '2px' }} />
-          <Box>
-            <Typography sx={{ fontSize: '0.9rem' }}>
-              The above testimonials were made from current clients and no compensation was given
-              for the remarks made. Since there wasn’t compensation given, there are no conflicts of
-              interest present that would affect the testimonial. Top Advisors reached out to all
-              clients requesting voluntary feedback and these were the clients who responded. These
-              testimonials were provided for informational purposes only and is not representative
-              of all client experiences. There is no assurance that a current or prospective client
-              will experience a high level of satisfaction with Top Advisors services. Past
-              performance is no guarantee of future results.
+      > */}
+      <Box sx={{ paddingBottom: '1rem' }}>
+        {userData.map((data) => (
+          <Box
+            key={data.name}
+            sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.7rem', margin: '1rem 0' }}
+          >
+            <Typography sx={{ fontSize: '1.15rem', color: COLORS.BLUE_600 }}>
+              {data.name}
             </Typography>
-            <Typography sx={{ fontSize: '0.9rem', marginTop: '1rem' }}>
-              Additional information is available upon request in our current brochure titled ADV 2A
-              and the Form CRS which discusses advisory services and fees. You can also view these
-              disclosures here{' '}
-              <span style={{ color: COLORS.BLUE_600 }}>www.samplewebsite/disclosure.</span>
-            </Typography>
+            <Typography sx={{ fontSize: '0.9rem' }}>{data.description}</Typography>
           </Box>
+        ))}
+        <hr style={{ height: '2px' }} />
+        <Box>
+          <Typography sx={{ fontSize: '0.9rem' }}>
+            The above testimonials were made from current clients and no compensation was given for
+            the remarks made. Since there wasn’t compensation given, there are no conflicts of
+            interest present that would affect the testimonial. Top Advisors reached out to all
+            clients requesting voluntary feedback and these were the clients who responded. These
+            testimonials were provided for informational purposes only and is not representative of
+            all client experiences. There is no assurance that a current or prospective client will
+            experience a high level of satisfaction with Top Advisors services. Past performance is
+            no guarantee of future results.
+          </Typography>
+          <Typography sx={{ fontSize: '0.9rem', marginTop: '1rem' }}>
+            Additional information is available upon request in our current brochure titled ADV 2A
+            and the Form CRS which discusses advisory services and fees. You can also view these
+            disclosures here{' '}
+            <span style={{ color: COLORS.BLUE_600 }}>www.samplewebsite/disclosure.</span>
+          </Typography>
         </Box>
-      </CustomModal>
+      </Box>
+      {/* </CustomModal> */}
     </Box>
   );
 };

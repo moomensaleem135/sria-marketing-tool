@@ -12,12 +12,114 @@ import ReviewAgreement from './modals/reviewAgreement';
 import AdvertisingProhibitation from './modals/advertisingProhibitation';
 import MainComponentForm from '../main-component';
 import useQuestionData from '@/hooks/useGetQuestionData';
+// const modalList = {
+//   list: [64],
+//   modals: {
+//     64: {
+//       title: 'test',
+//       content: <TestimonialDisclouserExample />
+//     }
+//   }
+// };
 const modalList = {
-  list: [64],
+  list: [
+    {
+      id: 64,
+      isQuestion: true,
+      isNote: true
+    },
+    {
+      id: 65,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 66,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 67,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 68,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 70,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 72,
+      isQuestion: false,
+      isNote: true
+    }
+  ],
   modals: {
     64: {
-      title: 'test',
-      content: <TestimonialDisclouserExample />
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: (
+        <ReviewDisclouser
+          text1={
+            'A disclosure displayed clearly and prominently is required by the SEC for reviews posted.'
+          }
+          text2="for an example of proper online review disclosure placement."
+          colorText={'currentClients'}
+        />
+      )
+    },
+    65: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: (
+        <ReviewDisclouser
+          text1="The SEC requires each disclosure to state if the person giving the review was a current client, investor, or someone else."
+          text2=" for an example."
+          colorText={'currentClient'}
+        />
+      )
+    },
+    66: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: (
+        <ReviewDisclouser
+          text1="The SEC requires each disclosure to state if any compensation was exchanged and what type—cash or non-cash. "
+          text2=" for an example."
+          colorText={'noCompensation'}
+        />
+      )
+    },
+    67: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: (
+        <ReviewDisclouser
+          text1="If compensation is exchanged for a review, then a material conflict of interest exists. It’s required to state this conflict in the disclosure."
+          text2=" for an example."
+          colorText={'noConflicts'}
+        />
+      )
+    },
+    68: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <PaidReviews />
+    },
+    70: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <ReviewAgreement />
+    },
+    72: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <AdvertisingProhibitation />
     }
   }
 };

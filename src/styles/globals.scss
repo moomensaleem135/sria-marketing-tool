@@ -200,3 +200,17 @@ span.ag-icon.ag-icon-menu {
 }
 
 // input.relative.duration-300.py-2\.5.pl-4.pr-14.w-full.border-none.rounded-lg.placeholder-subheadingColor.\!text-\[\#64698E\].\!text-base.font-medium.\!bg-transparent.focus\:border-none.focus\:outline-0.border.border-gray-300
+@keyframes zoom {
+  0%,
+  100% {
+    transform: scale(1) scaleY(1);
+  }
+  50% {
+    transform: scale(1.1) scaleY(1.1);
+  }
+}
+// Main logo screen animation
+.animate-zoom {
+  animation: zoom 2s infinite;
+  // margin-left: 4rem;
+}

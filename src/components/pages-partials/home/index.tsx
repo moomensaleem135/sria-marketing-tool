@@ -1,17 +1,8 @@
 'use client';
+import { useState } from 'react';
 import { SelectMarketingType, SelectMarketingTypeDis, TopHeading } from '../index.styles';
 import { Box } from '@mui/material';
-export function getCookie(name: string): string | null {
-  const cookies = document.cookie.split('; ');
-  for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split('=');
-    if (cookieName === name) {
-      return decodeURIComponent(cookieValue);
-    }
-  }
 
-  return null;
-}
 export default function PartialHome() {
   return (
     // <SharedLayout>

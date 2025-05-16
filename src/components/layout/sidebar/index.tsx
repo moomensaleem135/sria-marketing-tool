@@ -39,7 +39,7 @@ interface Props {
   children: React.ReactNode;
   pageTitle: string;
 }
-export const HIDDEN_ROUTES_LEFT_DRAWER = ['/', '/login', '/profile', '/support'];
+export const HIDDEN_ROUTES_LEFT_DRAWER = [];
 
 export default function LeftDrawer({ children, pageTitle }: Props) {
   const router = useRouter();
@@ -52,6 +52,7 @@ export default function LeftDrawer({ children, pageTitle }: Props) {
 
   const [openMenu, setOpenMenu] = useState<string | null>('');
   const [saveAlert, setSaveAlert] = useState<boolean>(false);
+
   const handleDrawerOpen = () => {
     setOpenD(true);
     setCollapse(true);

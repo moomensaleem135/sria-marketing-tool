@@ -24,7 +24,7 @@ const ClientEndorsementModal = () => {
 
   return (
     <Box>
-      <Typography sx={{ fontSize: '0.8rem' }}>
+      {/* <Typography sx={{ fontSize: '0.8rem' }}>
         The SEC requires each disclosure to state if the person giving the testimonial is a current
         or former client, or that the endorsement was given by a person other than a current client
         or investor.
@@ -43,47 +43,47 @@ const ClientEndorsementModal = () => {
         closeFunction={() => setIsDisclouserModal(false)}
         closedIcon={true}
         modalWidth={'37rem'}
-      >
-        <Box sx={{ paddingBottom: '1rem' }}>
-          {userData.map((data) => (
-            <Box
-              key={data.name}
-              sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.7rem', margin: '1rem 0' }}
-            >
-              <Typography sx={{ fontSize: '1.15rem', color: COLORS.BLUE_600 }}>
-                {data.name}
-              </Typography>
-              <Typography sx={{ fontSize: '0.9rem' }}>{data.description}</Typography>
-            </Box>
-          ))}
-          <hr style={{ height: '2px' }} />
-          <Box>
-            <Typography sx={{ fontSize: '0.9rem' }}>
-              <span style={{ color: COLORS.BLUE_600 }}>
-                The above testimonials were made from current clients{' '}
-              </span>{' '}
-              and no compensation was given for the remarks made. Since there wasn’t compensation
-              given, there are no conflicts of interest present that would affect the testimonial.
-              Top Advisors reached out to all clients requesting voluntary feedback and these were
-              the clients who responded. These testimonials were provided for informational purposes
-              only and is not representative of all client experiences. There is no assurance that a
-              current or prospective client will experience a high level of satisfaction with Top
-              Advisors services. Past performance is no guarantee of future results.
+      > */}
+      <Box sx={{ paddingBottom: '1rem' }}>
+        {userData.map((data) => (
+          <Box
+            key={data.name}
+            sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.7rem', margin: '1rem 0' }}
+          >
+            <Typography sx={{ fontSize: '1.15rem', color: COLORS.BLUE_600 }}>
+              {data.name}
             </Typography>
-            <Typography sx={{ fontSize: '0.9rem', marginTop: '1rem' }}>
-              Additional information is available upon request in our current brochure titled ADV 2A
-              and the Form CRS which discusses advisory services and fees. You can also view these
-              disclosures here{' '}
-              <span style={{ color: COLORS.BLUE_600 }}>www.samplewebsite/disclosure.</span>
-            </Typography>
-            <Typography sx={{ fontSize: '0.9rem', marginTop: '1rem' }}>
-              If there is compensation, either cash or non-cash, given to the person supplying the
-              testimonial there is a material conflict of interest present. Due to the compensation
-              received the promoter has an incentive to recommend us as the investment adviser.
-            </Typography>
+            <Typography sx={{ fontSize: '0.9rem' }}>{data.description}</Typography>
           </Box>
+        ))}
+        <hr style={{ height: '2px' }} />
+        <Box>
+          <Typography sx={{ fontSize: '0.9rem' }}>
+            <span style={{ color: COLORS.BLUE_600 }}>
+              The above testimonials were made from current clients{' '}
+            </span>{' '}
+            and no compensation was given for the remarks made. Since there wasn’t compensation
+            given, there are no conflicts of interest present that would affect the testimonial. Top
+            Advisors reached out to all clients requesting voluntary feedback and these were the
+            clients who responded. These testimonials were provided for informational purposes only
+            and is not representative of all client experiences. There is no assurance that a
+            current or prospective client will experience a high level of satisfaction with Top
+            Advisors services. Past performance is no guarantee of future results.
+          </Typography>
+          <Typography sx={{ fontSize: '0.9rem', marginTop: '1rem' }}>
+            Additional information is available upon request in our current brochure titled ADV 2A
+            and the Form CRS which discusses advisory services and fees. You can also view these
+            disclosures here{' '}
+            <span style={{ color: COLORS.BLUE_600 }}>www.samplewebsite/disclosure.</span>
+          </Typography>
+          <Typography sx={{ fontSize: '0.9rem', marginTop: '1rem' }}>
+            If there is compensation, either cash or non-cash, given to the person supplying the
+            testimonial there is a material conflict of interest present. Due to the compensation
+            received the promoter has an incentive to recommend us as the investment adviser.
+          </Typography>
         </Box>
-      </CustomModal>
+      </Box>
+      {/* </CustomModal> */}
     </Box>
   );
 };

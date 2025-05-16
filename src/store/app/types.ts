@@ -71,10 +71,10 @@ export interface Question {
   id: number;
   html_question_text: string;
   html_instructions_text?: string;
-  details_text?: string;
-  note_text_1?: string | ReactNode;
+  html_details_text?: string;
+  html_note_text_1?: string | ReactNode;
   html_example_text?: string | ReactNode;
-  note_text_2?: string | ReactNode;
+  html_note_text_2?: string | ReactNode;
   isMultipleNotes?: boolean;
   subquestions: SubQuestion[];
   dragAndDrop?: string;

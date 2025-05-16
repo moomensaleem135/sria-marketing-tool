@@ -1,14 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { Answer, Question } from '@/store/app/types';
-import { questions } from '../websites';
+import { Answer } from '@/store/app/types';
 import MainComponentForm from '../main-component';
-import { GetQuestionsService } from '@/services/app';
-import { toast } from 'react-toastify';
+
 import useQuestionData from '../../../hooks/useGetQuestionData';
 const modalList = {
   list: [],

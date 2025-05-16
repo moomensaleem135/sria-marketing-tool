@@ -3,7 +3,15 @@ import { Add, Remove } from '@mui/icons-material';
 
 import { COLORS } from '@/constants/colors';
 
-import React, { useEffect, useState } from 'react';
+import React, {
+  JSXElementConstructor,
+  PromiseLikeOfReactNode,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState
+} from 'react';
 
 import {
   Container,
@@ -33,7 +41,11 @@ import { useDispatch } from 'react-redux';
 import { removeFile, setFiles } from '@/store/app/appSlice';
 import { useAppSelector } from '@/hooks/useReduxTypedHooks';
 import { getAppDataSelector } from '@/store/app';
-type exampleOptions = 'html_example_text' | 'note_text_1' | 'details_text' | 'note_text_2';
+type exampleOptions =
+  | 'html_example_text'
+  | 'html_note_text_1'
+  | 'html_details_text'
+  | 'html_note_text_2';
 // Add this interface at the top of your file
 interface DisclosureModalData {
   title: string;
@@ -44,40 +56,87 @@ interface ProcessedQuestion extends Question {
   // id: number;
   // content: string;
   modal?: DisclosureModalData;
+  noteModal?: DisclosureModalData;
 }
-
+interface ModalList {
+  list: {
+    id: number;
+    isQuestion: boolean;
+    isNote: boolean;
+  }[];
+  modals: {
+    [key: number]: {
+      content?: React.ReactNode; // For question content
+      noteContent?: React.ReactNode; // For note content
+      title: string;
+    };
+  };
+}
 // Add this utility function outside your component
 const processQuestionsWithDisclosures = (
   questions: ProcessedQuestion[],
-  disclosureQuestionIds: number[],
-  modalData: Record<number, DisclosureModalData>
+  modalList: ModalList
 ): Question[] => {
   return questions.map((question) => {
-    // If this question doesn't need disclosure processing, return it as-is
-    if (!disclosureQuestionIds.includes(question.id)) {
-      return question;
-    }
+    // Find if this question needs processing
+    const modalConfig = modalList.list.find((item) => item.id === question.id);
+
+    // If no processing needed, return as-is
+    if (!modalConfig) return question;
 
     // Create a deep clone of the question to avoid modifying the original
     const processedQuestion = { ...question };
+    const modalData = modalList.modals[question.id];
 
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = question.html_question_text || ''; // Use the correct field that contains HTML
-    const uTags = tempDiv.getElementsByTagName('u');
+    // Process question text if needed
+    if (modalConfig.isQuestion && modalData?.content) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = question.html_question_text || '';
+      const uTags = tempDiv.getElementsByTagName('u');
 
-    if (uTags.length > 0) {
-      Array.from(uTags).forEach((uTag) => {
-        const clickableSpan = document.createElement('span');
-        clickableSpan.className = 'clickable-disclosure';
-        clickableSpan.style.cssText = 'cursor: pointer; text-decoration: underline;';
-        clickableSpan.textContent = uTag.textContent;
-        clickableSpan.dataset.questionId = question.id.toString();
-        uTag.replaceWith(clickableSpan);
-      });
+      if (uTags.length > 0) {
+        Array.from(uTags).forEach((uTag) => {
+          const clickableSpan = document.createElement('span');
+          clickableSpan.className = 'clickable-disclosure question';
+          clickableSpan.style.cssText = 'cursor: pointer; text-decoration: underline;';
+          clickableSpan.textContent = uTag.textContent;
+          clickableSpan.dataset.questionId = question.id.toString();
+          uTag.replaceWith(clickableSpan);
+        });
 
-      // Update the HTML content with the processed version
-      processedQuestion.html_question_text = tempDiv.innerHTML;
-      processedQuestion.modal = modalData[question.id];
+        processedQuestion.html_question_text = tempDiv.innerHTML;
+        processedQuestion.modal = {
+          title: modalData.title,
+          content: modalData.content as string
+        };
+      }
+    }
+
+    // Process note text if needed
+    if (modalConfig.isNote && modalData?.noteContent) {
+      const tempDiv = document.createElement('div');
+      const noteText =
+        typeof question.html_note_text_1 === 'string' ? question.html_note_text_1 : '';
+      tempDiv.innerHTML = noteText;
+      const uTags = tempDiv.getElementsByTagName('u');
+
+      if (uTags.length > 0) {
+        Array.from(uTags).forEach((uTag) => {
+          const clickableSpan = document.createElement('span');
+          clickableSpan.className = 'clickable-disclosure note';
+          clickableSpan.style.cssText = 'cursor: pointer; text-decoration: underline;';
+          clickableSpan.textContent = uTag.textContent;
+          clickableSpan.dataset.questionId = question.id.toString();
+          clickableSpan.dataset.isNote = 'true';
+          uTag.replaceWith(clickableSpan);
+        });
+
+        processedQuestion.html_note_text_1 = tempDiv.innerHTML;
+        processedQuestion.noteModal = {
+          title: modalData.title,
+          content: modalData.noteContent as string
+        };
+      }
     }
 
     return processedQuestion;
@@ -95,9 +154,9 @@ const QuestionSection = ({
   const [expandedSections, setExpandedSections] = useState<{
     [key: number]: {
       html_example_text?: boolean;
-      note_text_1?: boolean;
-      details_text?: boolean;
-      note_text_2?: boolean;
+      html_note_text_1?: boolean;
+      html_details_text?: boolean;
+      html_note_text_2?: boolean;
     };
   }>(
     questions.reduce(
@@ -116,11 +175,10 @@ const QuestionSection = ({
   const [processedQuestions, setProcessedQuestions] = useState<ProcessedQuestion[]>([]);
 
   // Add this click handler function
-  const handleDisclosureClick = (questionId: number) => {
+  const handleDisclosureClick = (questionId: number, isNote: boolean = false) => {
     const question = processedQuestions.find((q) => q.id === questionId);
     if (question) {
-      console.log('question', question);
-      setCurrentDisclosureModal(question.modal);
+      setCurrentDisclosureModal(isNote ? question.noteModal : question.modal);
       setDisclosureModalOpen(true);
     }
   };
@@ -131,8 +189,10 @@ const QuestionSection = ({
       const target = e.target as HTMLElement;
       if (target.classList.contains('clickable-disclosure')) {
         const questionId = target.dataset.questionId;
+        const isNote = target.dataset.isNote === 'true';
+
         if (questionId) {
-          handleDisclosureClick(parseInt(questionId));
+          handleDisclosureClick(parseInt(questionId), isNote);
         }
       }
     };
@@ -148,12 +208,11 @@ const QuestionSection = ({
     // Process questions when they change
     const withDisclosures = processQuestionsWithDisclosures(
       questions,
-      modalList.list, // Your question IDs that need disclosures
-      modalList.modals
+      modalList // Pass the entire modalList object
     );
     setProcessedQuestions(withDisclosures);
     console.log('withDisclosures', withDisclosures);
-  }, [questions]);
+  }, [questions, modalList]); // Add modalList to dependencies
   const [selectedOption, setSelectedOption] = useState<{ [key: number]: string }>({});
   const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
   const [isClearAllModal, setIsClearAllModal] = useState<boolean>(false);
@@ -419,7 +478,7 @@ const QuestionSection = ({
 
   const renderExpandableSection = (
     id: number,
-    type: 'html_example_text' | 'note_text_1' | 'details_text' | 'note_text_2',
+    type: 'html_example_text' | 'html_note_text_1' | 'html_details_text' | 'html_note_text_2',
     content?: string | React.ReactNode | undefined,
     label?: string
   ) => {
@@ -592,12 +651,17 @@ const QuestionSection = ({
                 {renderExpandableSection(q.id, 'html_example_text', q.html_example_text, 'Example')}
                 {renderExpandableSection(
                   q.id,
-                  'note_text_1',
-                  q.note_text_1,
-                  `${q.note_text_1 && q.note_text_2 ? 'Note 1 of 2' : 'Notes'}`
+                  'html_note_text_1',
+                  q.html_note_text_1,
+                  `${q.html_note_text_1 && q.html_note_text_2 ? 'Note 1 of 2' : 'Notes'}`
                 )}
-                {renderExpandableSection(q.id, 'note_text_2', q.note_text_2, 'Note 2 of 2')}
-                {renderExpandableSection(q.id, 'details_text', q.details_text, 'Details')}
+                {renderExpandableSection(
+                  q.id,
+                  'html_note_text_2',
+                  q.html_note_text_2,
+                  'Note 2 of 2'
+                )}
+                {renderExpandableSection(q.id, 'html_details_text', q.html_details_text, 'Details')}
               </Box>
               {shouldRenderSubQuestions(q) && (
                 <QuestionDetails>

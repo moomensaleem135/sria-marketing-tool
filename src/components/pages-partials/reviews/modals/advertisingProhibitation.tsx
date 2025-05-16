@@ -16,7 +16,7 @@ const AdvertisingProhibitation = () => {
 
   return (
     <Box>
-      <Typography sx={{ fontSize: '0.9rem' }}>
+      {/* <Typography sx={{ fontSize: '0.9rem' }}>
         <span
           style={{ textDecoration: 'underline', cursor: 'pointer', fontWeight: 'bold' }}
           onClick={() => setIsDisclouserModal(true)}
@@ -31,25 +31,25 @@ const AdvertisingProhibitation = () => {
         closeFunction={() => setIsDisclouserModal(false)}
         closedIcon={true}
         modalWidth={'40rem'}
-      >
-        <Box>
-          <Typography
-            sx={{
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              color: COLORS.BLUE_600,
-              textAlign: 'center'
-            }}
-          >
-            The 7 General Advertising Prohibitions
-          </Typography>
-          <ol>
-            {prohibitationData.map((data, index) => (
-              <li key={index}>{data}</li>
-            ))}
-          </ol>
-        </Box>
-      </CustomModal>
+      > */}
+      <Box>
+        <Typography
+          sx={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            color: COLORS.BLUE_600,
+            textAlign: 'center'
+          }}
+        >
+          The 7 General Advertising Prohibitions
+        </Typography>
+        <ol>
+          {prohibitationData.map((data, index) => (
+            <li key={index}>{data}</li>
+          ))}
+        </ol>
+      </Box>
+      {/* </CustomModal> */}
     </Box>
   );
 };

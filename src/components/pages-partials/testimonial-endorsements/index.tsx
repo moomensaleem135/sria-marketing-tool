@@ -15,11 +15,87 @@ import WrittenAgreement from './Wriiten-Agreement';
 import TestimonialProhibitation from './Testimonial-Prohibitation';
 import MainComponentForm from '../main-component';
 import useQuestionData from '@/hooks/useGetQuestionData';
+// const modalList = {
+//   list: [55, 63],
+//   modals: {
+//     55: { title: 'test', content: <TestimonialEndorsementModal /> },
+//     63: { title: 'test', content: <TestimonialProhibitation /> }
+//   }
+// };
 const modalList = {
-  list: [55, 63],
+  list: [
+    {
+      id: 55,
+      isQuestion: true,
+      isNote: true
+    },
+    {
+      id: 56,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 57,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 58,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 59,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 61,
+      isQuestion: false,
+      isNote: true
+    },
+    {
+      id: 63,
+      isQuestion: true,
+      isNote: false
+    }
+  ],
   modals: {
-    55: { title: 'test', content: <TestimonialEndorsementModal /> },
-    63: { title: 'test', content: <TestimonialProhibitation /> }
+    55: {
+      title: 'Test Disclosure',
+      content: <TestimonialEndorsementModal />,
+      noteContent: <DisclouserExampleModal />
+    },
+    56: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <ClientEndorsementModal />
+    },
+    57: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <CompensationModal />
+    },
+    58: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <DisclouserConflicts />
+    },
+    59: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <PaidTestimonial />
+    },
+    61: {
+      title: 'Test Disclosure',
+      content: '',
+      noteContent: <WrittenAgreement />
+    },
+    63: {
+      title: 'Test Disclosure',
+      content: <TestimonialProhibitation />,
+      noteContent: ''
+    }
   }
 };
 const questions = [

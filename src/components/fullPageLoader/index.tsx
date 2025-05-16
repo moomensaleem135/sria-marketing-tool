@@ -40,5 +40,9 @@ function FullPageSkeleton() {
 }
 
 export default function FullPageLoader() {
-  return <SharedLayout children={<FullPageSkeleton />} />;
+  return (
+    <React.Suspense>
+      <SharedLayout children={<FullPageSkeleton />} />
+    </React.Suspense>
+  );
 }

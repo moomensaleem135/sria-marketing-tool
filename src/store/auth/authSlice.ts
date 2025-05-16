@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { UserState, User, ILoginRequest } from './types';
 import { loginService } from '../../services/auth/loginService';
-import { getCookie } from '@/components/pages-partials/home';
 import Cookies from 'js-cookie';
 export const signIn = createAsyncThunk('users/login', async (requestData: ILoginRequest) => {
   return await loginService(requestData);
@@ -16,11 +15,11 @@ const getInitialValues = () => {
     const localStorageUser = Cookies.get('user'); // => undefined;
     if (localStorageUser) {
       user = localStorageUser;
-      isAuthenticated = true;
     }
     const localStorageToken = Cookies.get('token') as string;
     if (localStorageToken) {
       token = localStorageToken;
+      isAuthenticated = true;
     }
   }
 
@@ -61,6 +60,9 @@ const authSlice = createSlice({
     },
     setIsNavigated(state: UserState, { payload }: PayloadAction<boolean>) {
       state.isNavigated = payload;
+    },
+    setIsAuthenticated(state: UserState, { payload }: PayloadAction<boolean>) {
+      state.isAuthenticated = payload;
     }
   },
   extraReducers: (builder) => {
@@ -69,7 +71,7 @@ const authSlice = createSlice({
     });
     builder.addCase(signIn.rejected, (state, { error }) => {
       state.status = 'rejected';
-      state.isAuthenticated = false;
+      // state.isAuthenticated = false;
       state.error = error.message;
     });
 
@@ -84,7 +86,14 @@ const authSlice = createSlice({
   }
 });
 
-export const { resetUser, setUser, setToken, clearError, resetStatus, setIsNavigated } =
-  authSlice.actions;
+export const {
+  resetUser,
+  setUser,
+  setToken,
+  clearError,
+  resetStatus,
+  setIsNavigated,
+  setIsAuthenticated
+} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -28,6 +28,23 @@ export const postRequest = (url: string, body: IRequestBody | any, config?: Axio
     }
   });
 };
+export const postWithoutBodyRequest = (
+  url: string,
+  // body?: IRequestBody | any,
+  // isWithoutToken?: boolean,
+  config?: AxiosRequestConfig
+) => {
+  const extraHeaders = getTokenHeader();
+
+  return axios.post(url, '', {
+    // ...config,
+    // headers: {
+    //   // ...REQUEST_HEADERS,
+    //   // ...extraHeaders,
+    //   ...config?.headers
+    // }
+  });
+};
 
 export const putRequest = (url: string, body: IRequestBody | any, config?: AxiosRequestConfig) => {
   const extraHeaders = getTokenHeader();

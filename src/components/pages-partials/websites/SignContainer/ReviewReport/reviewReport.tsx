@@ -185,25 +185,25 @@ const ReviewReportPDF = ({
                 {/* Sub Questions */}
                 {question.subquestions &&
                   answer?.mainAnswer &&
-                  answer.mainAnswer.toLowerCase() === question.show_subquestions && (
+                  answer.mainAnswer.toUpperCase() === question.show_subquestions && (
                     <View style={styles.subQuestions}>
                       {question.subquestions
-                        .filter((subQuestion) => subQuestion.field_type !== 'file')
+                        .filter((subQuestion) => subQuestion.field_type !== 'File')
                         .map((subQ, subIndex) => (
                           <View
                             key={subIndex}
                             style={{
                               marginBottom: 2,
-                              display: subQ.field_type === 'radio' ? 'flex' : undefined,
+                              display: subQ.field_type === 'RADIO' ? 'flex' : undefined,
                               flexDirection:
-                                subQ.field_type === 'radio' ? 'row-reverse' : undefined,
+                                subQ.field_type === 'RADIO' ? 'row-reverse' : undefined,
                               justifyContent: 'flex-start'
                             }}
                           >
                             <Text style={styles.boldText}>
                               {subQ.html_sub_question_text.replace(/<[^>]*>/g, '')}
                             </Text>
-                            {subQ.field_type === 'checkbox' ? (
+                            {subQ.field_type === 'CHECKBOX' ? (
                               <View style={styles.checkboxGroupSub}>
                                 <View style={styles.radioFlexBox}>
                                   {answer?.subAnswers?.[`sub_${subQ.id}`] === 'Yes' ? (
@@ -223,7 +223,7 @@ const ReviewReportPDF = ({
 
                                   <Text style={styles.selecteText}>No</Text>
                                 </View>
-                                {subQ.is_na && subQ.question_type !== 'spacial' && (
+                                {subQ.is_na && subQ.question_type !== 'SPECIAL' && (
                                   <View style={styles.radioFlexBox}>
                                     {answer?.subAnswers?.[`sub_${subQ.id}`] === 'N/A' ? (
                                       <View style={styles.checkedBox}></View>
@@ -235,7 +235,7 @@ const ReviewReportPDF = ({
                                   </View>
                                 )}
                               </View>
-                            ) : subQ.field_type === 'radio' ? (
+                            ) : subQ.field_type === 'RADIO' ? (
                               answer?.subAnswers?.[`sub_${subQ.id}`] === 'on' ? (
                                 <View style={styles.checkedBox}></View>
                               ) : (

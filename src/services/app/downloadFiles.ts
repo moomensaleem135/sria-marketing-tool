@@ -1,10 +1,11 @@
 import { postRequest } from '@/services/utils';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 const getTokenHeader = () => {
   const extraHeaders: { authorization?: string } = {};
-  let token = localStorage.getItem('token');
+  const token = Cookies.get('token');
   if (token) {
-    token = JSON.parse(token);
+    // token = JSON.parse(token);
     extraHeaders['authorization'] = `token ${token}`;
   }
 

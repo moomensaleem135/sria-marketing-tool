@@ -116,9 +116,13 @@ const SignContainer = ({ answers, questions, fieldData, formik }: IQuestionRepor
       const pdfInstance = pdf(doc);
       const blob = await pdfInstance.toBlob();
 
-      const file = new File([blob], `MRT Report (${formik.values.currentTab}).pdf`, {
-        type: blob.type
-      });
+      const file = new File(
+        [blob],
+        `MRT Report (${formik.values.currentTab})_${new Date().getTime()}.pdf`,
+        {
+          type: blob.type
+        }
+      );
 
       return file;
     } catch (error) {

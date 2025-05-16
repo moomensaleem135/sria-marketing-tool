@@ -1,13 +1,12 @@
 import '@/styles/globals.scss';
 
 import { Metadata } from 'next';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { MainProvider } from '@/components/providers/MainProvider';
 import SharedLayout from '@/components/layout/shared-layout';
 import { COLORS } from '@/constants/colors';
 import NextTopLoader from 'nextjs-toploader';
-
 export const metadata: Metadata = {
   title: 'Marketing Review Tool',
   description: '🚀'
@@ -33,9 +32,11 @@ const RootLayout = ({ children }: RootLayoutProps) => {
             speed={2000}
             shadow="0 0 10px #2299DD,0 0 5px #2299DD"
           />
-          <SharedLayout>
-            <main>{children}</main>
-          </SharedLayout>
+          <React.Suspense>
+            <SharedLayout>
+              <main>{children}</main>
+            </SharedLayout>
+          </React.Suspense>
         </MainProvider>
       </body>
     </html>

@@ -14,7 +14,7 @@ const PaidTestimonial = () => {
 
   return (
     <Box>
-      <Typography sx={{ fontSize: '0.8rem' }}>
+      {/* <Typography sx={{ fontSize: '0.8rem' }}>
         <span
           style={{ textDecoration: 'underline', cursor: 'pointer', fontWeight: 'bold' }}
           onClick={() => setIsDisclouserModal(true)}
@@ -30,31 +30,31 @@ const PaidTestimonial = () => {
         closeFunction={() => setIsDisclouserModal(false)}
         closedIcon={true}
         modalWidth={'37rem'}
-      >
-        <Box sx={{ paddingBottom: '1rem' }}>
-          {userData.map((data) => (
-            <Box
-              key={data.name}
-              sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.7rem', margin: '1rem 0' }}
-            >
-              <Typography sx={{ fontSize: '1.15rem', color: COLORS.BLUE_600 }}>
-                {data.name}
-              </Typography>
-              <Typography sx={{ fontSize: '0.9rem' }}>{data.description}</Typography>
-            </Box>
-          ))}
-          <hr style={{ height: '2px' }} />
-          <Box>
-            <Typography sx={{ fontSize: '0.9rem' }}>
-              The client above was indirectly compensated with reduced fees that totaled $950. This
-              offer of non-cash compensation represents a material conflict of interest that will
-              affect the testimony given. This testimony is for informational purposes only and does
-              not represent all client experiences. It does not guarantee positive performance or
-              future results.
+      > */}
+      <Box sx={{ paddingBottom: '1rem' }}>
+        {userData.map((data) => (
+          <Box
+            key={data.name}
+            sx={{ display: 'flex', flexDirection: 'column', rowGap: '0.7rem', margin: '1rem 0' }}
+          >
+            <Typography sx={{ fontSize: '1.15rem', color: COLORS.BLUE_600 }}>
+              {data.name}
             </Typography>
+            <Typography sx={{ fontSize: '0.9rem' }}>{data.description}</Typography>
           </Box>
+        ))}
+        <hr style={{ height: '2px' }} />
+        <Box>
+          <Typography sx={{ fontSize: '0.9rem' }}>
+            The client above was indirectly compensated with reduced fees that totaled $950. This
+            offer of non-cash compensation represents a material conflict of interest that will
+            affect the testimony given. This testimony is for informational purposes only and does
+            not represent all client experiences. It does not guarantee positive performance or
+            future results.
+          </Typography>
         </Box>
-      </CustomModal>
+      </Box>
+      {/* </CustomModal>   */}
     </Box>
   );
 };

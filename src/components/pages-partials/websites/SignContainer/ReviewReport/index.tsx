@@ -158,17 +158,17 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
             {/* Sub Questions */}
             {question.subquestions &&
               answer?.mainAnswer &&
-              answer?.mainAnswer.toLowerCase() === question.show_subquestions && (
+              answer?.mainAnswer.toUpperCase() === question.show_subquestions && (
                 <div style={{ marginLeft: '15px' }}>
                   {question.subquestions
-                    .filter((subQuestion) => subQuestion.field_type !== 'file')
+                    .filter((subQuestion) => subQuestion.field_type !== 'FILE')
                     .map((subQ, subIndex) => (
                       <div
                         key={subIndex}
                         style={{
                           marginBottom: '5px',
-                          display: subQ.field_type === 'radio' ? 'flex' : 'block',
-                          flexDirection: subQ.field_type === 'radio' ? 'row-reverse' : 'column',
+                          display: subQ.field_type === 'RADIO' ? 'flex' : 'block',
+                          flexDirection: subQ.field_type === 'RADIO' ? 'row-reverse' : 'column',
                           justifyContent: 'start',
                           padding: '0.3rem 0'
                         }}
@@ -177,7 +177,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
                           dangerouslySetInnerHTML={{ __html: subQ.html_sub_question_text }}
                           // sx={{ marginTop: '0.1rem' }}
                         />
-                        {subQ.field_type === 'checkbox' ? (
+                        {subQ.field_type === 'CHECKBOX' ? (
                           <div
                             style={{
                               display: 'flex',
@@ -210,7 +210,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
                               />
                               No
                             </label>
-                            {subQ.is_na && subQ.question_type !== 'spacial' && (
+                            {subQ.is_na && subQ.question_type !== 'SPECIAL' && (
                               <label>
                                 <input
                                   type="checkbox"
@@ -225,7 +225,7 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
                               </label>
                             )}
                           </div>
-                        ) : subQ.field_type === 'radio' ? (
+                        ) : subQ.field_type === 'RADIO' ? (
                           <input
                             type="checkbox"
                             checked={
@@ -247,37 +247,6 @@ const ReviewReport = ({ answers, questions, fieldData, formik, signatureText }: 
                     ))}
                 </div>
               )}
-
-            {/* Is Updated Question */}
-            {/* {question.isUpdated && answer?.mainAnswer === question.note && (
-              <div style={{ marginTop: '10px', marginLeft: '15px' }}>
-                <RegularText sx={{ fontWeight: 'bold' }}>{question.isUpdated}</RegularText>
-                <div
-                  style={{ display: 'flex', alignItems: 'center', gap: '15px', margin: '5px 0px' }}
-                >
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={answer?.isUpdated === 'Yes'}
-                      readOnly
-                      style={{ marginRight: '5px' }}
-                    />
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={answer?.isUpdated === 'No'}
-                      readOnly
-                      style={{ marginRight: '5px' }}
-                    />
-                    No
-                  </label>
-                </div>
-              </div>
-            )} */}
-
-            {/* <Line /> */}
           </div>
         );
       })}

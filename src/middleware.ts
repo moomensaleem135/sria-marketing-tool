@@ -17,10 +17,13 @@ export default function middleware(req: NextRequest) {
   // Check if the current path is protected
   // const isProtectedPath = protectedPaths.some((path) => pathname.startsWith(path));
 
-  if (!token) {
-    // Redirect to login if trying to access protected path without token
-    return NextResponse.redirect(new URL('https://cco-portal-sria.vercel.app/', req.nextUrl));
-  }
+  // if (!token) {
+  //   if(req.url !== '/?token'){
+
+  //     return NextResponse.redirect(new URL('https://cco-portal-sria.vercel.app/', req.nextUrl));
+  //   }
+  // Redirect to login if trying to access protected path without token
+  // }
 
   // Allow the request to continue if:
   // 1. There's a token, or
