@@ -118,11 +118,12 @@ export const TopHeading = styled.h1`
   text-align: center;
 `;
 export const SelectMarketingType = styled.h1`
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
   color: ${COLORS.BLUE_THEME_MAIN};
 `;
 export const SelectMarketingTypeDis = styled.p`
   font-size: 1rem;
   font-weight: 400;
+  margin-top: 1rem;
 `;
