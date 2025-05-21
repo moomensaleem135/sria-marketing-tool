@@ -17,7 +17,6 @@ interface SharedLayoutProps {
 const LANDING_PAGE = '/';
 const SharedLayout = ({ children }: SharedLayoutProps) => {
   const { isAuthenticated } = useAppSelector(getAuthDataSelector);
-  console.log('isAuthenticated', isAuthenticated);
   const [isLoading, setIsLoading] = useState(true);
   const params = useSearchParams();
   const encToken = params.get('token');
