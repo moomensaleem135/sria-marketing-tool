@@ -63,7 +63,6 @@ const PartialBlogArticle = () => {
   const { isAdd, isQuestionsContainerOpen, isSignContainerOpen } = useSelector(
     (state: any) => state.marketingTools.blog
   );
-  console.log(isAdd, isQuestionsContainerOpen, isSignContainerOpen);
   const initialValues = {
     title: '',
     advisor: '',
